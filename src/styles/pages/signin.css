@@ -1,0 +1,12 @@
+#page-signin {
+  width: 100vw;
+  height: 100vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  color: #000000;
+  background-color: #F5F5F5;
+}
