@@ -39,6 +39,21 @@
   width: 100%;
 }
 
+.container .select-city {
+  font-size: 32px;
+  font-weight: 300;
+  color: #000000; 
+  background-color: #DCDCDC;
+
+  border-radius: 15px;
+  border: 0px solid;
+  outline: none;
+
+  padding: 1rem;
+  margin-bottom: 30px;
+  width: 100%;
+}
+
 .container .cancel-button {
   font-weight: 300;
   font-size: 26px;
