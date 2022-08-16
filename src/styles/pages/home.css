@@ -12,6 +12,24 @@
   background-color: #F5F5F5;
 }
 
+a {
+  text-decoration: none;
+  color: #000000;
+  font-size: 48px;
+  font-weight: 500;
+}
+
+.home-header {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.home-content p{
+  padding-bottom: 30px;
+}
+
+
 .home-header button {
   border-radius: 35px;
   border: 0px;
@@ -21,16 +39,36 @@
   margin: 30px;
 }
 
-.home-content {
+.home-content-top {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center; 
+}
+
+.home-content-bottom {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center; 
+}
+
+.menu-button, .order-button, .ingredients-button, .portion-button{
   background-color: #D9D9D9;
   border-radius: 50px;
 
   display: flex;
   align-items: center;
+  justify-content: center;
 
   color: #000000;
   font-size: 48px;
   text-align: center;
   text-decoration: none;
-  
+
+  width: 550px;
+  height: 350px;
+
+  margin: 25px;
 }
+

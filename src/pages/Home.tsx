@@ -30,18 +30,40 @@ export function Home () {
             <ArrowsOutSimple size={64} weight="bold" color="black"/>
           </Link>
         </button>        
-      </header> 
+      </header>
 
       <div className="home-content">
-        <Link to="/pratos">
-          <p>Cardápio</p>
-          <ClipboardText size={128} weight="bold" color="black"/>
-        </Link>
-        
+        <div className="home-content-top">
+          <div className="menu-button">
+            <Link to="/pratos">
+              <p>Cardápio</p>
+              <ClipboardText size={128} weight="bold" color="black"/>
+            </Link>
+          </div>
 
-        <ListNumbers size={128} weight="bold" color="black"/>
-        <Fish size={128} weight="bold" color="black"/>
-        <ChartPieSlice size={128} weight="bold" color="black"/>
+          <div className="order-button">
+            <Link to="/">
+              <p>Pedidos</p>
+              <ListNumbers size={128} weight="bold" color="black"/>
+            </Link>
+          </div>
+        </div>
+
+        <div className="home-content-bottom">
+          <div className="ingredients-button">
+            <Link to="/">
+              <p>Ingredientes</p>
+              <Fish size={128} weight="bold" color="black"/>
+            </Link>
+          </div>
+
+          <div className="portion-button">
+            <Link to="/">
+              <p>Porções</p>
+              <ChartPieSlice size={128} weight="bold" color="black"/>
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
   )
