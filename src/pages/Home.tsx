@@ -9,7 +9,9 @@ import {
   ClipboardText, 
   ListNumbers, 
   Fish, 
-  ChartPieSlice 
+  ChartPieSlice,
+  Graph,
+  Database,
 } from 'phosphor-react';
 
 export function Home () {
@@ -37,33 +39,50 @@ export function Home () {
           <div className="menu-button">
             <Link to="/pratos">
               <p>Cardápio</p>
-              <ClipboardText size={128} weight="bold" color="black"/>
+              <ClipboardText size={100} weight="bold" color="black"/>
             </Link>
           </div>
 
           <div className="order-button">
-            <Link to="/">
+            <Link to="/orders">
               <p>Pedidos</p>
-              <ListNumbers size={128} weight="bold" color="black"/>
+              <ListNumbers size={100} weight="bold" color="black"/>
             </Link>
           </div>
         </div>
 
-        <div className="home-content-bottom">
+        <div className="home-content-middle">
           <div className="ingredients-button">
             <Link to="/">
               <p>Ingredientes</p>
-              <Fish size={128} weight="bold" color="black"/>
+              <Fish size={100} weight="bold" color="black"/>
             </Link>
           </div>
 
           <div className="portion-button">
             <Link to="/">
               <p>Porções</p>
-              <ChartPieSlice size={128} weight="bold" color="black"/>
+              <ChartPieSlice size={100} weight="bold" color="black"/>
             </Link>
           </div>
         </div>
+
+        <div className="home-content-bottom">
+          <div className="colect-data-button">
+            <Link to="/">
+              <p>Coleta de Dados</p>
+              <Database size={100} weight="bold" color="black"/>
+            </Link>
+          </div>
+
+          <div className="data-gathering-button">
+            <Link to="/">
+              <p>Previsão de Dados</p>
+              <Graph size={100} weight="bold" color="black"/>
+            </Link>
+          </div>
+        </div>
+
       </div>
     </div>
   )
