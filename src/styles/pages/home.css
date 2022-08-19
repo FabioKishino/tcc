@@ -31,6 +31,13 @@ a {
   justify-content: center;
 }
 
+.home-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80%;
+}
+
 .home-content p {
   padding-bottom: 30px;
 }
@@ -47,13 +54,6 @@ a {
 .home-header button:hover {
   background-color: #a5a4a4;
   transition: 0.3s ease-in-out;
-}
-
-.home-content-top, .home-content-middle, .home-content-bottom {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
 }
 
 .menu-button, 
@@ -74,7 +74,7 @@ a {
   text-align: center;
   text-decoration: none;
 
-  width: 600px;
+  width: 90%;
   height: 270px;
 
   margin: 25px;
