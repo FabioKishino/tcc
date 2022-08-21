@@ -1,5 +1,11 @@
-#order-component {
-  width: 80vw;
+#order-list {
+  display: flex;
+  justify-content:center;
+  padding-top: 30px;
+}
+
+.order-component {
+  width: 78vw;
   height: 170px;
 
   color: #000000;
@@ -11,7 +17,6 @@
 
   border-radius: 25px;
   padding-right: 45px;
-  
 }
 
 .order-content {
@@ -28,4 +33,92 @@
 
 .order-content p{
   font-size: 26px;
+  width: 250px;
+}
+
+.order-edit-btn {
+  padding-left: 30px;
+  display: flex;
+  align-items: center;
+}
+
+.order-edit-btn button {
+  display: flex;
+  align-items: center;
+  background-color: #D9D9D9;
+  border: 0px;
+  cursor: pointer;
+}
+
+.order-edit-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+} 
+
+.order-edit-header button {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  background-color: #FFFFFF;
+  border: 0px;
+  cursor: pointer;
+}
+
+.order-edit-form form{
+  display: flex;
+  flex-direction: column;
+  width: 95%;
+  font-size: 26px;
+  font-weight: 300;
+}
+
+.order-edit-form label {
+  padding-left: 10px;
+}
+
+.order-edit-form input {
+  height: 50px;
+  margin-bottom: 30px;
+  font-size: 26px;
+  border: 1px solid #CCC;
+  border-radius: 5px;
+  padding-left: 10px;
+  font-weight: 300;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 20px;
+}
+
+.cancel-btn {
+  background-color: #FA0303;
+  color:#FFFFFF;
+
+  width: 30%;
+  border: 0px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-radius: 15px;
+  margin-right: 30px;
+
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.confirm-btn {
+  background-color: #63B90E;
+  color:#FFFFFF;
+
+  width: 30%;
+  border: 0px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-radius: 15px;
+
+  font-size: 24px;
+  cursor: pointer;
 }

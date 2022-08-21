@@ -5,3 +5,56 @@
   color: #000000;
   background-color: #F5F5F5;
 }
+
+#plus-icon-btn {
+  background-color: #F5F5F5;
+  border: 0px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.plus-icon {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  margin-right: 20px; 
+}
+
+.new-order-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+} 
+
+.new-order-header button {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  background-color: #FFFFFF;
+  border: 0px;
+  cursor: pointer;
+}
+
+.new-order-form form{
+  display: flex;
+  flex-direction: column;
+  width: 95%;
+  font-size: 26px;
+  font-weight: 300;
+}
+
+.new-order-form label {
+  padding-left: 10px;
+  padding-top: 15px;
+}
+
+.new-order-form input {
+  height: 50px;
+  margin-bottom: 30px;
+  font-size: 26px;
+  border: 1px solid #CCC;
+  border-radius: 5px;
+  padding-left: 10px;
+  font-weight: 300;
+}
+

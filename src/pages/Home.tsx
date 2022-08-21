@@ -17,14 +17,12 @@ export function Home () {
   return (
     <div id="home-page">
       <header className="home-header">
-        {/* Profile Button */}
         <button>
           <Link to="/home">
             <User size={64} weight="bold" color="black"/>
           </Link>
         </button> 
         
-        {/* User Button */}
         <button>
           <Link to="/">
             <SignOut size={64} weight="bold" color="black"/>
@@ -37,42 +35,42 @@ export function Home () {
         <div className="menu-button">
           <Link to="/pratos">
             <p>Cardápio</p>
-            <ClipboardText size={100} weight="bold" color="black"/>
+            <ClipboardText size={80} weight="bold" color="black"/>
           </Link>
         </div>
 
         <div className="order-button">
           <Link to="/orders">
             <p>Pedidos</p>
-            <ListNumbers size={100} weight="bold" color="black"/>
+            <ListNumbers size={80} weight="bold" color="black"/>
           </Link>
         </div>
         
         <div className="ingredients-button">
           <Link to="/">
             <p>Ingredientes</p>
-            <Fish size={100} weight="bold" color="black"/>
+            <Fish size={80} weight="bold" color="black"/>
           </Link>
         </div>
 
         <div className="portion-button">
           <Link to="/">
             <p>Porções</p>
-            <ChartPieSlice size={100} weight="bold" color="black"/>
+            <ChartPieSlice size={80} weight="bold" color="black"/>
           </Link>
         </div>
       
         <div className="colect-data-button">
           <Link to="/">
             <p>Coleta de Dados</p>
-            <Database size={100} weight="bold" color="black"/>
+            <Database size={80} weight="bold" color="black"/>
           </Link>
         </div>
 
         <div className="data-gathering-button">
           <Link to="/">
             <p>Previsão de Dados</p>
-            <Graph size={100} weight="bold" color="black"/>
+            <Graph size={80} weight="bold" color="black"/>
           </Link>
         </div>
         

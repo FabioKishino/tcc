@@ -5,7 +5,6 @@ import { SignUp } from './pages/SignUp';
 import { Home } from './pages/Home';
 import { Orders } from './pages/Orders';
 
-
 export function SiteRoutes() {
   return (
     <BrowserRouter>
