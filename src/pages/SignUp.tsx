@@ -1,14 +1,28 @@
 import { Link } from 'react-router-dom'
-
-import TakeLogo from '../images/TakeLogo.svg'
 import '../styles/pages/signup.css';
-
 import Select from 'react-select'
 
 const cityOptions = [
   { value: '1', label: 'Curitiba' },
   { value: '2', label: 'SJP' },
 ]
+
+const customStyles = {
+  menuList: () => ({
+    backgroundColor: '#DCDCDC',
+    color: 'black',
+    padding: 20,
+  }),
+  control: (styles: any) => ({
+    ...styles,
+    backgroundColor: '#DCDCDC',
+    border: '0px',
+  }),
+  dropdownIndicator: () => ({
+    color: 'black',
+  })
+}
+
 
 export function SignUp () {
   return (
@@ -25,6 +39,7 @@ export function SignUp () {
           <input type="text" placeholder="State"/>
           
           <Select
+            styles={customStyles}
             className="select-city"
             placeholder="City"
             options={cityOptions}

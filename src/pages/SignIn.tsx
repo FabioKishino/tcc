@@ -6,7 +6,7 @@ import '../styles/pages/signin.css';
 export function SignIn () {
   return (
     <div id="page-signin">
-      <div className="container">
+      <div className="signin-container">
         <form>
           <img src={TakeLogo} alt="TakeLogo"/>
 

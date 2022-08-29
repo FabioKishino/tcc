@@ -5,15 +5,15 @@ import Select from 'react-select'
 import { HeaderComponent } from '../components/HeaderComponent';
 import { Order } from '../components/Order'
 
-
 import { PlusCircle, X } from 'phosphor-react'
 import '../styles/pages/orders.css';
 
 Modal.setAppElement('#root')
 
 export function Orders () {
-
   const [newOrderIsOpen, setNewOrderIsOpen] = useState(false);
+  const [orders, setOrders] = useState({});
+
 
   function handleOpenNewOrderMenu () {
     setNewOrderIsOpen(true);
@@ -25,7 +25,9 @@ export function Orders () {
 
   function handleCloseNewOrderMenuAndSubmit () {
     setNewOrderIsOpen(false);
-    // Needs to submit the form to the back end
+    // Needs to submit the form to the back end and also add to the orders page
+    // setOrders([...orders, ])
+    console.log(orders)
   }
 
   const recipesOptions = [
@@ -49,20 +51,25 @@ export function Orders () {
     }
   }
 
+  const customStylesSelect = {
+    menuList: () => ({
+      backgroundColor: '#DCDCDC',
+      color: 'black',
+      padding: 20,
+    }),
+    control: (styles: any) => ({
+      ...styles,
+      backgroundColor: '#DCDCDC',
+      border: '0px',
+    }),
+    dropdownIndicator: () => ({
+      color: 'black',
+    })
+  }
+
   return (
     <div id="orders-page">
-      <HeaderComponent title="Pedidos"/>
-      <Order recipe="Yakisoba" amount="1 Porção" status="Em andamento" created_at="5" />
-      <Order recipe="Camarão à milanesa" amount="2 Porções" status="Em andamento" created_at="15" />
-      <Order recipe="Cogumelo Paris" amount="1/2 Porção" status="Cancelado" created_at="25" />
-      <Order recipe="Salmão Grelhado" amount="1 Porção" status="Finalizado" created_at="35" />
-      <Order recipe="Salmão Grelhado" amount="1 Porção" status="Finalizado" created_at="45" />
-      <Order recipe="Salmão Grelhado" amount="1 Porção" status="Finalizado" created_at="55" />
-
-      <button id="plus-icon-btn" className="plus-icon" onClick={handleOpenNewOrderMenu}>
-        <PlusCircle size={100} weight="fill"/>
-      </button>
-
+  
       <Modal
         isOpen={newOrderIsOpen}
         onRequestClose={handleCloseNewOrderMenu}
@@ -77,25 +84,13 @@ export function Orders () {
         <div className="new-order-form">
           <form>
             <label>Prato</label>
-            <Select
-              className="new-order-select"
-              placeholder="Escolha o prato"
-              options={recipesOptions}
-            />
+            <Select styles={customStylesSelect} className="new-order-select" placeholder="Escolha o prato" options={recipesOptions} />
 
             <label>Quantidade</label>
-            <Select
-              className="new-order-select"
-              placeholder="Escolha a quantidade"
-              options={recipesOptions}
-            />
+            <Select styles={customStylesSelect} className="new-order-select" placeholder="Escolha a quantidade" options={recipesOptions} />
 
             <label>Status</label>
-            <Select
-              className="new-order-select"
-              placeholder="Escolha o status"
-              options={recipesOptions}
-            />
+            <Select styles={customStylesSelect} className="new-order-select" placeholder="Escolha o status" options={recipesOptions} />
           </form>
         </div>
         <div className="form-buttons"> 
@@ -104,6 +99,21 @@ export function Orders () {
         </div>
       </Modal>
     
+      <HeaderComponent title="Pedidos"/>
+
+      {/* {orders.map((item), i) => ( <Order />)} */}
+
+      <Order recipe="Yakisoba" amount="1 Porção" status="Em andamento" created_at="5" />
+      <Order recipe="Camarão à milanesa" amount="2 Porções" status="Em andamento" created_at="15" />
+      <Order recipe="Cogumelo Paris" amount="1/2 Porção" status="Cancelado" created_at="25" />
+      <Order recipe="Salmão Grelhado" amount="1 Porção" status="Finalizado" created_at="35" />
+      <Order recipe="Salmão Grelhado" amount="1 Porção" status="Finalizado" created_at="45" />
+      <Order recipe="Salmão Grelhado" amount="1 Porção" status="Finalizado" created_at="55" />
+
+      <button id="plus-icon-btn" className="plus-icon" onClick={handleOpenNewOrderMenu}>
+        <PlusCircle size={100} weight="fill"/>
+      </button>
+
     </div>
 
     

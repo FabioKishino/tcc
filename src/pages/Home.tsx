@@ -18,7 +18,7 @@ export function Home () {
     <div id="home-page">
       <header className="home-header">
         <button>
-          <Link to="/home">
+          <Link to="/user">
             <User size={64} weight="bold" color="black"/>
           </Link>
         </button> 
@@ -33,7 +33,7 @@ export function Home () {
 
       <div className="home-content">
         <div className="menu-button">
-          <Link to="/pratos">
+          <Link to="/recipes">
             <p>Cardápio</p>
             <ClipboardText size={80} weight="bold" color="black"/>
           </Link>

@@ -12,19 +12,30 @@
   background-color: #F5F5F5;
 }
 
-.signin-container img {
-  width: 40%;
-  padding-bottom: 50px;
-}
+.container { 
+  width: 100%;
+  height: 100%;
 
-.signin-container form {
+  padding-top: 50px;
+
   display: flex;
   flex-direction: column;
-
+  justify-content: center;
   align-items: center;
 }
 
-.signin-container form input {
+.container form {
+  align-items: stretch;
+}
+
+.container form label {
+  padding-left: 15px;
+  padding-bottom: 10px;
+  font-size: 24px;
+}
+
+
+.container .select-city {
   font-size: 32px;
   font-weight: 300;
   color: #000000; 
@@ -39,19 +50,7 @@
   width: 100%;
 }
 
-.signin-container .login-button {
-  font-weight: 300;
-  font-size: 26px;
-  text-decoration: none;
-  color: #000000;
-
-  background-color: #B2C900;
-  border-radius: 15px;
-
-  padding: 20px 80px 20px 80px;
-}
-
-.signin-container .signup-button {
+.container .confirm-button {
   font-weight: 300;
   font-size: 26px;
   text-decoration: none;
@@ -63,16 +62,4 @@
   padding: 20px 80px 20px 80px;
 
   margin-left: 20px;
-}
-
-.signin-container .buttons {
-  margin-top: 25px;
-}
-
-.signin-container .forget-password {
-  font-size: 20px;
-  font-weight: 300;
-  color: #525252;
-  text-decoration: none;
-  padding-top: 45px;
 }

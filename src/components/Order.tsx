@@ -102,8 +102,8 @@ export function Order (props: orderProps) {
                 <label>Status</label>
                 <input type="text" placeholder={props.status}/>
 
-                <label>Criado há</label>
-                <input type="text" placeholder={props.created_at}/>
+                {/* <label>Criado há</label>
+                <input type="text" placeholder={props.created_at}/> */}
               </form>
             </div>
             <div className="form-buttons"> 
