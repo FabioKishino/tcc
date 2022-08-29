@@ -8,7 +8,7 @@ import '../styles/components/order.css';
 
 Modal.setAppElement('#root')
 
-interface orderProps {
+export interface OrderProps {
   // id: number,
   recipe: string,
   amount: string,
@@ -16,7 +16,7 @@ interface orderProps {
   created_at: string,
 }
 
-export function Order (props: orderProps) {
+export function Order (props: OrderProps) {
 
   const [editOrderIsOpen, setEditOrderIsOpen] = useState(false);
 

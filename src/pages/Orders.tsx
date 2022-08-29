@@ -3,17 +3,18 @@ import Modal from 'react-modal'
 import Select from 'react-select'
 
 import { HeaderComponent } from '../components/HeaderComponent';
-import { Order } from '../components/Order'
+import { Order, OrderProps } from '../components/Order'
 
 import { PlusCircle, X } from 'phosphor-react'
 import '../styles/pages/orders.css';
+import api from '../services/api';
 
 Modal.setAppElement('#root')
 
 export function Orders () {
   const [newOrderIsOpen, setNewOrderIsOpen] = useState(false);
-  const [orders, setOrders] = useState({});
-
+  const [orders, setOrders] = useState<OrderProps[]>([]);
+  const [newOrder, setNewOrder] = useState<OrderProps>({} as OrderProps);
 
   function handleOpenNewOrderMenu () {
     setNewOrderIsOpen(true);
@@ -23,16 +24,26 @@ export function Orders () {
     setNewOrderIsOpen(false);
   }
 
-  function handleCloseNewOrderMenuAndSubmit () {
+  async function handleCloseNewOrderMenuAndSubmit () {
     setNewOrderIsOpen(false);
     // Needs to submit the form to the back end and also add to the orders page
-    // setOrders([...orders, ])
-    console.log(orders)
+    setOrders([newOrder, ...orders]);
+    await api.post('/orders', newOrder);
   }
 
   const recipesOptions = [
     { value: '1', label: 'Yakisoba' },
     { value: '2', label: 'Salmão Grelhado' },
+  ]
+
+  const amountOptions = [
+    { value: '1', label: '1 Porção' },
+    { value: '2', label: '1/2 Porção' },
+  ]
+
+  const statusOptions = [
+    { value: '1', label: 'Em andamento' },
+    { value: '2', label: 'Cancelado' },
   ]
 
   const customStyles = {
@@ -84,13 +95,44 @@ export function Orders () {
         <div className="new-order-form">
           <form>
             <label>Prato</label>
-            <Select styles={customStylesSelect} className="new-order-select" placeholder="Escolha o prato" options={recipesOptions} />
+            <Select 
+              styles={customStylesSelect} 
+              className="new-order-select" 
+              placeholder="Escolha o prato" 
+              options={recipesOptions} 
+              onChange={selection => {
+                const newObject = newOrder
+                newObject.recipe = selection ? selection.label : ''
+                setNewOrder(newObject)
+              }
+            }/>
 
             <label>Quantidade</label>
-            <Select styles={customStylesSelect} className="new-order-select" placeholder="Escolha a quantidade" options={recipesOptions} />
+            <Select 
+              styles={customStylesSelect} 
+              className="new-order-select" 
+              placeholder="Escolha a quantidade" 
+              options={amountOptions}
+              onChange={selection => {
+                const newObject = newOrder
+                newObject.amount = selection ? selection.label : ''
+                setNewOrder(newObject)
+              }
+            }/>
 
             <label>Status</label>
-            <Select styles={customStylesSelect} className="new-order-select" placeholder="Escolha o status" options={recipesOptions} />
+            <Select 
+              styles={customStylesSelect} 
+              className="new-order-select" 
+              placeholder="Escolha o status" 
+              options={statusOptions} 
+              onChange={selection => {
+                const newObject = newOrder
+                newObject.status = selection ? selection.label : ''
+                setNewOrder(newObject)
+              }
+            }/>
+
           </form>
         </div>
         <div className="form-buttons"> 
@@ -101,14 +143,9 @@ export function Orders () {
     
       <HeaderComponent title="Pedidos"/>
 
-      {/* {orders.map((item), i) => ( <Order />)} */}
+      {orders.map(item => <Order recipe={item.recipe} amount={item.amount} status={item.status} created_at={item.created_at} />)}
 
       <Order recipe="Yakisoba" amount="1 Porção" status="Em andamento" created_at="5" />
-      <Order recipe="Camarão à milanesa" amount="2 Porções" status="Em andamento" created_at="15" />
-      <Order recipe="Cogumelo Paris" amount="1/2 Porção" status="Cancelado" created_at="25" />
-      <Order recipe="Salmão Grelhado" amount="1 Porção" status="Finalizado" created_at="35" />
-      <Order recipe="Salmão Grelhado" amount="1 Porção" status="Finalizado" created_at="45" />
-      <Order recipe="Salmão Grelhado" amount="1 Porção" status="Finalizado" created_at="55" />
 
       <button id="plus-icon-btn" className="plus-icon" onClick={handleOpenNewOrderMenu}>
         <PlusCircle size={100} weight="fill"/>
