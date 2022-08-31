@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://tcc-2022-backend.herokuapp.com/ '
+  baseURL: 'https://take-backend.herokuapp.com/api-docs/'
 });
 
 export default api;

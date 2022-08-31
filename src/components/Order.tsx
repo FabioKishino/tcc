@@ -1,9 +1,9 @@
 import { useState } from 'react'
+import Select from 'react-select';
 
-import { Link } from 'react-router-dom'
 import Modal from 'react-modal'
-import { Pencil, X } from 'phosphor-react'
 
+import { Pencil, X } from 'phosphor-react'
 import '../styles/components/order.css';
 
 Modal.setAppElement('#root')
@@ -17,16 +17,10 @@ export interface OrderProps {
 }
 
 export function Order (props: OrderProps) {
-
   const [editOrderIsOpen, setEditOrderIsOpen] = useState(false);
 
-  function handleOpenEditMenu () {
-    setEditOrderIsOpen(true);
-  }
-
-  function handleCloseEditMenu () {
-    setEditOrderIsOpen(false);
-  }
+  function handleOpenEditMenu () { setEditOrderIsOpen(true); }
+  function handleCloseEditMenu () { setEditOrderIsOpen(false); }
 
   function handleCloseEditMenuAndSubmit () {
     setEditOrderIsOpen(false);
@@ -102,8 +96,6 @@ export function Order (props: OrderProps) {
                 <label>Status</label>
                 <input type="text" placeholder={props.status}/>
 
-                {/* <label>Criado há</label>
-                <input type="text" placeholder={props.created_at}/> */}
               </form>
             </div>
             <div className="form-buttons"> 

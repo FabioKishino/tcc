@@ -1,4 +1,6 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
+import { OrdersContext } from '../contexts/OrderContext';
+
 import Modal from 'react-modal'
 import Select from 'react-select'
 
@@ -7,29 +9,25 @@ import { Order, OrderProps } from '../components/Order'
 
 import { PlusCircle, X } from 'phosphor-react'
 import '../styles/pages/orders.css';
-import api from '../services/api';
+
+
 
 Modal.setAppElement('#root')
 
 export function Orders () {
-  const [newOrderIsOpen, setNewOrderIsOpen] = useState(false);
-  const [orders, setOrders] = useState<OrderProps[]>([]);
-  const [newOrder, setNewOrder] = useState<OrderProps>({} as OrderProps);
-
-  function handleOpenNewOrderMenu () {
-    setNewOrderIsOpen(true);
-  }
-
-  function handleCloseNewOrderMenu () {
-    setNewOrderIsOpen(false);
-  }
-
-  async function handleCloseNewOrderMenuAndSubmit () {
-    setNewOrderIsOpen(false);
-    // Needs to submit the form to the back end and also add to the orders page
-    setOrders([newOrder, ...orders]);
-    await api.post('/orders', newOrder);
-  }
+  const { 
+    orders, 
+    handleCloseNewOrderMenuAndSubmit, 
+    newOrder, 
+    setNewOrder, 
+    newOrderIsOpen, 
+    setNewOrderIsOpen,
+    handleOpenNewOrderMenu,
+    handleCloseNewOrderMenu
+  
+  } = useContext(OrdersContext);
+  
+  
 
   const recipesOptions = [
     { value: '1', label: 'Yakisoba' },
@@ -100,6 +98,7 @@ export function Orders () {
               className="new-order-select" 
               placeholder="Escolha o prato" 
               options={recipesOptions} 
+              isSearchable={false}
               onChange={selection => {
                 const newObject = newOrder
                 newObject.recipe = selection ? selection.label : ''
@@ -113,6 +112,7 @@ export function Orders () {
               className="new-order-select" 
               placeholder="Escolha a quantidade" 
               options={amountOptions}
+              isSearchable={false}
               onChange={selection => {
                 const newObject = newOrder
                 newObject.amount = selection ? selection.label : ''
@@ -125,7 +125,8 @@ export function Orders () {
               styles={customStylesSelect} 
               className="new-order-select" 
               placeholder="Escolha o status" 
-              options={statusOptions} 
+              options={statusOptions}
+              isSearchable={false}
               onChange={selection => {
                 const newObject = newOrder
                 newObject.status = selection ? selection.label : ''
