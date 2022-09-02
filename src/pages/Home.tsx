@@ -61,7 +61,7 @@ export function Home () {
         </div>
       
         <div className="colect-data-button">
-          <Link to="/">
+          <Link to="/data-gathering">
             <p>Coleta de Dados</p>
             <Database size={80} weight="bold" color="black"/>
           </Link>

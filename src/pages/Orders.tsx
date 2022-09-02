@@ -5,17 +5,16 @@ import Modal from 'react-modal'
 import Select from 'react-select'
 
 import { HeaderComponent } from '../components/HeaderComponent';
-import { Order, OrderProps } from '../components/Order'
+import { OrderComponent } from '../components/OrderComponent'
 
+import { customStyleModal, customStylesSelect  } from '../@types/customStyles';
 import { PlusCircle, X } from 'phosphor-react'
 import '../styles/pages/orders.css';
-
-
 
 Modal.setAppElement('#root')
 
 export function Orders () {
-  const { 
+  const {
     orders, 
     handleCloseNewOrderMenuAndSubmit, 
     newOrder, 
@@ -27,62 +26,17 @@ export function Orders () {
   
   } = useContext(OrdersContext);
   
+  const [recipeOptions, setRecipeOptions] = useState([ { value: '1', label: 'Yakisoba' }, { value: '2', label: 'Salmão Grelhado' } ]);
+  const [amountOptions, setAmountOptions] = useState([ { value: '1', label: '1 Porção' }, { value: '2', label: '1/2 Porção' } ]);
+  const [statusOptions, setStatusOptions] = useState([ { value: '1', label: 'Em andamento' }, { value: '2', label: 'Cancelado' } ]);
   
-
-  const recipesOptions = [
-    { value: '1', label: 'Yakisoba' },
-    { value: '2', label: 'Salmão Grelhado' },
-  ]
-
-  const amountOptions = [
-    { value: '1', label: '1 Porção' },
-    { value: '2', label: '1/2 Porção' },
-  ]
-
-  const statusOptions = [
-    { value: '1', label: 'Em andamento' },
-    { value: '2', label: 'Cancelado' },
-  ]
-
-  const customStyles = {
-    content: {
-      top: '50%',
-      left: '50%',
-      right: 'auto',
-      bottom: 'auto',
-      marginRight: '-50%',
-      transform: 'translate(-50%, -50%)',
-      width: '80%',
-      border: '1px solid #CCC',
-      background: '#FFFFFF',
-      overflow: 'auto',
-      borderRadius: '10px',
-    }
-  }
-
-  const customStylesSelect = {
-    menuList: () => ({
-      backgroundColor: '#DCDCDC',
-      color: 'black',
-      padding: 20,
-    }),
-    control: (styles: any) => ({
-      ...styles,
-      backgroundColor: '#DCDCDC',
-      border: '0px',
-    }),
-    dropdownIndicator: () => ({
-      color: 'black',
-    })
-  }
-
   return (
     <div id="orders-page">
   
       <Modal
         isOpen={newOrderIsOpen}
         onRequestClose={handleCloseNewOrderMenu}
-        style={customStyles}
+        style={customStyleModal}
       >
         <div className="new-order-header">
           <h1>Novo Pedido</h1>
@@ -97,7 +51,7 @@ export function Orders () {
               styles={customStylesSelect} 
               className="new-order-select" 
               placeholder="Escolha o prato" 
-              options={recipesOptions} 
+              options={recipeOptions} 
               isSearchable={false}
               onChange={selection => {
                 const newObject = newOrder
@@ -144,9 +98,7 @@ export function Orders () {
     
       <HeaderComponent title="Pedidos"/>
 
-      {orders.map(item => <Order recipe={item.recipe} amount={item.amount} status={item.status} created_at={item.created_at} />)}
-
-      <Order recipe="Yakisoba" amount="1 Porção" status="Em andamento" created_at="5" />
+      {orders.map((item, index) => <OrderComponent key={index} recipe={item.recipe} amount={item.amount} status={item.status} created_at={item.created_at}/>)}
 
       <button id="plus-icon-btn" className="plus-icon" onClick={handleOpenNewOrderMenu}>
         <PlusCircle size={100} weight="fill"/>

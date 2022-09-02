@@ -4,19 +4,13 @@ import Select from 'react-select';
 import Modal from 'react-modal'
 
 import { Pencil, X } from 'phosphor-react'
-import '../styles/components/order.css';
+import '../styles/components/orderComponent.css';
+import { OrderProps } from '../contexts/OrderContext';
+import { customStyleModal } from '../@types/customStyles';
 
 Modal.setAppElement('#root')
 
-export interface OrderProps {
-  // id: number,
-  recipe: string,
-  amount: string,
-  status: string,
-  created_at: string,
-}
-
-export function Order (props: OrderProps) {
+export function OrderComponent ({ recipe, amount, status, created_at}: OrderProps) {
   const [editOrderIsOpen, setEditOrderIsOpen] = useState(false);
 
   function handleOpenEditMenu () { setEditOrderIsOpen(true); }
@@ -27,45 +21,28 @@ export function Order (props: OrderProps) {
     // Needs to submit the form to the back end
   }
 
-  const customStyles = {
-    content: {
-      top: '50%',
-      left: '50%',
-      right: 'auto',
-      bottom: 'auto',
-      marginRight: '-50%',
-      transform: 'translate(-50%, -50%)',
-      width: '80%',
-      // height: '80%',
-      border: '1px solid #CCC',
-      background: '#FFFFFF',
-      overflow: 'auto',
-      borderRadius: '10px',
-    }
-  }
-
   return (
     <div id="order-list">
       <div className="order-component">
         <div className="order-content">
           <div className="order-recipe">
             <label>Prato</label>
-            <p className="recipe-name">{props.recipe}</p>
+            <p className="recipe-name">{recipe}</p>
           </div>
 
           <div>
             <label>Quantidade</label>
-            <p>{props.amount}</p>
+            <p>{amount}</p>
           </div>
 
           <div>
             <label>Status</label>
-            <p>{props.status}</p>
+            <p>{status}</p>
           </div>
 
           <div>
             <label>Criado há</label>
-            <p>{props.created_at} min</p>
+            <p>{created_at} min</p>
           </div>
         </div>
 
@@ -77,7 +54,7 @@ export function Order (props: OrderProps) {
           <Modal
             isOpen={editOrderIsOpen}
             onRequestClose={handleCloseEditMenu}
-            style={customStyles}
+            style={customStyleModal}
           >
             <div className="order-edit-header">
               <h1>Editar pedido</h1>
@@ -88,13 +65,13 @@ export function Order (props: OrderProps) {
             <div className="order-edit-form">
               <form>
                 <label>Prato</label>
-                <input type="text" placeholder={props.recipe}/>
+                <input type="text" placeholder={recipe}/>
 
                 <label>Quantidade</label>
-                <input type="text" placeholder={props.amount}/>
+                <input type="text" placeholder={amount}/>
 
                 <label>Status</label>
-                <input type="text" placeholder={props.status}/>
+                <input type="text" placeholder={status}/>
 
               </form>
             </div>
