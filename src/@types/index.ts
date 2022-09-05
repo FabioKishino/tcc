@@ -1,3 +1,8 @@
+export interface User {
+  email: string;
+  password: string;
+}
+
 export interface Ingredients {
   name: string;
 }

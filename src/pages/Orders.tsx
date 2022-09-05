@@ -22,16 +22,17 @@ export function Orders () {
     newOrderIsOpen, 
     setNewOrderIsOpen,
     handleOpenNewOrderMenu,
-    handleCloseNewOrderMenu
-  
+    handleCloseNewOrderMenu,
+    recipeOptions,
+    amountOptions,
+    statusOptions
   } = useContext(OrdersContext);
   
-  const [recipeOptions, setRecipeOptions] = useState([ { value: '1', label: 'Yakisoba' }, { value: '2', label: 'Salmão Grelhado' } ]);
-  const [amountOptions, setAmountOptions] = useState([ { value: '1', label: '1 Porção' }, { value: '2', label: '1/2 Porção' } ]);
-  const [statusOptions, setStatusOptions] = useState([ { value: '1', label: 'Em andamento' }, { value: '2', label: 'Cancelado' } ]);
   
   return (
     <div id="orders-page">
+
+      <HeaderComponent title="Pedidos"/>
   
       <Modal
         isOpen={newOrderIsOpen}
@@ -94,9 +95,7 @@ export function Orders () {
           <button onClick={handleCloseNewOrderMenu} className="cancel-btn">CANCELAR</button>
           <button onClick={handleCloseNewOrderMenuAndSubmit} className="confirm-btn">CONFIRMAR</button>
         </div>
-      </Modal>
-    
-      <HeaderComponent title="Pedidos"/>
+      </Modal> 
 
       {orders.map((item, index) => <OrderComponent key={index} recipe={item.recipe} amount={item.amount} status={item.status} created_at={item.created_at}/>)}
 

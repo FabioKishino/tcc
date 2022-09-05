@@ -1,5 +1,8 @@
 import { Link } from 'react-router-dom'
 
+import { useContext } from 'react'
+import { AuthContext } from '../contexts/AuthContext'
+
 import '../styles/pages/home.css';
 
 import { 
@@ -14,6 +17,8 @@ import {
 } from 'phosphor-react';
 
 export function Home () {
+  const { signOut } = useContext(AuthContext)
+  
   return (
     <div id="home-page">
       <header className="home-header">
@@ -24,17 +29,17 @@ export function Home () {
         </button> 
         
         <button>
-          <Link to="/">
+          <Link to="/" onClick={signOut}>
             <SignOut size={64} weight="bold" color="black"/>
           </Link>
-        </button>        
+        </button>
       </header>
 
 
       <div className="home-content">
         <div className="menu-button">
           <Link to="/recipes">
-            <p>Cardápio</p>
+            <p>Receitas</p>
             <ClipboardText size={80} weight="bold" color="black"/>
           </Link>
         </div>
@@ -68,7 +73,7 @@ export function Home () {
         </div>
 
         <div className="data-gathering-button">
-          <Link to="/">
+          <Link to="/data-forecast">
             <p>Previsão de Dados</p>
             <Graph size={80} weight="bold" color="black"/>
           </Link>

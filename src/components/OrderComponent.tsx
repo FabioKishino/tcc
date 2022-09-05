@@ -1,20 +1,30 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import Select from 'react-select';
 
 import Modal from 'react-modal'
 
 import { Pencil, X } from 'phosphor-react'
 import '../styles/components/orderComponent.css';
-import { OrderProps } from '../contexts/OrderContext';
-import { customStyleModal } from '../@types/customStyles';
+import { OrderProps, OrdersContext } from '../contexts/OrderContext';
+import { customStyleModal, customStylesSelect } from '../@types/customStyles';
 
 Modal.setAppElement('#root')
 
-export function OrderComponent ({ recipe, amount, status, created_at}: OrderProps) {
+export function OrderComponent ({recipe, amount, status, created_at}: OrderProps) {
+  const {
+    recipeOptions,
+    amountOptions,
+    statusOptions
+  } = useContext(OrdersContext);
+  
   const [editOrderIsOpen, setEditOrderIsOpen] = useState(false);
 
-  function handleOpenEditMenu () { setEditOrderIsOpen(true); }
-  function handleCloseEditMenu () { setEditOrderIsOpen(false); }
+  function handleOpenEditMenu () { 
+    setEditOrderIsOpen(true); 
+  }
+  
+  function handleCloseEditMenu () { 
+    setEditOrderIsOpen(false); }
 
   function handleCloseEditMenuAndSubmit () {
     setEditOrderIsOpen(false);
@@ -65,13 +75,31 @@ export function OrderComponent ({ recipe, amount, status, created_at}: OrderProp
             <div className="order-edit-form">
               <form>
                 <label>Prato</label>
-                <input type="text" placeholder={recipe}/>
+                <Select 
+                  styles={customStylesSelect} 
+                  className="new-order-select" 
+                  placeholder={recipe}
+                  options={recipeOptions} 
+                  isSearchable={false}
+                />
 
                 <label>Quantidade</label>
-                <input type="text" placeholder={amount}/>
+                <Select 
+                  styles={customStylesSelect} 
+                  className="new-order-select" 
+                  placeholder={amount}
+                  options={amountOptions} 
+                  isSearchable={false}
+                />
 
                 <label>Status</label>
-                <input type="text" placeholder={status}/>
+                <Select 
+                  styles={customStylesSelect} 
+                  className="new-order-select" 
+                  placeholder={status}
+                  options={statusOptions} 
+                  isSearchable={false}
+                />
 
               </form>
             </div>

@@ -9,8 +9,6 @@ import '../styles/components/dataGatheringComponet.css';
 
 Modal.setAppElement('#root')
 
-
-
 export function DataGatheringComponent () {
 
   const [ingredientsOptions, setIngredientsOptions] = useState([ { value: '1', label: 'Salmão' }, { value: '2', label: 'Atum'} ]);

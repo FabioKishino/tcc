@@ -1,0 +1,21 @@
+#home-page {
+  width: 100vw;
+  height: 100vh;
+ 
+  color: #000000;
+  background-color: #F5F5F5;
+}
+
+#plus-icon-btn {
+  background-color: #F5F5F5;
+  border: 0px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.plus-icon {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  margin-right: 20px; 
+}

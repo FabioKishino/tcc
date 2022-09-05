@@ -64,3 +64,27 @@ export const customStylesSelectWhite = {
     color: 'black',
   })
 }
+
+export const customStyleSelectDataForecast = {
+  menuList: () => ({
+    backgroundColor: 'white',
+    color: 'black',
+    padding: 20,
+    fontWeight: '300',
+  }),
+  control: (styles: any) => ({
+    ...styles,
+    backgroundColor: 'white',
+    border: '0px',
+    fontWeight: '300',
+    width: '500px',
+    height: '75px',
+  }),
+  dropdownIndicator: () => ({
+    color: 'black',
+    width: '50px',
+    display: 'flex',
+    justifyContent: 'center',
+
+  })
+}

@@ -1,0 +1,87 @@
+#data-forecast-page {
+  width: 100vw;
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+  color: #000000;
+  background-color: #F5F5F5;
+}
+
+.data-forecast-page-content {  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  font-size: 32px;
+
+  margin-top: 50px;
+  gap: 50px;
+}
+
+.data-forecast-select {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+  
+}
+
+.data-forecast-input {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.data-forecast-input input{
+  font-weight: 300;
+  font-size: 32px;
+  border: 0px;
+  border-radius: 5px;
+  width: 100%;
+  height: 75px;
+}
+
+.data-forecast-buttons {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 100px;
+  width: 90%;
+}
+
+.data-forecast-cancel-btn {
+  background-color: #FA0303;
+  color:#FFFFFF;
+
+  width: 30%;
+  border: 0px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-radius: 15px;
+  margin-bottom: 15px;
+
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.data-forecast-confirm-btn {
+  background-color: #63B90E;
+  color:#FFFFFF;
+
+  width: 30%;
+  border: 0px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-radius: 15px;
+
+  font-size: 18px;
+  cursor: pointer;
+}

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom'
 import Modal from 'react-modal'
 
 import { HeaderComponent } from '../components/HeaderComponent';
@@ -15,11 +16,13 @@ import api from '../services/api';
 Modal.setAppElement('#root')
 
 export function DataGathering () {
+  const navigate = useNavigate();
 
   const [collectPeopleAmountIsOpen, setCollectPeopleAmountIsOpen] = useState(false);
   const [dataGatherings, setNewDataGatherings] = useState([{} as dataGatheringProps]);
 
   function handleNewDataGathering () {
+    
     setNewDataGatherings([...dataGatherings]);
     console.log(dataGatherings);
   }
@@ -37,17 +40,21 @@ export function DataGathering () {
     await api.post('/orders', dataGatherings);
   }
 
+  function cancelDataGathering () {
+    // This function should delete all the data gathered for the day
+    navigate('/home');
+  }
+
   return (
     <div id="data-gathering-page">
       <HeaderComponent title="Coleta de Dados"/>
       
       <DataGatheringComponent />
-      {dataGatherings.map(item => <DataGatheringComponent />)}
+      {/* {dataGatherings.map(item => <DataGatheringComponent />)} */}
 
       <div className="form-buttons"> 
-      
         {/* This button should delete all the fields and go back to Home Page */}
-        <button className="cancel-btn">CANCELAR</button>
+        <button className="cancel-btn" onClick={cancelDataGathering}>CANCELAR</button>
         {/* This button should verify if all the fields has been completed and then open the Modal */}
         <button className="confirm-btn" onClick={handleOpenCollectPeopleAmount}>REALIZAR COLETA</button>
       </div>
