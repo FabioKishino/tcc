@@ -1,6 +1,4 @@
-import { useContext, useState } from 'react'
-import { OrdersContext } from '../contexts/OrderContext';
-
+import { useContext, useEffect, useState } from 'react'
 import Modal from 'react-modal'
 import Select from 'react-select'
 
@@ -11,11 +9,17 @@ import { customStyleModal, customStylesSelect  } from '../@types/customStyles';
 import { PlusCircle, X } from 'phosphor-react'
 import '../styles/pages/orders.css';
 
+import { OrdersContext } from '../contexts/OrderContext';
+import { AuthContext } from '../contexts/AuthContext';
+
+import api from '../services/api';
+
 Modal.setAppElement('#root')
 
 export function Orders () {
   const {
-    orders, 
+    orders,
+    setOrders,
     handleCloseNewOrderMenuAndSubmit, 
     newOrder, 
     setNewOrder, 
@@ -28,6 +32,12 @@ export function Orders () {
     statusOptions
   } = useContext(OrdersContext);
   
+  const { token } = useContext(AuthContext)
+
+  useEffect(() => {
+    console.log("aaaa: "+ localStorage.getItem("@Auth:token"));
+    api.get('/orders', { headers: { Authorization: token ? token : "" } }).then(response => setOrders(response.data));
+  }, [])
   
   return (
     <div id="orders-page">
@@ -96,6 +106,8 @@ export function Orders () {
           <button onClick={handleCloseNewOrderMenuAndSubmit} className="confirm-btn">CONFIRMAR</button>
         </div>
       </Modal> 
+
+      
 
       {orders.map((item, index) => <OrderComponent key={index} recipe={item.recipe} amount={item.amount} status={item.status} created_at={item.created_at}/>)}
 

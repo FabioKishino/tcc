@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useState } from "react";
+import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 
 import api from '../services/api';
 
@@ -12,6 +12,7 @@ export interface OrderProps {
 
 interface OrderContextType {
   orders: OrderProps[],
+  setOrders: (orders: OrderProps[]) => void,
   handleCloseNewOrderMenuAndSubmit: () => void,
   newOrder: OrderProps,
   setNewOrder: (newOrder: OrderProps) => void,
@@ -31,7 +32,7 @@ interface OrdersProviderProps {
 export const OrdersContext = createContext({} as OrderContextType);
 
 export function OrdersProvider({ children }: OrdersProviderProps) {
-  
+
   const [orders, setOrders] = useState<OrderProps[]>([]);
   const [newOrder, setNewOrder] = useState<OrderProps>({} as OrderProps);
   const [newOrderIsOpen, setNewOrderIsOpen] = useState(false);
@@ -53,12 +54,16 @@ export function OrdersProvider({ children }: OrdersProviderProps) {
     setNewOrderIsOpen(false);
     // Needs to submit the form to the back end and also add to the orders page
     setOrders([newOrder, ...orders]);
-    await api.post('/orders', newOrder);
+    console.log("New Order:" + newOrder);
+    console.log("Order:" + orders);
+    const response = await api.post('/orders', newOrder);
+    console.log("Response: " + response);
   }
 
   return (
     <OrdersContext.Provider value={{ 
-        orders, 
+        orders,
+        setOrders,
         handleCloseNewOrderMenuAndSubmit, 
         newOrder, 
         setNewOrder, 

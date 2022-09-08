@@ -3,13 +3,13 @@ export interface User {
   password: string;
 }
 
-export interface Ingredients {
+export interface IngredientsProps {
   name: string;
 }
 
 export interface dataGatheringProps {
   ingredient_id: string,
-  ingredient_name: Ingredients[],
+  ingredient_name: IngredientsProps[],
   initial_amount: number,
   final_amount: number,
   // unit: string,

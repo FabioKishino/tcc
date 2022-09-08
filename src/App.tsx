@@ -7,12 +7,13 @@ import { useContext } from 'react';
 import { AuthContext } from './contexts/AuthContext';
 
 export function App() {
-  const { user } = useContext(AuthContext)
+
+  const { isAuthenticated } = useContext(AuthContext)
 
   return (
     <AuthProvider>
       <OrdersProvider>
-        {/* Se autenticado = SiteRoutes, se não Login SignIn */}
+        {/* {isAuthenticated ? <SiteRoutes /> : <SignIn />}	 */}
         <SiteRoutes/>
       </OrdersProvider>
     </AuthProvider>

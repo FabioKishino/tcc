@@ -2,11 +2,6 @@ import { createContext, ReactNode, useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import api from '../services/api';
 
-interface User {
-  username: string;
-  email: string;
-}
-
 interface SignInData { 
   email: string;
   password: string;
@@ -18,9 +13,12 @@ interface AuthProviderProps {
 
 interface AuthContextData {
   user: SignInData | null,
+  token: string | null,
+  isAuthenticated: boolean;
+  setUser: (user: SignInData) => void;
   signIn: (user: SignInData) => Promise<void>;
   signOut: () => void;
-  isAuthenticated: boolean;
+  setIsAuthenticated: (isAuthenticated: boolean) => void;
 }
 
 export const AuthContext = createContext<AuthContextData>({} as AuthContextData);
@@ -28,7 +26,8 @@ export const AuthContext = createContext<AuthContextData>({} as AuthContextData)
 
 export function AuthProvider ({ children }: AuthProviderProps) {
   const [user, setUser] = useState<SignInData | null>({} as SignInData)
-
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
+  const [token, setToken] = useState<string | null>(null)
 
   useEffect(() => {
     const loadingStoragedData = () => {
@@ -37,20 +36,27 @@ export function AuthProvider ({ children }: AuthProviderProps) {
 
       if (storageUser && storageToken) {
         setUser(JSON.parse(storageUser));
+        console.log("storageUser: " + storageUser);
+        console.log("storageToken: " + storageToken);
       }
     };
     loadingStoragedData();
   }, []);
 
   async function signIn ({email, password}: SignInData) {
-    const response = await api.post('/authenticate', { email, password });
+    const response = await api.post<string>('/authenticate', { email, password });
     
     try {
-      const { token } = response.data;
+      const token = response.data;
+      
       api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
       localStorage.setItem('@Auth:token', token);
-      localStorage.setItem('@User:user', JSON.stringify(response.config.data));
+      localStorage.setItem('@User:user', JSON.stringify(response.config.data).replace(/\\/g, ''));
+
+      setToken(token);
+      setUser(response.config.data);
+      setIsAuthenticated(true);
 
     } catch (error) {
       alert("E-mail ou senha inválidos");
@@ -58,14 +64,16 @@ export function AuthProvider ({ children }: AuthProviderProps) {
     }
   }
 
+
   const signOut = () => {
     localStorage.clear();
     setUser(null);
+    setIsAuthenticated(false);
     return <Navigate to="/"/>;
   };
 
   return (
-    <AuthContext.Provider value={{ user, signIn, signOut, isAuthenticated: !!user }}>
+    <AuthContext.Provider value={{ user, token, setUser,  signIn, signOut, isAuthenticated, setIsAuthenticated }}>
       {children}
     </AuthContext.Provider>
   );

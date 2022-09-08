@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { AuthContext } from '../contexts/AuthContext'
 
 import '../styles/pages/home.css';
@@ -17,7 +17,28 @@ import {
 } from 'phosphor-react';
 
 export function Home () {
-  const { signOut } = useContext(AuthContext)
+  const { user, setUser, signOut, isAuthenticated, setIsAuthenticated } = useContext(AuthContext)
+
+  useEffect(() => {
+    const loadingStoragedData = () => {
+      console.log("User: "+user);
+      console.log("isAuthenticated: "+isAuthenticated);
+      
+      const storageUser = localStorage.getItem("@User:user");
+      const storageToken = localStorage.getItem("@Auth:token");
+
+      if (storageUser && storageToken) {
+        // setUser(JSON.parse(storageUser));
+        console.log("storageUser: " + storageUser);
+        console.log("storageToken: " + storageToken);
+      } else {
+        setIsAuthenticated(false);
+        console.log("Não há dados salvos");
+      }
+    };
+    loadingStoragedData();
+  }, []);
+  
   
   return (
     <div id="home-page">
@@ -35,7 +56,6 @@ export function Home () {
         </button>
       </header>
 
-
       <div className="home-content">
         <div className="menu-button">
           <Link to="/recipes">
@@ -52,14 +72,14 @@ export function Home () {
         </div>
         
         <div className="ingredients-button">
-          <Link to="/">
+          <Link to="/ingredients">
             <p>Ingredientes</p>
             <Fish size={80} weight="bold" color="black"/>
           </Link>
         </div>
 
         <div className="portion-button">
-          <Link to="/">
+          <Link to="/portions">
             <p>Porções</p>
             <ChartPieSlice size={80} weight="bold" color="black"/>
           </Link>
