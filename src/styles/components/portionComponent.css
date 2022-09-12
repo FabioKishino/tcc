@@ -1,0 +1,84 @@
+.portion-size-component {
+  width: 78vw;
+  height: 170px;
+
+  color: #000000;
+  background-color: #D9D9D9;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 25px;
+  padding-right: 45px;
+  margin-top: 30px;
+}
+
+.portion-size-content {
+  display: flex;
+  width: 90%;
+  justify-content: space-between;
+  padding-left: 45px;
+}
+
+.portion-size-content p {
+  font-size: 36px;
+}
+
+.order-edit-btn {
+  padding-left: 30px;
+  display: flex;
+  align-items: center;
+}
+
+.delete-portion-size-btn button {
+  display: flex;
+  align-items: center;
+  background-color: #D9D9D9;
+  border: 0px;
+  cursor: pointer;
+}
+
+.delete-portion-size-modal-content {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  padding-bottom: 50px;
+  font-size: 20px;
+} 
+
+.form-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 20px;
+}
+
+.cancel-btn {
+  background-color: #FA0303;
+  color:#FFFFFF;
+
+  width: 30%;
+  border: 0px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-radius: 15px;
+  margin-right: 30px;
+
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.confirm-btn {
+  background-color: #63B90E;
+  color:#FFFFFF;
+
+  width: 30%;
+  border: 0px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-radius: 15px;
+
+  font-size: 24px;
+  cursor: pointer;
+}

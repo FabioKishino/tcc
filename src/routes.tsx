@@ -9,6 +9,7 @@ import { DataGathering } from './pages/DataGathering';
 import { DataForecast } from './pages/DataForecast';
 import { Recipes } from './pages/Recipes';
 import { Portions } from './pages/Portions';
+import { Ingredients } from './pages/Ingredients';
 
 export function SiteRoutes() {
   return (
@@ -23,6 +24,7 @@ export function SiteRoutes() {
         <Route path="/data-forecast" element={<DataForecast />} />
         <Route path="/recipes" element={<Recipes />} />
         <Route path="/portions" element={<Portions />} />
+        <Route path="/ingredients" element={<Ingredients />} />
       </Routes>
     </BrowserRouter>
   )

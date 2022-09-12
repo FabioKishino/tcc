@@ -35,7 +35,7 @@ export function Orders () {
   const { token } = useContext(AuthContext)
 
   useEffect(() => {
-    console.log("aaaa: "+ localStorage.getItem("@Auth:token"));
+    console.log("localStorage.getItem(@Auth:token): "+ localStorage.getItem("@Auth:token"));
     api.get('/orders', { headers: { Authorization: token ? token : "" } }).then(response => setOrders(response.data));
   }, [])
   

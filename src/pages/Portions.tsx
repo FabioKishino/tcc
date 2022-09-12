@@ -1,19 +1,22 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { PortionSizeProps } from '../@types';
 
 import Modal from 'react-modal'
 
 import { HeaderComponent } from '../components/HeaderComponent';
+import { PortionComponent } from '../components/PortionComponent';
 
 import { PlusCircle } from 'phosphor-react'
-import '../styles/pages/portions.css';
-
 import { customStyleModalPortionSize } from '../@types/customStyles';
+import '../styles/pages/portions.css';
 
 Modal.setAppElement('#root')
 
 export function Portions () {
 
   const [newPortionSize, setNewPortionSize] = useState(false);
+  const [portionSizes, setPortionSizes] = useState<PortionSizeProps[]>([]);
+
 
   function handleOpenNewPortionSize () {
     setNewPortionSize(true);
@@ -29,6 +32,7 @@ export function Portions () {
     setNewPortionSize(false);
   }
 
+
   // Everytime this page is loaded, the list of all portions in the database has to be loaded
   useEffect(() => {
     console.log('Portions page loaded');
@@ -36,10 +40,10 @@ export function Portions () {
   
 
   return (
-    <div id="recipe-page">
+    <div id="portion-size-page">
       <HeaderComponent title="Porções"/>
       
-
+    
       <Modal
         isOpen={newPortionSize}
         onRequestClose={handleCloseNewPortionSize}
@@ -47,7 +51,11 @@ export function Portions () {
       >
         <div className="portion-size-modal-content">
           <h2>Insira o novo tamanho de porção</h2>
-          <input type="text" className="new-portion-size-input"/>
+          <input 
+            type="text" 
+            className="new-portion-size-input"
+            placeholder="Ex: 1/2"
+          />
         </div>
         
         <div className="form-buttons">
@@ -55,6 +63,8 @@ export function Portions () {
           <button onClick={handleNewPortionSizeAndSubmit} className="data-confirm-btn">CONFIRMAR</button>
         </div>
       </Modal>
+
+      {portionSizes.map((item, index) => <PortionComponent key={index} portionSize={item.portionSize} />)}
       
       
       <button id="plus-icon-btn" className="plus-icon" onClick={handleOpenNewPortionSize}>

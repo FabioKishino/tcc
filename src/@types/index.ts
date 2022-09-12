@@ -7,6 +7,10 @@ export interface IngredientsProps {
   name: string;
 }
 
+export interface PortionSizeProps {
+  portionSize: string;
+}
+
 export interface dataGatheringProps {
   ingredient_id: string,
   ingredient_name: IngredientsProps[],
