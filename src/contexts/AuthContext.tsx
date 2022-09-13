@@ -48,6 +48,9 @@ export function AuthProvider ({ children }: AuthProviderProps) {
     
     try {
       const token = response.data;
+
+      console.log("Token: "+token);
+      
       
       api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 

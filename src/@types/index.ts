@@ -8,7 +8,9 @@ export interface IngredientsProps {
 }
 
 export interface PortionSizeProps {
+  // id: string;
   portionSize: string;
+  handleDeletePortion: () => void;
 }
 
 export interface dataGatheringProps {

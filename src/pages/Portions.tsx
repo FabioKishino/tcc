@@ -6,7 +6,7 @@ import Modal from 'react-modal'
 import { HeaderComponent } from '../components/HeaderComponent';
 import { PortionComponent } from '../components/PortionComponent';
 
-import { PlusCircle } from 'phosphor-react'
+import { PlusCircle, Trash } from 'phosphor-react'
 import { customStyleModalPortionSize } from '../@types/customStyles';
 import '../styles/pages/portions.css';
 
@@ -15,7 +15,8 @@ Modal.setAppElement('#root')
 export function Portions () {
 
   const [newPortionSize, setNewPortionSize] = useState(false);
-  const [portionSizes, setPortionSizes] = useState<PortionSizeProps[]>([]);
+  const [portionSize, setPortionSize] = useState<PortionSizeProps>({} as PortionSizeProps);
+  const [portionSizeList, setPortionSizeList] = useState<PortionSizeProps[]>([]);
 
 
   function handleOpenNewPortionSize () {
@@ -28,8 +29,22 @@ export function Portions () {
   
   function handleNewPortionSizeAndSubmit () {
     // This function should send the new portion size to the database and close the modal
+    setPortionSizeList([...portionSizeList, portionSize]);
+    console.log(portionSizeList);
     console.log('PENDING: New portion size sent to the database');
     setNewPortionSize(false);
+  }
+
+  const inputHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    const enteredName = event.target.value
+    setPortionSize({ ...portionSize, portionSize: enteredName })
+  }
+
+  const deletePortion = (index: any) => {
+    var newPortionSizeList = [...portionSizeList];
+    newPortionSizeList.splice(index, 1);
+    setPortionSizeList(newPortionSizeList)
   }
 
 
@@ -43,7 +58,6 @@ export function Portions () {
     <div id="portion-size-page">
       <HeaderComponent title="Porções"/>
       
-    
       <Modal
         isOpen={newPortionSize}
         onRequestClose={handleCloseNewPortionSize}
@@ -55,6 +69,8 @@ export function Portions () {
             type="text" 
             className="new-portion-size-input"
             placeholder="Ex: 1/2"
+            // value={portionSize.name}
+            onChange={inputHandler}
           />
         </div>
         
@@ -64,12 +80,13 @@ export function Portions () {
         </div>
       </Modal>
 
-      {portionSizes.map((item, index) => <PortionComponent key={index} portionSize={item.portionSize} />)}
+      {portionSizeList.map((item, index) => <PortionComponent key={index} portionSize={item.portionSize} handleDeletePortion={() => deletePortion(index)}/>)}
       
       
       <button id="plus-icon-btn" className="plus-icon" onClick={handleOpenNewPortionSize}>
         <PlusCircle size={100} weight="fill"/>
       </button>
+
     </div> 
   )
 }

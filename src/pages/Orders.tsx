@@ -105,9 +105,7 @@ export function Orders () {
           <button onClick={handleCloseNewOrderMenu} className="cancel-btn">CANCELAR</button>
           <button onClick={handleCloseNewOrderMenuAndSubmit} className="confirm-btn">CONFIRMAR</button>
         </div>
-      </Modal> 
-
-      
+      </Modal>
 
       {orders.map((item, index) => <OrderComponent key={index} recipe={item.recipe} amount={item.amount} status={item.status} created_at={item.created_at}/>)}
 
@@ -116,7 +114,5 @@ export function Orders () {
       </button>
 
     </div>
-
-    
   )
 }

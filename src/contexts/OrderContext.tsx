@@ -54,10 +54,7 @@ export function OrdersProvider({ children }: OrdersProviderProps) {
     setNewOrderIsOpen(false);
     // Needs to submit the form to the back end and also add to the orders page
     setOrders([newOrder, ...orders]);
-    console.log("New Order:" + newOrder);
-    console.log("Order:" + orders);
     const response = await api.post('/orders', newOrder);
-    console.log("Response: " + response);
   }
 
   return (
