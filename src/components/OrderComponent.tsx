@@ -10,7 +10,7 @@ import { customStyleModal, customStylesSelect } from '../@types/customStyles';
 
 Modal.setAppElement('#root')
 
-export function OrderComponent ({recipe, amount, status, created_at}: OrderProps) {
+export function OrderComponent (props: OrderProps) {
   const {
     recipeOptions,
     amountOptions,
@@ -37,22 +37,22 @@ export function OrderComponent ({recipe, amount, status, created_at}: OrderProps
         <div className="order-content">
           <div className="order-recipe">
             <label>Prato</label>
-            <p className="recipe-name">{recipe}</p>
+            <p className="recipe-name">{props.recipe}</p>
           </div>
 
           <div>
             <label>Quantidade</label>
-            <p>{amount}</p>
+            <p>{props.portion_size}</p>
           </div>
 
           <div>
             <label>Status</label>
-            <p>{status}</p>
+            <p>{props.status}</p>
           </div>
 
           <div>
             <label>Criado há</label>
-            <p>{created_at} min</p>
+            <p>{props.created_at} min</p>
           </div>
         </div>
 
@@ -78,7 +78,7 @@ export function OrderComponent ({recipe, amount, status, created_at}: OrderProps
                 <Select 
                   styles={customStylesSelect} 
                   className="new-order-select" 
-                  placeholder={recipe}
+                  placeholder={props.recipe}
                   options={recipeOptions} 
                   isSearchable={false}
                 />
@@ -87,7 +87,7 @@ export function OrderComponent ({recipe, amount, status, created_at}: OrderProps
                 <Select 
                   styles={customStylesSelect} 
                   className="new-order-select" 
-                  placeholder={amount}
+                  placeholder={props.portion_size}
                   options={amountOptions} 
                   isSearchable={false}
                 />
@@ -96,7 +96,7 @@ export function OrderComponent ({recipe, amount, status, created_at}: OrderProps
                 <Select 
                   styles={customStylesSelect} 
                   className="new-order-select" 
-                  placeholder={status}
+                  placeholder={props.status}
                   options={statusOptions} 
                   isSearchable={false}
                 />

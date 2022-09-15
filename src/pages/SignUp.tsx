@@ -1,11 +1,8 @@
+import { ChangeEvent, useEffect, useState } from 'react'
+
 import { Link } from 'react-router-dom'
 import '../styles/pages/signup.css';
-import Select from 'react-select'
-
-const cityOptions = [
-  { value: '1', label: 'Curitiba' },
-  { value: '2', label: 'SJP' },
-]
+import api from '../services/api';
 
 const customStyles = {
   menuList: () => ({
@@ -23,28 +20,76 @@ const customStyles = {
   })
 }
 
+interface IBGEUFResponse {
+  sigla: string;
+  nome: string;
+}
+
+interface IBGECITYResponse {
+  id: number;
+  nome: string;
+}
 
 export function SignUp () {
+
+  const [cityOptions, setCityOptions] = useState<IBGECITYResponse[]>([])
+  const [UFs, setUFs] = useState<IBGEUFResponse[]>([])
+
+  const [selectedUF, setSelectedUF] = useState('0')
+  const [selectedCity, setSelectedCity] = useState('0')
+  
+  useEffect(() => {
+    api.get("https://servicodados.ibge.gov.br/api/v1/localidades/estados/")
+    .then(response => setUFs(response.data)
+    );
+  }, [])
+
+  useEffect(() => {
+    api.get(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${selectedUF}/municipios`)
+    .then(response => setCityOptions(response.data)
+    );
+  }, [selectedUF])
+
+  function handleSelectUF (event: ChangeEvent<HTMLSelectElement>) {
+    const UF = event.target.value;
+    setSelectedUF(UF);
+  }
+
+  function handleSelectCity (event: ChangeEvent<HTMLSelectElement>) {
+    const city = event.target.value;
+    setSelectedCity(city);
+  }
+
   return (
     <div id="page-signup">
       <div className="container">
         <form>
-          {/* <img src={TakeLogo} alt="TakeLogo"/> */}
-
           <input type="email" placeholder="E-mail"/>
           <input type="text" placeholder="Username"/>
           <input type="password" placeholder="Password"/> 
-          
           <input type="password" placeholder="Admin Password"/> 
-          <input type="text" placeholder="State"/>
-          
-          <Select
-            styles={customStyles}
-            className="select-city"
-            placeholder="City"
-            options={cityOptions}
-          />
 
+
+          {/* Estilizar Select */}
+          <select className="select-city" onChange={handleSelectUF}>
+            <option value="0">Selecione um Estado</option>
+            {UFs.map((uf) => (
+              <option value={uf.sigla}>
+                {uf.sigla}
+              </option>
+            ))}
+          </select>
+
+          <select className="select-city" onChange={handleSelectCity}>
+            <option value="0">Selecione uma Cidade</option>
+            {cityOptions.map((city) => (
+              <option value={city.nome}>
+                {city.nome}
+              </option>
+            ))}
+          </select>
+
+              
           <div className="buttons">
             <Link to="/" className="cancel-button">Cancel</Link>
             <Link to="/home" className="create-account-button">Create Account</Link>

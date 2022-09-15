@@ -35,9 +35,15 @@ export function Orders () {
   const { token } = useContext(AuthContext)
 
   useEffect(() => {
-    console.log("localStorage.getItem(@Auth:token): "+ localStorage.getItem("@Auth:token"));
-    api.get('/orders', { headers: { Authorization: token ? token : "" } }).then(response => setOrders(response.data));
+    const token = localStorage.getItem("@Auth:token");
+    api.get('/orders', { 
+      headers: { 
+        'ContentType': 'application/json',
+        'Authorization': `Bearer ${token}`
+      } 
+    }).then(response => console.log(response.data));
   }, [])
+
   
   return (
     <div id="orders-page">
@@ -66,7 +72,7 @@ export function Orders () {
               isSearchable={false}
               onChange={selection => {
                 const newObject = newOrder
-                newObject.recipe = selection ? selection.label : ''
+                newObject.id_recipe = selection ? selection.id_recipe : ''
                 setNewOrder(newObject)
               }
             }/>
@@ -80,7 +86,7 @@ export function Orders () {
               isSearchable={false}
               onChange={selection => {
                 const newObject = newOrder
-                newObject.amount = selection ? selection.label : ''
+                newObject.portion_id = selection ? selection.portion_id : ''
                 setNewOrder(newObject)
               }
             }/>
@@ -94,7 +100,7 @@ export function Orders () {
               isSearchable={false}
               onChange={selection => {
                 const newObject = newOrder
-                newObject.status = selection ? selection.label : ''
+                newObject.priority = selection ? selection.priority : ''
                 setNewOrder(newObject)
               }
             }/>
@@ -107,7 +113,19 @@ export function Orders () {
         </div>
       </Modal>
 
-      {orders.map((item, index) => <OrderComponent key={index} recipe={item.recipe} amount={item.amount} status={item.status} created_at={item.created_at}/>)}
+      {orders.map((item, index) => <OrderComponent 
+        key={index} 
+        id={item.id}
+        recipe={item.recipe} 
+        portion_size={item.portion_size} 
+        status={item.status} 
+        created_at={item.created_at}
+        id_recipe={item.id_recipe}
+        portion_id={item.portion_id}
+        priority={item.priority}
+        />
+      
+      )}
 
       <button id="plus-icon-btn" className="plus-icon" onClick={handleOpenNewOrderMenu}>
         <PlusCircle size={100} weight="fill"/>

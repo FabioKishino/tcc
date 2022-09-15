@@ -13,7 +13,7 @@ export function App() {
   return (
     <AuthProvider>
       <OrdersProvider>
-        {/* {isAuthenticated ? <SiteRoutes /> : <SignIn />}	 */}
+        {/* {isAuthenticated ? <SiteRoutes /> : <SignIn />} */}
         <SiteRoutes/>
       </OrdersProvider>
     </AuthProvider>
