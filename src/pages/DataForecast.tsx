@@ -10,7 +10,20 @@ import '../styles/pages/dataForecast.css';
 
 
 export function DataForecast () {
-  const [ingredientsOptions, setIngredientsOptions] = useState([ { value: '1', label: 'Salmão' }, { value: '2', label: 'Atum'} ]);
+  const [ingredientsOptions, setIngredientsOptions] = useState([ 
+    { 
+      value: '1', 
+      label: 'Salmão' 
+    }, 
+    { 
+      value: '2', 
+      label: 'Carne'
+    }, 
+    { 
+      value: '3',
+      label: 'Bacalhau'
+    } 
+  ]);
   const navigate = useNavigate();
 
   function cancelDataForecast () {

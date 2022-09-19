@@ -6,10 +6,11 @@ import Modal from 'react-modal'
 import { customStylesSelectWhite } from '../@types/customStyles';
 import { Trash } from 'phosphor-react'
 import '../styles/components/dataGatheringComponet.css';
+import { DataGatheringProps } from '../@types';
 
 Modal.setAppElement('#root')
 
-export function DataGatheringComponent () {
+export function DataGatheringComponent ({ingredient_name}: DataGatheringProps) {
 
   const [ingredientsOptions, setIngredientsOptions] = useState([ 
     { 
@@ -32,12 +33,7 @@ export function DataGatheringComponent () {
         <div className="data-gathering-component-content">
           <div className="data-gathering-component-ingredient">
             <label>Ingrediente</label>
-            <Select 
-              styles={customStylesSelectWhite} 
-              placeholder="Selecionar ingrediente"
-              options={ingredientsOptions}
-              isSearchable={false}
-            />
+            <span>{ingredient_name}</span>
           </div>
 
           <div className="data-gathering-component-input">

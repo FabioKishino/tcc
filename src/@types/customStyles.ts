@@ -1,51 +1,3 @@
-export const customStyleModal = {
-  content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
-    width: '80%',
-    border: '1px solid #CCC',
-    background: '#FFFFFF',
-    overflow: 'auto',
-    borderRadius: '10px',
-  }
-}
-
-export const customStyleModalPortionSize = {
-  content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
-    width: '50%',
-    border: '1px solid #CCC',
-    background: '#FFFFFF',
-    overflow: 'auto',
-    borderRadius: '10px',
-  }
-}
-
-export const customStyleModalIngredients = {
-  content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
-    width: '50%',
-    border: '1px solid #CCC',
-    background: '#FFFFFF',
-    overflow: 'auto',
-    borderRadius: '10px',
-  }
-}
-
 export const customStylesSelect = {
   menuList: () => ({
     backgroundColor: '#DCDCDC',
@@ -62,8 +14,24 @@ export const customStylesSelect = {
   })
 }
 
+export const customStyleModal = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+    width: '80%',
+    border: '1px solid #CCC',
+    background: '#FFFFFF',
+    overflow: 'auto',
+    borderRadius: '10px',
+  }
+}
 
-export const customStyleModalDataGathering = {	
+// Portion Size Page
+export const customStyleModalPortionSize = {
   content: {
     top: '50%',
     left: '50%',
@@ -79,6 +47,85 @@ export const customStyleModalDataGathering = {
   }
 }
 
+// Ingredients Page
+export const customStyleModalIngredients = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+    width: '50%',
+    border: '1px solid #CCC',
+    background: '#FFFFFF',
+    overflow: 'auto',
+    borderRadius: '10px',
+  }
+}
+
+
+
+// DATA GATHERING
+export const customStylesSelectDataGathering = {
+  menuList: () => ({
+    backgroundColor: 'white',
+    color: 'black',
+    padding: 20,
+    fontWeight: '300',
+  }),
+  control: (styles: any) => ({
+    ...styles,
+    backgroundColor: '#F1F1F1',
+    border: '0px',
+    fontWeight: '300',
+    width: '500px',
+    height: '75px',
+    marginTop: '25px',
+  }),
+  dropdownIndicator: () => ({
+    color: 'black',
+    width: '50px',
+    display: 'flex',
+    justifyContent: 'center',
+  })
+}
+
+export const customStyleModalNewDataGathering = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+    width: '50%',
+    height: '50%',
+    border: '1px solid #CCC',
+    background: '#FFFFFF',
+    overflow: 'auto',
+    borderRadius: '10px',
+  }
+}
+
+export const customStyleModalDataGatheringPeopleAmount = {	
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+    width: '50%',
+    border: '1px solid #CCC',
+    background: '#FFFFFF',
+    overflow: 'auto',
+    borderRadius: '10px',
+  }
+}
+
+
+// DATA FORECAST
 export const customStylesSelectWhite = {
   menuList: () => ({
     backgroundColor: 'white',
@@ -117,6 +164,5 @@ export const customStyleSelectDataForecast = {
     width: '50px',
     display: 'flex',
     justifyContent: 'center',
-
   })
 }

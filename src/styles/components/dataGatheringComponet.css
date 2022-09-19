@@ -26,10 +26,21 @@
   padding-left: 45px;
 }
 
+.data-gathering-component-ingredient {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.data-gathering-component-ingredient span {
+  font-size: 26px;
+  font-weight: 600;
+  padding-top: 5px;
+}
+
 .data-gathering-component-content label{
   font-size: 20px;
   font-weight: 300;
-  padding-left: 5px;
 }
 
 .data-gathering-component-content input{
