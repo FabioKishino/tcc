@@ -50,6 +50,8 @@ export function DataGathering () {
       <HeaderComponent title="Coleta de Dados"/>
       
       <DataGatheringComponent />
+      <DataGatheringComponent />
+      <DataGatheringComponent />
       {/* {dataGatherings.map(item => <DataGatheringComponent />)} */}
 
       <div className="form-buttons"> 

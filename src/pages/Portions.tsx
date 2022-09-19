@@ -38,7 +38,7 @@ export function Portions () {
   const inputHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     const enteredName = event.target.value
-    setPortionSize({ ...portionSize, portionSize: enteredName })
+    setPortionSize({ ...portionSize, name: enteredName })
   }
 
   const deletePortion = (index: any) => {
@@ -80,7 +80,7 @@ export function Portions () {
         </div>
       </Modal>
 
-      {portionSizeList.map((item, index) => <PortionComponent key={index} portionSize={item.portionSize} handleDeletePortion={() => deletePortion(index)}/>)}
+      {portionSizeList.map((item, index) => <PortionComponent key={index} name={item.name} handleDeletePortion={() => deletePortion(index)}/>)}
       
       
       <button id="plus-icon-btn" className="plus-icon" onClick={handleOpenNewPortionSize}>

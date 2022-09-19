@@ -12,6 +12,10 @@
   background-color: #F5F5F5;
 }
 
+::placeholder {
+  color: #000000;
+}
+
 .container img {
   width: 35%;
   padding-bottom: 50px;
@@ -38,7 +42,7 @@
   width: 100%;
 }
 
-.container .select-city {
+.sign-up-form select {
   font-size: 32px;
   font-weight: 300;
   color: #000000; 
@@ -49,7 +53,7 @@
   outline: none;
 
   padding: 1rem;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   width: 100%;
 }
 
@@ -70,12 +74,13 @@
   font-size: 26px;
   text-decoration: none;
   color: #000000;
+  cursor: pointer;
 
   background-color: #63B90E;
   border-radius: 15px;
+  border: 0px;
 
   padding: 20px 80px 20px 80px;
-
   margin-left: 20px;
 }
 

@@ -1,16 +1,18 @@
 import { useContext, useState } from 'react'
 import Select from 'react-select';
 
+import { OrdersContext } from '../contexts/OrderContext';
+import { Order } from '../@types';
+
 import Modal from 'react-modal'
 
 import { Pencil, X } from 'phosphor-react'
 import '../styles/components/orderComponent.css';
-import { OrderProps, OrdersContext } from '../contexts/OrderContext';
 import { customStyleModal, customStylesSelect } from '../@types/customStyles';
 
 Modal.setAppElement('#root')
 
-export function OrderComponent (props: OrderProps) {
+export function OrderComponent (props: Order) {
   const {
     recipeOptions,
     amountOptions,
@@ -31,18 +33,23 @@ export function OrderComponent (props: OrderProps) {
     // Needs to submit the form to the back end
   }
 
+  const created_at_minutes = new Date(props.created_at).getUTCMinutes();
+  const now_minutes = new Date().getUTCMinutes();
+
+  const created_ago_minutes = now_minutes - created_at_minutes;
+
   return (
     <div id="order-list">
       <div className="order-component">
         <div className="order-content">
           <div className="order-recipe">
             <label>Prato</label>
-            <p className="recipe-name">{props.recipe}</p>
+            <p className="recipe-name">{props.recipe?.name}</p>
           </div>
 
           <div>
             <label>Quantidade</label>
-            <p>{props.portion_size}</p>
+            <p>{props.portion_size?.name}</p>
           </div>
 
           <div>
@@ -52,7 +59,7 @@ export function OrderComponent (props: OrderProps) {
 
           <div>
             <label>Criado há</label>
-            <p>{props.created_at} min</p>
+            <p>{created_ago_minutes} min</p>
           </div>
         </div>
 
@@ -78,7 +85,7 @@ export function OrderComponent (props: OrderProps) {
                 <Select 
                   styles={customStylesSelect} 
                   className="new-order-select" 
-                  placeholder={props.recipe}
+                  placeholder={props.recipe?.name}
                   options={recipeOptions} 
                   isSearchable={false}
                 />
@@ -87,7 +94,7 @@ export function OrderComponent (props: OrderProps) {
                 <Select 
                   styles={customStylesSelect} 
                   className="new-order-select" 
-                  placeholder={props.portion_size}
+                  placeholder={props.portion_size?.name}
                   options={amountOptions} 
                   isSearchable={false}
                 />

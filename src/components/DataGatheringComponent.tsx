@@ -11,7 +11,20 @@ Modal.setAppElement('#root')
 
 export function DataGatheringComponent () {
 
-  const [ingredientsOptions, setIngredientsOptions] = useState([ { value: '1', label: 'Salmão' }, { value: '2', label: 'Atum'} ]);
+  const [ingredientsOptions, setIngredientsOptions] = useState([ 
+    { 
+      value: '1', 
+      label: 'Salmão' 
+    }, 
+    { 
+      value: '2', 
+      label: 'Carne'
+    },
+    { 
+      value: '3', 
+      label: 'Bacalhau'
+    },
+  ]);
 
   return (
     <div id="data-gathering-component-page">

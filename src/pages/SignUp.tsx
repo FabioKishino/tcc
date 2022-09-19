@@ -1,24 +1,12 @@
-import { ChangeEvent, useEffect, useState } from 'react'
-
+import { ChangeEvent, useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+
+import { useNavigate } from 'react-router-dom'
+
 import '../styles/pages/signup.css';
 import api from '../services/api';
+import { AuthContext } from '../contexts/AuthContext';
 
-const customStyles = {
-  menuList: () => ({
-    backgroundColor: '#DCDCDC',
-    color: 'black',
-    padding: 20,
-  }),
-  control: (styles: any) => ({
-    ...styles,
-    backgroundColor: '#DCDCDC',
-    border: '0px',
-  }),
-  dropdownIndicator: () => ({
-    color: 'black',
-  })
-}
 
 interface IBGEUFResponse {
   sigla: string;
@@ -30,16 +18,29 @@ interface IBGECITYResponse {
   nome: string;
 }
 
+const initialValues = {
+  name: "",
+  email: "",
+  password: "",
+  state: "",
+  city: "",
+  admin_password: ""
+}
+
+
 export function SignUp () {
+
+  const navigate = useNavigate();
+  const { signIn } = useContext(AuthContext)
 
   const [cityOptions, setCityOptions] = useState<IBGECITYResponse[]>([])
   const [UFs, setUFs] = useState<IBGEUFResponse[]>([])
-
   const [selectedUF, setSelectedUF] = useState('0')
   const [selectedCity, setSelectedCity] = useState('0')
+  const [newRestaurant, setNewRestaurant] = useState(initialValues)
   
   useEffect(() => {
-    api.get("https://servicodados.ibge.gov.br/api/v1/localidades/estados/")
+    api.get("https://servicodados.ibge.gov.br/api/v1/localidades/estados?orderBy=nome")
     .then(response => setUFs(response.data)
     );
   }, [])
@@ -53,26 +54,58 @@ export function SignUp () {
   function handleSelectUF (event: ChangeEvent<HTMLSelectElement>) {
     const UF = event.target.value;
     setSelectedUF(UF);
+
+
+    const { name, value } = event.target;
+    setNewRestaurant({
+      ...newRestaurant,
+      [name]: value,
+    });
   }
 
   function handleSelectCity (event: ChangeEvent<HTMLSelectElement>) {
     const city = event.target.value;
     setSelectedCity(city);
+
+    const { name, value } = event.target;
+    setNewRestaurant({
+      ...newRestaurant,
+      [name]: value,
+    });
+  }
+
+  const handleInputChange = (e: any) => {
+    const { name, value } = e.target;
+
+    setNewRestaurant({
+      ...newRestaurant,
+      [name]: value,
+    });
+  }
+
+  async function handleSignUp () {
+    try {
+      const response = await api.post('/restaurants', newRestaurant)
+      navigate('/home');
+      alert("Cadastro realizado com sucesso!")
+      signIn(newRestaurant);
+      
+    } catch (Error) {
+      alert("Cadastro inválido");
+      throw Error;
+    }
   }
 
   return (
     <div id="page-signup">
       <div className="container">
-        <form>
-          <input type="email" placeholder="E-mail"/>
-          <input type="text" placeholder="Username"/>
-          <input type="password" placeholder="Password"/> 
-          <input type="password" placeholder="Admin Password"/> 
+        <form className="sign-up-form">
+          <input name="email" value={newRestaurant.email} onChange={handleInputChange} type="email" placeholder="E-mail" required/>
+          <input name="name" value={newRestaurant.name} onChange={handleInputChange} type="text" placeholder="Username" required/>
+          <input name="password" value={newRestaurant.password} onChange={handleInputChange} type="password" placeholder="Password" required/> 
 
-
-          {/* Estilizar Select */}
-          <select className="select-city" onChange={handleSelectUF}>
-            <option value="0">Selecione um Estado</option>
+          <select name="state" value={newRestaurant.state} onChange={handleSelectUF}>
+            <option value="0">State</option>
             {UFs.map((uf) => (
               <option value={uf.sigla}>
                 {uf.sigla}
@@ -80,8 +113,8 @@ export function SignUp () {
             ))}
           </select>
 
-          <select className="select-city" onChange={handleSelectCity}>
-            <option value="0">Selecione uma Cidade</option>
+          <select name="city" value={newRestaurant.city} onChange={handleSelectCity}>
+            <option value="0">City</option>
             {cityOptions.map((city) => (
               <option value={city.nome}>
                 {city.nome}
@@ -89,10 +122,9 @@ export function SignUp () {
             ))}
           </select>
 
-              
           <div className="buttons">
             <Link to="/" className="cancel-button">Cancel</Link>
-            <Link to="/home" className="create-account-button">Create Account</Link>
+            <button type="button" onClick={handleSignUp} className="create-account-button">Create Account</button>
           </div>          
         </form>
       </div>

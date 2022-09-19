@@ -51,6 +51,8 @@
   border-radius: 15px;
 
   padding: 20px 80px 20px 80px;
+
+  cursor: pointer;
 }
 
 .signin-container .signup-button {

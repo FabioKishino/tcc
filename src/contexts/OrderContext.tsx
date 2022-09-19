@@ -1,48 +1,27 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 
+import { Order } from '../@types';
+
 import api from '../services/api';
 
 // export interface OrderProps {
-//   id?: string,
-//   created_at?: string,
-//   end_at?: string,
+//   id: string,
+//   recipe: string,
+//   portion_size: string,
+//   status: string | number,
+//   created_at: string,
   
-//   portion_size?: {
-//     id: string,
-//     name: string,
-//   },
-
-//   recipe?: {
-//     id: string,
-//     name: string,
-//   },
-
-//   status?: string | number,
-  
-
 //   id_recipe?: string,
 //   portion_id?: string,
 //   priority?: string | number,
 // }
 
-export interface OrderProps {
-  id: string,
-  created_at: string,
-  portion_size: string,
-  recipe: string,
-  status: string | number,
-  
-  id_recipe: string,
-  portion_id: string,
-  priority: string | number,
-}
-
 interface OrderContextType {
-  orders: OrderProps[],
-  setOrders: (orders: OrderProps[]) => void,
+  orders: Order[],
+  setOrders: (orders: Order[]) => void,
   handleCloseNewOrderMenuAndSubmit: () => void,
-  newOrder: OrderProps,
-  setNewOrder: (newOrder: OrderProps) => void,
+  newOrder: Order,
+  setNewOrder: (newOrder: Order) => void,
   newOrderIsOpen: boolean,
   setNewOrderIsOpen: (newOrderIsOpen: boolean) => void,
   handleOpenNewOrderMenu: () => void,
@@ -60,29 +39,24 @@ export const OrdersContext = createContext({} as OrderContextType);
 
 export function OrdersProvider({ children }: OrdersProviderProps) {
 
-  const [orders, setOrders] = useState<OrderProps[]>([]);
-  const [newOrder, setNewOrder] = useState<OrderProps>({} as OrderProps);
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [newOrder, setNewOrder] = useState<Order>({} as Order);
   const [newOrderIsOpen, setNewOrderIsOpen] = useState(false);
 
   const [recipeOptions, setRecipeOptions] = useState([ 
     { 
       value: '1', 
-      label: 'Yakisoba', 
-      id_recipe: '8095b1ed-d2d0-4a1c-955c-91acc6397646' 
+      label: 'Receita Teste', 
+      id_recipe: '1a118ff1-f009-46ba-98fa-b09bed39be3f' 
     },
    ]);
   
   const [amountOptions, setAmountOptions] = useState([ 
     { 
       value: '1', 
-      label: '1 Porção', 
-      portion_id: '04f74162-8394-4543-a86b-938f2e0c4366' 
-    }, 
-    { 
-      value: '2', 
-      label: '1/2 Porção',
-      portion_id: '20fe7454-5b03-409c-8322-2842be9b9eaf'
-    } 
+      label: 'Porção Teste', 
+      portion_id: 'bb069028-f6e1-410f-b46e-e9557378b94a' 
+    }
   ]);
 
   const [statusOptions, setStatusOptions] = useState([ 

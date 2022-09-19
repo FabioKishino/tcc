@@ -29,6 +29,7 @@
 .data-gathering-component-content label{
   font-size: 20px;
   font-weight: 300;
+  padding-left: 5px;
 }
 
 .data-gathering-component-content input{
@@ -38,11 +39,14 @@
   border-radius: 5px;
   border: none;
 
+  padding-left: 10px;
+
   display: flex;
 }
 
 .data-gathering-component-input {
   padding-left: 30px;
+  
 }
 
 .data-gathering-component-input input{

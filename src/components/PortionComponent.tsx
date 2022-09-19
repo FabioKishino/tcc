@@ -10,7 +10,7 @@ import { customStyleModalPortionSize } from '../@types/customStyles';
 
 Modal.setAppElement('#root')
 
-export function PortionComponent ({ portionSize, handleDeletePortion }: PortionSizeProps) {
+export function PortionComponent ({ name, handleDeletePortion }: PortionSizeProps) {
 
   const [deletePortion, setDeletePortion] = useState(false);
 
@@ -33,7 +33,7 @@ export function PortionComponent ({ portionSize, handleDeletePortion }: PortionS
     <div className="portion-size-component">
       <div className="portion-size-content">
         <div className="portion-size-name">
-          <p>{portionSize}</p>
+          <p>{name}</p>
         </div>
       </div>
 

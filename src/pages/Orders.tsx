@@ -41,10 +41,20 @@ export function Orders () {
         'ContentType': 'application/json',
         'Authorization': `Bearer ${token}`
       } 
-    }).then(response => console.log(response.data));
+    }).then(response => console.log(response.data.orders));
   }, [])
 
-  
+
+  useEffect(() => {
+    const token = localStorage.getItem("@Auth:token");
+    api.get('/orders', { 
+      headers: { 
+        'ContentType': 'application/json',
+        'Authorization': `Bearer ${token}`
+      } 
+    }).then(response => setOrders(response.data.orders));
+  }, [orders])
+
   return (
     <div id="orders-page">
 
@@ -113,19 +123,21 @@ export function Orders () {
         </div>
       </Modal>
 
-      {orders.map((item, index) => <OrderComponent 
+      {orders.reverse().map((item, index) => <OrderComponent 
         key={index} 
         id={item.id}
-        recipe={item.recipe} 
-        portion_size={item.portion_size} 
+        recipe={item.recipe}
+        portion_size={item.portion_size}
         status={item.status} 
         created_at={item.created_at}
-        id_recipe={item.id_recipe}
-        portion_id={item.portion_id}
         priority={item.priority}
+        id_recipe={item.id_recipe}
+        portion_id={item.portion_id} 
         />
-      
       )}
+
+      <button onClick={() => console.log(orders)}>Orders</button> 
+      <button onClick={() => console.log(orders.reverse())}>Reverse</button> 
 
       <button id="plus-icon-btn" className="plus-icon" onClick={handleOpenNewOrderMenu}>
         <PlusCircle size={100} weight="fill"/>
