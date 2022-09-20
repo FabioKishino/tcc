@@ -32,18 +32,14 @@ export function Orders () {
     statusOptions
   } = useContext(OrdersContext);
   
-  const { token } = useContext(AuthContext)
+  const [reload, setReload] = useState(false)
+  const reversedOrders = Array.from(orders).reverse()
 
-  useEffect(() => {
-    const token = localStorage.getItem("@Auth:token");
-    api.get('/orders', { 
-      headers: { 
-        'ContentType': 'application/json',
-        'Authorization': `Bearer ${token}`
-      } 
-    }).then(response => console.log(response.data.orders));
-  }, [])
+  function timer() {
+    setTimeout(() => {setReload(!reload)}, 60000)
+  }
 
+  useEffect(() => {timer()}, [])
 
   useEffect(() => {
     const token = localStorage.getItem("@Auth:token");
@@ -53,7 +49,19 @@ export function Orders () {
         'Authorization': `Bearer ${token}`
       } 
     }).then(response => setOrders(response.data.orders));
-  }, [orders])
+  }, [])
+
+
+  useEffect(() => {
+    const token = localStorage.getItem("@Auth:token");
+      api.get('/orders', { 
+      headers: { 
+        'ContentType': 'application/json',
+        'Authorization': `Bearer ${token}`
+      } 
+    }).then(response => setOrders(response.data.orders));
+  }, [reload])
+
 
   return (
     <div id="orders-page">
@@ -123,7 +131,7 @@ export function Orders () {
         </div>
       </Modal>
 
-      {orders.reverse().map((item, index) => <OrderComponent 
+      {reversedOrders.map((item, index) => <OrderComponent 
         key={index} 
         id={item.id}
         recipe={item.recipe}
@@ -136,13 +144,9 @@ export function Orders () {
         />
       )}
 
-      <button onClick={() => console.log(orders)}>Orders</button> 
-      <button onClick={() => console.log(orders.reverse())}>Reverse</button> 
-
       <button id="plus-icon-btn" className="plus-icon" onClick={handleOpenNewOrderMenu}>
         <PlusCircle size={100} weight="fill"/>
       </button>
-
     </div>
   )
 }

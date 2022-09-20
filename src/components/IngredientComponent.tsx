@@ -25,7 +25,7 @@ export function IngredientComponent ({ name }: IngredientsProps) {
   function handleCloseDeleteIngredientAndSubmit () {
     setDeleteIngredient(false);
     
-    // Delete portion size from database.
+    // Delete ingredient from database.
   }
   
   return (

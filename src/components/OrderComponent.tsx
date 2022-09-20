@@ -33,11 +33,11 @@ export function OrderComponent (props: Order) {
     // Needs to submit the form to the back end
   }
 
-  const created_at_minutes = new Date(props.created_at).getUTCMinutes();
-  const now_minutes = new Date().getUTCMinutes();
+  const created_at = new Date(props.created_at);
+  const now = new Date().getTime();
 
-  const created_ago_minutes = now_minutes - created_at_minutes;
-
+  const created_ago = ((now - created_at.getTime())/(1000*60)).toFixed(0);
+  
   return (
     <div id="order-list">
       <div className="order-component">
@@ -59,7 +59,7 @@ export function OrderComponent (props: Order) {
 
           <div>
             <label>Criado há</label>
-            <p>{created_ago_minutes} min</p>
+            <p>{created_ago} min</p>
           </div>
         </div>
 

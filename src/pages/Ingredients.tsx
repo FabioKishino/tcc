@@ -55,7 +55,7 @@ export function Ingredients () {
         </div>
       </Modal>
 
-      <IngredientComponent name="teste"/>
+      <IngredientComponent name="Ingrediente Teste"/>
 
 
       <button id="plus-icon-btn" className="plus-icon" onClick={handleOpenNewIngredient}>

@@ -79,11 +79,20 @@ export function DataGathering () {
     console.log("Data saved");
     console.log(dataGatherings);
   }
+
+  function deleteDataGathering (index: number) {
+    var newDataGatheringList = [...dataGatherings];
+    newDataGatheringList.splice(index, 1);
+    setNewDataGatherings(newDataGatheringList)
+  }
+
+
+
   return (
     <div id="data-gathering-page">
       <HeaderComponent title="Coleta de Dados"/>
 
-      {dataGatherings.map(item => <DataGatheringComponent ingredient_name={dataGathering.ingredient_name} />)}
+      {dataGatherings.map((item, index) => <DataGatheringComponent key={index} ingredient_name={dataGathering.ingredient_name} handleDeleteDataGathering={() => deleteDataGathering(index)}/>)}
 
       { dataGatherings.length == 0 &&
         <div className="no-data-gatherings">
@@ -114,31 +123,34 @@ export function DataGathering () {
         onRequestClose={handleCloseNewDataGathering}
         style={customStyleModalNewDataGathering}
       >
-        <div className="data-modal-content">
+      <div className="data-modal-container">
+        <div className="data-modal-header">
           <h3>Selecione o ingrediente que deseja coletar os dados</h3>
-          
-          <Select 
-              styles={customStylesSelectDataGathering}
-              className="new-order-select" 
-              placeholder="Escolha o ingrediente" 
-              options={ingredientsOptions}
-              isSearchable={false}
-              onChange={selection => {
-                const newDataGathering = dataGathering
-                dataGathering.ingredient_name = selection ? selection.label : ''
-                setDataGathering(newDataGathering)
-              }
-            }/>
         </div>
-
+        
+        <div className="data-modal-select">
+          <Select 
+            styles={customStylesSelectDataGathering}
+            className="new-order-select" 
+            placeholder="Escolha o ingrediente" 
+            options={ingredientsOptions}
+            isSearchable={false}
+            onChange={selection => {
+              const newDataGathering = dataGathering
+              dataGathering.ingredient_name = selection ? selection.label : ''
+              setDataGathering(newDataGathering)
+            }
+          }/>
+        </div> 
+        
         <div className="form-buttons">
           <button onClick={handleCloseNewDataGathering} className="data-cancel-btn">CANCELAR</button>
           <button onClick={handleCloseNewDataGatheringAndSubmit} className="data-confirm-btn">CONFIRMAR</button>
         </div>
+      </div>
+        
 
       </Modal>
-
-
 
       {/* PEOPLE AMOUNT MODAL */}
       <Modal

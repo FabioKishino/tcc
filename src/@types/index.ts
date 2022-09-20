@@ -42,4 +42,5 @@ export interface PortionSizeProps {
 
 export interface DataGatheringProps {
   ingredient_name: string,
+  handleDeleteDataGathering: () => void,
 }

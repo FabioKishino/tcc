@@ -43,6 +43,8 @@ export function OrdersProvider({ children }: OrdersProviderProps) {
   const [newOrder, setNewOrder] = useState<Order>({} as Order);
   const [newOrderIsOpen, setNewOrderIsOpen] = useState(false);
 
+  const [reload, setReload] = useState(false);
+
   const [recipeOptions, setRecipeOptions] = useState([ 
     { 
       value: '1', 
@@ -95,6 +97,20 @@ export function OrdersProvider({ children }: OrdersProviderProps) {
     });
     console.log(response);
     console.log(response.data.created_at);
+
+    // api.post('/orders', newOrder, { 
+    //   headers: { 
+    //     'ContentType': 'application/json',
+    //     'Authorization': `Bearer ${token}`
+    //   } 
+    // })
+    // .then(response => {
+    //   setOrders([...orders, response.data]);
+    //   setReload(!reload)
+    // })
+    // .catch(error => {
+      
+    // })
   }
 
   return (

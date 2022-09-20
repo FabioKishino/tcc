@@ -3,15 +3,16 @@ import { useState } from 'react'
 import Select from 'react-select';
 import Modal from 'react-modal'
 
-import { customStylesSelectWhite } from '../@types/customStyles';
+import { customStyleModalDeleteDataGathering } from '../@types/customStyles';
 import { Trash } from 'phosphor-react'
 import '../styles/components/dataGatheringComponet.css';
 import { DataGatheringProps } from '../@types';
 
 Modal.setAppElement('#root')
 
-export function DataGatheringComponent ({ingredient_name}: DataGatheringProps) {
+export function DataGatheringComponent ({ingredient_name, handleDeleteDataGathering}: DataGatheringProps) {
 
+  const [deleteNewDataGathering, setDeleteNewDataGathering] = useState(false);
   const [ingredientsOptions, setIngredientsOptions] = useState([ 
     { 
       value: '1', 
@@ -26,6 +27,19 @@ export function DataGatheringComponent ({ingredient_name}: DataGatheringProps) {
       label: 'Bacalhau'
     },
   ]);
+
+  function handleOpenDeleteNewDataGathering () {
+    setDeleteNewDataGathering(true);
+  }
+
+  function handleCloseDeleteNewDataGathering () {
+    setDeleteNewDataGathering(false);
+  }
+
+  function handleCloseDeleteNewDataGatheringAndSubmit () {
+    setDeleteNewDataGathering(false);
+    handleDeleteDataGathering();
+  }
 
   return (
     <div id="data-gathering-component-page">
@@ -47,9 +61,25 @@ export function DataGatheringComponent ({ingredient_name}: DataGatheringProps) {
           </div>
         </div>
 
-        <button className="data-gathering-component-buttons"> 
+        <button className="data-gathering-component-buttons" onClick={handleOpenDeleteNewDataGathering}> 
           <Trash size={64} weight="fill" />
         </button>
+
+        <Modal
+          isOpen={deleteNewDataGathering}
+          onRequestClose={handleCloseDeleteNewDataGathering}
+          style={customStyleModalDeleteDataGathering}
+        >
+          <div className="delete-data-gathering-content">
+            <h1>Você tem certeza que deseja excluir essa coleta de dados?</h1>
+          </div>
+        
+          <div className="form-buttons"> 
+            <button onClick={handleCloseDeleteNewDataGathering} className="cancel-btn">CANCELAR</button>
+            <button onClick={handleCloseDeleteNewDataGatheringAndSubmit} className="confirm-btn">CONFIRMAR</button>
+          </div>
+        </Modal>
+
       </div>
     </div> 
   )
