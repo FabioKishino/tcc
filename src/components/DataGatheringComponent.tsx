@@ -13,20 +13,7 @@ Modal.setAppElement('#root')
 export function DataGatheringComponent ({ingredient_name, handleDeleteDataGathering}: DataGatheringProps) {
 
   const [deleteNewDataGathering, setDeleteNewDataGathering] = useState(false);
-  const [ingredientsOptions, setIngredientsOptions] = useState([ 
-    { 
-      value: '1', 
-      label: 'Salmão' 
-    }, 
-    { 
-      value: '2', 
-      label: 'Carne'
-    },
-    { 
-      value: '3', 
-      label: 'Bacalhau'
-    },
-  ]);
+
 
   function handleOpenDeleteNewDataGathering () {
     setDeleteNewDataGathering(true);

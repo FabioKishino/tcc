@@ -9,6 +9,7 @@ import { PortionComponent } from '../components/PortionComponent';
 import { PlusCircle, Trash } from 'phosphor-react'
 import { customStyleModalPortionSize } from '../@types/customStyles';
 import '../styles/pages/portions.css';
+import api from '../services/api';
 
 Modal.setAppElement('#root')
 
@@ -18,7 +19,7 @@ export function Portions () {
   const [portionSize, setPortionSize] = useState<PortionSizeProps>({} as PortionSizeProps);
   const [portionSizeList, setPortionSizeList] = useState<PortionSizeProps[]>([]);
 
-
+  
   function handleOpenNewPortionSize () {
     setNewPortionSize(true);
   }
@@ -28,11 +29,21 @@ export function Portions () {
   }
   
   function handleNewPortionSizeAndSubmit () {
-    // This function should send the new portion size to the database and close the modal
-    setPortionSizeList([...portionSizeList, portionSize]);
-    console.log(portionSizeList);
-    console.log('PENDING: New portion size sent to the database');
     setNewPortionSize(false);
+    setPortionSizeList([...portionSizeList, portionSize]);
+
+    const token = localStorage.getItem('@Auth:token');
+    api.post('/portionsizes', portionSize, {
+      headers: {
+        'ContentType': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    }).then(response => {
+      console.log(response.data);
+      setPortionSizeList([...portionSizeList, response.data]);
+    }).catch(error => {
+      console.log(error);
+    })
   }
 
   const inputHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,18 +52,15 @@ export function Portions () {
     setPortionSize({ ...portionSize, name: enteredName })
   }
 
-  const deletePortion = (index: any) => {
-    var newPortionSizeList = [...portionSizeList];
-    newPortionSizeList.splice(index, 1);
-    setPortionSizeList(newPortionSizeList)
-  }
-
-
-  // Everytime this page is loaded, the list of all portions in the database has to be loaded
   useEffect(() => {
-    console.log('Portions page loaded');
+    const token = localStorage.getItem("@Auth:token");
+    api.get('/portionsizes', { 
+      headers: { 
+        'ContentType': 'application/json',
+        'Authorization': `Bearer ${token}`
+      } 
+    }).then(response => setPortionSizeList(response.data.portion_sizes));
   }, [])
-  
 
   return (
     <div id="portion-size-page">
@@ -80,9 +88,14 @@ export function Portions () {
         </div>
       </Modal>
 
-      {portionSizeList.map((item, index) => <PortionComponent key={index} name={item.name} handleDeletePortion={() => deletePortion(index)}/>)}
-      
-      
+      {portionSizeList.length == 0 && 
+        <div className="no-portion-sizes">
+          <p>Não há tamanho de porções cadastradas :(</p>
+        </div>
+      }
+
+      {portionSizeList.map((item, index) => <PortionComponent key={index} id={item.id} name={item.name}/>)}
+
       <button id="plus-icon-btn" className="plus-icon" onClick={handleOpenNewPortionSize}>
         <PlusCircle size={100} weight="fill"/>
       </button>

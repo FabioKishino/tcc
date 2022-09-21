@@ -6,16 +6,16 @@ import '../styles/components/portionComponent.css';
 import { PortionSizeProps } from '../@types'
 import { Trash } from 'phosphor-react';
 import { customStyleModalPortionSize } from '../@types/customStyles';
+import api from '../services/api';
 
 
 Modal.setAppElement('#root')
 
-export function PortionComponent ({ name, handleDeletePortion }: PortionSizeProps) {
+export function PortionComponent ({ id, name }: PortionSizeProps) {
 
   const [deletePortion, setDeletePortion] = useState(false);
 
   function handleOpenDeletePortionSize () {
-    handleDeletePortion();
     setDeletePortion(true);
   }
 
@@ -25,8 +25,20 @@ export function PortionComponent ({ name, handleDeletePortion }: PortionSizeProp
 
   function handleCloseDeletePortionSizeAndSubmit () {
     setDeletePortion(false);
-    
-    // Delete portion size from database.
+
+    const token = localStorage.getItem('@Auth:token');
+    api.delete(`/portionsizes/${id}`, {
+      headers: {
+        'ContentType': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    }).then(response => {
+      alert('Portion size deleted successfully!');
+      window.location.reload()
+    }).catch(error => {
+      alert("Error deleting portion size! Try again later.");
+      console.log(error);
+    })
   }
   
   return (

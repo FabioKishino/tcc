@@ -31,13 +31,14 @@ export interface PortionSize{
 
 // Components V
 
-export interface IngredientsProps {
+export interface IngredientProps {
+  id: string,
   name: string;
 }
 
 export interface PortionSizeProps {
+  id: string,
   name: string;
-  handleDeletePortion: () => void;
 }
 
 export interface DataGatheringProps {

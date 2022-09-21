@@ -56,7 +56,7 @@ export function OrdersProvider({ children }: OrdersProviderProps) {
   const [amountOptions, setAmountOptions] = useState([ 
     { 
       value: '1', 
-      label: 'Porção Teste', 
+      label: 'Porção Teste',
       portion_id: 'bb069028-f6e1-410f-b46e-e9557378b94a' 
     }
   ]);
@@ -85,7 +85,6 @@ export function OrdersProvider({ children }: OrdersProviderProps) {
   
   async function handleCloseNewOrderMenuAndSubmit () {
     setNewOrderIsOpen(false);
-    // Needs to submit the form to the back end and also add to the orders page
     setOrders([newOrder, ...orders]);
 
     const token = localStorage.getItem("@Auth:token");
@@ -95,8 +94,6 @@ export function OrdersProvider({ children }: OrdersProviderProps) {
         'Authorization': `Bearer ${token}`
       } 
     });
-    console.log(response);
-    console.log(response.data.created_at);
 
     // api.post('/orders', newOrder, { 
     //   headers: { 

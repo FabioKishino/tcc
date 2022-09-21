@@ -6,11 +6,12 @@ import '../styles/components/ingredientComponent.css';
 import { Trash } from 'phosphor-react';
 import { customStyleModalIngredients } from '../@types/customStyles';
 
-import { IngredientsProps } from '../@types';
+import { IngredientProps } from '../@types';
+import api from '../services/api';
 
 Modal.setAppElement('#root')
 
-export function IngredientComponent ({ name }: IngredientsProps) {
+export function IngredientComponent ({ id, name }: IngredientProps) {
 
   const [deleteIngredient, setDeleteIngredient] = useState(false);
 
@@ -25,7 +26,19 @@ export function IngredientComponent ({ name }: IngredientsProps) {
   function handleCloseDeleteIngredientAndSubmit () {
     setDeleteIngredient(false);
     
-    // Delete ingredient from database.
+    const token = localStorage.getItem('@Auth:token');
+    api.delete(`/ingredients/${id}`, {
+      headers: {
+        'ContentType': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    }).then(response => {
+      alert('Ingredient deleted successfully!');
+      window.location.reload()
+    }).catch(error => {
+      alert("Error deleting Ingredient! Try again later.");
+      console.log(error);
+    })
   }
   
   return (
