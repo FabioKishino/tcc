@@ -5,7 +5,7 @@ export interface User {
 
 export interface Order {
   id: string,
-  
+
   recipe?: Recipe,
   portion_size?: PortionSize,
   created_at: string,
@@ -16,7 +16,7 @@ export interface Order {
   id_recipe: string,
   portion_id: string,
   priority: string | number,
-  
+
 }
 
 export interface Recipe {
@@ -24,7 +24,7 @@ export interface Recipe {
   name: string,
 }
 
-export interface PortionSize{
+export interface PortionSize {
   id: string,
   name: string,
 }
@@ -42,6 +42,36 @@ export interface PortionSizeProps {
 }
 
 export interface DataGatheringProps {
+  initial_amount: number;
+  final_amount: number;
   ingredient_name: string,
   handleDeleteDataGathering: () => void,
+  handleChangeAmount: (initial_amount: number, final_amount: number) => void,
+}
+
+export interface DataGatheringItem {
+  name: string;
+  id_ingredient: string;
+  initial_amount: number;
+  final_amount: number;
+  unit: string;
+}
+
+export interface DataGatheringReceived {
+  id_ingredient: string;
+  initial_amount: number;
+  final_amount: number;
+  unit: string;
+  ingredient: {
+    name: string;
+  }
+}
+
+export interface ForecastedData {
+  date: string,
+  ingredients: {
+    name: string,
+    amount: number,
+    unit: string
+  }[]
 }

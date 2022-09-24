@@ -116,3 +116,7 @@
   font-size: 24px;
   cursor: pointer;
 }
+
+.icon-info:hover {
+  cursor: pointer;
+}

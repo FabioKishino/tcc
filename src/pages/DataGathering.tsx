@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom'
 import Modal from 'react-modal'
 import Select from 'react-select';
@@ -7,84 +7,172 @@ import { HeaderComponent } from '../components/HeaderComponent';
 import { DataGatheringComponent } from '../components/DataGatheringComponent';
 
 import '../styles/pages/dataGathering.css';
-import { PlusCircle } from 'phosphor-react';
+import { Info, PlusCircle, Rss } from 'phosphor-react';
+import { DataGatheringItem, DataGatheringReceived } from '../@types';
 
-import { DataGatheringProps } from '../@types/index';
 import { customStyleModalNewDataGathering, customStyleModalDataGatheringPeopleAmount, customStylesSelectDataGathering } from '../@types/customStyles';
 import api from '../services/api';
 
+
 Modal.setAppElement('#root')
 
-export function DataGathering () {
+export function DataGathering() {
   const navigate = useNavigate();
 
   const [collectPeopleAmountIsOpen, setCollectPeopleAmountIsOpen] = useState(false);
   const [newDataGatheringIsOpen, setNewDataGatheringIsOpen] = useState(false);
 
-  const [newDataGathering, setNewDataGathering] = useState<DataGatheringProps>({} as DataGatheringProps);
-  const [dataGatherings, setDataGatherings] = useState<DataGatheringProps[]>([]);
+  const [newDataGathering, setNewDataGathering] = useState<DataGatheringItem>({ id_ingredient: '', name: '', initial_amount: 0, final_amount: 0, unit: '' });
+  const [dataGatherings, setDataGatherings] = useState<DataGatheringItem[]>([]);
 
-  const [ingredientsOptions, setIngredientsOptions] = useState([ 
-    { 
-      value: '1', 
-      label: 'Salmão',
-      ingredient_id: '5173b7c9-60ef-46b6-aee1-7945f61cfb5b'
-    }, 
-    { 
-      value: '2', 
-      label: 'Carne',
-      ingredient_id: 'a1ef7b6e-fd2f-4c5d-8824-8b00408a97b4'
-    },
-    { 
-      value: '3', 
-      label: 'Bacalhau',
-      ingredient_id: '7cc22a50-c663-4029-88a5-c0887b4c8562'
-    },
-  ]);
+  const [customerAmount, setCustomerAmount] = useState(0);
 
-  function handleOpenNewDataGathering () {
+  const [ingredientsOptions, setIngredientsOptions] = useState<DataGatheringItem[]>([]);
+
+  useEffect(() => {
+    setIngredientsOptions([]);
+    const token = localStorage.getItem("@Auth:token");
+    api.get('/ingredients', {
+      headers: {
+        'ContentType': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    }).then(response => {
+      const ingredients = [] as any[]
+      response.data.ingredients.map((i: any) => {
+
+        ingredients.push({
+          id_ingredient: i.id,
+          name: i.name
+        })
+      })
+      setIngredientsOptions(ingredientsOptions.concat(ingredients));
+    });
+
+    api.get('/data/today', {
+      headers: {
+        'ContentType': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    }).then(res => {
+      const data = [] as DataGatheringItem[];
+      res.data.map((i: DataGatheringReceived) => {
+        data.push({
+          name: i.ingredient.name,
+          id_ingredient: i.id_ingredient,
+          initial_amount: i.initial_amount,
+          final_amount: i.final_amount,
+          unit: i.unit
+        })
+      })
+      setDataGatherings(data)
+    })
+
+  }, [])
+
+  function handleOpenNewDataGathering() {
     setNewDataGatheringIsOpen(true);
   }
 
-  function handleCloseNewDataGathering () {
+  function handleCloseNewDataGathering() {
     setNewDataGatheringIsOpen(false);
   }
 
-  function handleCloseNewDataGatheringAndSubmit () {
-    setDataGatherings([newDataGathering, ...dataGatherings]);
+  function handleCloseNewDataGatheringAndSubmit() {
+    if (!dataGatherings.filter((i: any) => i.name == newDataGathering.name && i.id_ingredient == newDataGathering.id_ingredient).length) {
+      setDataGatherings(dataGatherings.concat(newDataGathering));
+    }
     setNewDataGatheringIsOpen(false);
   }
 
+  function handleChangeAmount(id: string, initial_amount: number, final_amount: number) {
+    dataGatherings.filter((i: any) => i.id_ingredient == id).map((i) => {
+      i.initial_amount = initial_amount,
+        i.final_amount = final_amount,
+        i.unit = 'kg'
+    })
+  }
 
   // QUANTIDADE DE PESSOAS
-  function handleOpenCollectPeopleAmount () {
+  function handleOpenCollectPeopleAmount() {
     setCollectPeopleAmountIsOpen(true);
   }
 
-  function handleCloseCollectPeopleAmount () {
+  function handleCloseCollectPeopleAmount() {
     setCollectPeopleAmountIsOpen(false);
   }
 
-  async function handleCloseDataCollectionAndSubmit () {
-    await api.post('/orders', dataGatherings);
-    setCollectPeopleAmountIsOpen(false);
+  async function handleCloseDataCollectionAndSubmit() {
+    if (customerAmount <= 0 || !Number.isInteger(customerAmount)) {
+      alert('Quantidade de pessoas inválida!')
+    } else {
+      saveDataGathering();
+      savePeopleAmount();
+      setCollectPeopleAmountIsOpen(false);
+    }
   }
 
 
   // CANCELAR 
-  function cancelDataGathering () {
+  function cancelDataGathering() {
     // This function should delete all the data gathered for the day
     navigate('/home');
   }
 
   // SALVAR
-  function saveDataGathering () {
-    // This function should save all the data gathered for the day
-    console.log("Data saved");
-    console.log(dataGatherings);
+  function saveDataGathering() {
+    let invalidData = false;
+    dataGatherings.map((i) => {
+      if (i.initial_amount == 0) {
+        invalidData = true;
+        alert(`A quantidade inicial deve ser superior a 0`)
+      } else if (i.final_amount > i.initial_amount) {
+        invalidData = true;
+        alert('A quantidade final não pode ser maior que a inicial!')
+      }
+    })
+
+    if (!invalidData) {
+      const data = {
+        ingredients_data: dataGatherings
+      }
+      const token = localStorage.getItem("@Auth:token");
+      api.post('/data/collect/ingredients', data,
+        {
+          headers: {
+            'ContentType': 'application/json',
+            'Authorization': `Bearer ${token}`
+          }
+        }).then(res => {
+          alert(res.data.message)
+        }).catch(err => {
+          alert('Houve um problema na coleta, tente novamente')
+          console.log(err)
+        })
+    }
   }
 
-  function deleteDataGathering (index: number) {
+  function savePeopleAmount() {
+
+
+    const token = localStorage.getItem("@Auth:token");
+    api.post('/data/collect/additional', {
+      customer_amount: customerAmount
+    },
+      {
+        headers: {
+          'ContentType': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      }).then(res => { }).catch(err => {
+        alert('Houve um problema na coleta, tente novamente')
+        console.log(err)
+      })
+
+
+  }
+
+  function deleteDataGathering(index: number) {
     var newDataGatheringList = [...dataGatherings];
     newDataGatheringList.splice(index, 1);
     setDataGatherings(newDataGatheringList)
@@ -93,31 +181,41 @@ export function DataGathering () {
 
   return (
     <div id="data-gathering-page">
-      <HeaderComponent title="Coleta de Dados"/>
-      
-      { dataGatherings.length == 0 &&
+      <HeaderComponent title="Coleta de Dados" />
+      {
+        dataGatherings.length == 0 &&
         <div className="no-data-gatherings">
           <p>Não há ingredientes para coleta de dados cadastrados :(</p>
         </div>
       }
 
-      {dataGatherings.map((item, index) => <DataGatheringComponent key={index} ingredient_name={item.ingredient_name} handleDeleteDataGathering={() => deleteDataGathering(index)}/>)}
+      {
+        dataGatherings.map((item, index) => <DataGatheringComponent
+          key={index}
+          initial_amount={item.initial_amount}
+          final_amount={item.final_amount}
+          ingredient_name={item.name}
+          handleDeleteDataGathering={() => deleteDataGathering(index)}
+          handleChangeAmount={(initial_amount, final_amount) => handleChangeAmount(item.id_ingredient, initial_amount, final_amount)}
+        />)
+      }
 
-      {dataGatherings.length > 0 &&
-      <div className="data-form-buttons"> 
-        {/* This button should delete all the fields and go back to Home Page */}
-        <button className="data-cancel-btn" onClick={cancelDataGathering}>CANCELAR</button>
+      {
+        dataGatherings.length > 0 &&
+        <div className="data-form-buttons">
+          {/* This button should delete all the fields and go back to Home Page */}
+          <button className="data-cancel-btn" onClick={cancelDataGathering}>CANCELAR</button>
 
-        {/* This button should save all the fields */}
-        <button className="data-save-btn" onClick={saveDataGathering}>SAVE</button>
-        
-        {/* This button should verify if all the fields has been completed and then open the Modal */}
-        <button className="data-confirm-btn" onClick={handleOpenCollectPeopleAmount}>REALIZAR COLETA</button>
-      </div>
+          {/* This button should save all the fields */}
+          <button className="data-save-btn" onClick={saveDataGathering}>SAVE</button>
+
+          {/* This button should verify if all the fields has been completed and then open the Modal */}
+          <button className="data-confirm-btn" onClick={handleOpenCollectPeopleAmount}>REALIZAR COLETA</button>
+        </div>
       }
 
       <button id="page-btns" className="plus-icon" onClick={handleOpenNewDataGathering}>
-        <PlusCircle size={80} weight="fill"/>
+        <PlusCircle size={80} weight="fill" />
       </button>
 
       {/* NEW DATA GATHERING MODAL */}
@@ -130,22 +228,29 @@ export function DataGathering () {
           <div className="data-modal-header">
             <h3>Selecione o ingrediente que deseja coletar os dados</h3>
           </div>
-          
+
           <div className="data-modal-select">
-            <Select 
+            <Select
               styles={customStylesSelectDataGathering}
-              className="new-order-select" 
-              placeholder="Escolha o ingrediente" 
-              options={ingredientsOptions}
+              className="new-order-select"
+              placeholder="Escolha o ingrediente"
+              options={ingredientsOptions.map((i: DataGatheringItem, index: number) => {
+                return {
+                  id: i.id_ingredient,
+                  label: i.name,
+                  value: (index + 1).toString()
+                }
+              })}
               isSearchable={false}
               onChange={selection => {
-                const newDataGatheringObject = newDataGathering
-                newDataGatheringObject.ingredient_name = selection ? selection.label : ''
+                const newDataGatheringObject = { id_ingredient: '', name: '', initial_amount: 0, final_amount: 0, unit: '' }
+                newDataGatheringObject.id_ingredient = selection ? selection.id : ''
+                newDataGatheringObject.name = selection ? selection.label : ''
                 setNewDataGathering(newDataGatheringObject)
               }
-            }/>
-          </div> 
-          
+              } />
+          </div>
+
           <div className="form-buttons">
             <button onClick={handleCloseNewDataGathering} className="data-cancel-btn">CANCELAR</button>
             <button onClick={handleCloseNewDataGatheringAndSubmit} className="data-confirm-btn">CONFIRMAR</button>
@@ -161,15 +266,15 @@ export function DataGathering () {
       >
         <div className="data-modal-content">
           <h3>Insira a quantidade de clientes do dia</h3>
-          <input type="number" min="0" placeholder="" className="people-amount-input"/>
+          <input onChange={(e) => isNaN(e.target.valueAsNumber) ? '' : setCustomerAmount(e.target.valueAsNumber)} type="number" min="1" step="1" placeholder="" className="people-amount-input" />
         </div>
-        
+
         <div className="form-buttons">
           <button onClick={handleCloseCollectPeopleAmount} className="data-cancel-btn">CANCELAR</button>
           <button onClick={handleCloseDataCollectionAndSubmit} className="data-confirm-btn">CONFIRMAR</button>
         </div>
       </Modal>
 
-    </div>
+    </div >
   )
 }
