@@ -130,3 +130,9 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
   font-size: 18px;
   cursor: pointer;
 }
+
+.info-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

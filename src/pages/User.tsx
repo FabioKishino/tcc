@@ -11,7 +11,7 @@ const userInfo = {
   password: 'password',
   adminPassword: 'password',
   state: 'state',
-  cityOptions:  [
+  cityOptions: [
     { value: '1', label: 'São Paulo' },
     { value: '2', label: 'Rio de Janeiro' },
   ]
@@ -33,31 +33,31 @@ const customStyles = {
   })
 }
 
-function handleUserEdit () {
+function handleUserEdit() {
   console.log('handleUserEdit')
 }
 
 
-export function User () {
+export function User() {
   return (
     <div id="page-user">
-      <HeaderComponent title="Editar Restaurante" />
+      <HeaderComponent title="Editar Restaurante" handleInfo={() => null} />
       <div className="container">
         <form>
           <label>E-mail</label>
-          <input type="email" placeholder={userInfo.email}/>
+          <input type="email" placeholder={userInfo.email} />
           <label>Username</label>
-          <input type="text" placeholder={userInfo.username}/>
+          <input type="text" placeholder={userInfo.username} />
           <label>Password</label>
-          <input type="password" placeholder={userInfo.password}/>
+          <input type="password" placeholder={userInfo.password} />
           <label>Admin Password</label>
-          <input type="password" placeholder={userInfo.adminPassword}/>
+          <input type="password" placeholder={userInfo.adminPassword} />
           <label>State</label>
-          <input type="text" placeholder={userInfo.state}/>
+          <input type="text" placeholder={userInfo.state} />
           <label>City</label>
-          <Select 
+          <Select
             styles={customStyles}
-            className="select-city" 
+            className="select-city"
             options={userInfo.cityOptions}
           />
 

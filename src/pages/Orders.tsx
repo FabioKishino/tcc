@@ -5,7 +5,7 @@ import Select from 'react-select'
 import { HeaderComponent } from '../components/HeaderComponent';
 import { OrderComponent } from '../components/OrderComponent'
 
-import { customStyleModal, customStylesSelect  } from '../@types/customStyles';
+import { customStyleModal, customStylesSelect } from '../@types/customStyles';
 import { PlusCircle, X } from 'phosphor-react'
 import '../styles/pages/orders.css';
 
@@ -16,14 +16,14 @@ import api from '../services/api';
 
 Modal.setAppElement('#root')
 
-export function Orders () {
+export function Orders() {
   const {
     orders,
     setOrders,
-    handleCloseNewOrderMenuAndSubmit, 
-    newOrder, 
-    setNewOrder, 
-    newOrderIsOpen, 
+    handleCloseNewOrderMenuAndSubmit,
+    newOrder,
+    setNewOrder,
+    newOrderIsOpen,
     setNewOrderIsOpen,
     handleOpenNewOrderMenu,
     handleCloseNewOrderMenu,
@@ -31,34 +31,34 @@ export function Orders () {
     amountOptions,
     statusOptions
   } = useContext(OrdersContext);
-  
+
   const [reload, setReload] = useState(false)
   const reversedOrders = Array.from(orders).reverse()
 
   function timer() {
-    setTimeout(() => {setReload(!reload)}, 60000)
+    setTimeout(() => { setReload(!reload) }, 60000)
   }
 
-  useEffect(() => {timer()}, [])
+  useEffect(() => { timer() }, [])
 
   useEffect(() => {
     const token = localStorage.getItem("@Auth:token");
-    api.get('/orders', { 
-      headers: { 
+    api.get('/orders', {
+      headers: {
         'ContentType': 'application/json',
         'Authorization': `Bearer ${token}`
-      } 
+      }
     }).then(response => setOrders(response.data.orders));
   }, [])
 
 
   useEffect(() => {
     const token = localStorage.getItem("@Auth:token");
-      api.get('/orders', { 
-      headers: { 
+    api.get('/orders', {
+      headers: {
         'ContentType': 'application/json',
         'Authorization': `Bearer ${token}`
-      } 
+      }
     }).then(response => setOrders(response.data.orders));
   }, [reload])
 
@@ -66,8 +66,8 @@ export function Orders () {
   return (
     <div id="orders-page">
 
-      <HeaderComponent title="Pedidos"/>
-  
+      <HeaderComponent title="Pedidos" handleInfo={() => null} />
+
       <Modal
         isOpen={newOrderIsOpen}
         onRequestClose={handleCloseNewOrderMenu}
@@ -82,24 +82,24 @@ export function Orders () {
         <div className="new-order-form">
           <form>
             <label>Prato</label>
-            <Select 
-              styles={customStylesSelect} 
-              className="new-order-select" 
-              placeholder="Escolha o prato" 
-              options={recipeOptions} 
+            <Select
+              styles={customStylesSelect}
+              className="new-order-select"
+              placeholder="Escolha o prato"
+              options={recipeOptions}
               isSearchable={false}
               onChange={selection => {
                 const newObject = newOrder
                 newObject.id_recipe = selection ? selection.id_recipe : ''
                 setNewOrder(newObject)
               }
-            }/>
+              } />
 
             <label>Quantidade</label>
-            <Select 
-              styles={customStylesSelect} 
-              className="new-order-select" 
-              placeholder="Escolha a quantidade" 
+            <Select
+              styles={customStylesSelect}
+              className="new-order-select"
+              placeholder="Escolha a quantidade"
               options={amountOptions}
               isSearchable={false}
               onChange={selection => {
@@ -107,13 +107,13 @@ export function Orders () {
                 newObject.portion_id = selection ? selection.portion_id : ''
                 setNewOrder(newObject)
               }
-            }/>
+              } />
 
             <label>Status</label>
-            <Select 
-              styles={customStylesSelect} 
-              className="new-order-select" 
-              placeholder="Escolha o status" 
+            <Select
+              styles={customStylesSelect}
+              className="new-order-select"
+              placeholder="Escolha o status"
               options={statusOptions}
               isSearchable={false}
               onChange={selection => {
@@ -121,31 +121,31 @@ export function Orders () {
                 newObject.priority = selection ? selection.priority : ''
                 setNewOrder(newObject)
               }
-            }/>
+              } />
 
           </form>
         </div>
-        <div className="form-buttons"> 
+        <div className="form-buttons">
           <button onClick={handleCloseNewOrderMenu} className="cancel-btn">CANCELAR</button>
           <button onClick={handleCloseNewOrderMenuAndSubmit} className="confirm-btn">CONFIRMAR</button>
         </div>
       </Modal>
 
-      {reversedOrders.map((item, index) => <OrderComponent 
-        key={index} 
+      {reversedOrders.map((item, index) => <OrderComponent
+        key={index}
         id={item.id}
         recipe={item.recipe}
         portion_size={item.portion_size}
-        status={item.status} 
+        status={item.status}
         created_at={item.created_at}
         priority={item.priority}
         id_recipe={item.id_recipe}
-        portion_id={item.portion_id} 
-        />
+        portion_id={item.portion_id}
+      />
       )}
 
       <button id="plus-icon-btn" className="plus-icon" onClick={handleOpenNewOrderMenu}>
-        <PlusCircle size={100} weight="fill"/>
+        <PlusCircle size={100} weight="fill" />
       </button>
     </div>
   )

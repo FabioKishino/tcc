@@ -2,24 +2,54 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom'
 import Modal from 'react-modal'
 import Select from 'react-select';
+import { Carousel } from 'react-carousel-minimal';
+
+import Etapa_1 from '../images/dataGatheringSteps/Etapa_1.jpg';
+import Etapa_2 from '../images/dataGatheringSteps/Etapa_2.jpg';
+import Etapa_3 from '../images/dataGatheringSteps/Etapa_3.jpg';
+import Etapa_4 from '../images/dataGatheringSteps/Etapa_4.jpg';
+import Etapa_5 from '../images/dataGatheringSteps/Etapa_5.jpg';
 
 import { HeaderComponent } from '../components/HeaderComponent';
 import { DataGatheringComponent } from '../components/DataGatheringComponent';
 
 import '../styles/pages/dataGathering.css';
-import { Info, PlusCircle, Rss } from 'phosphor-react';
+import { PlusCircle, X } from 'phosphor-react';
 import { DataGatheringItem, DataGatheringReceived } from '../@types';
 
 import { customStyleModalNewDataGathering, customStyleModalDataGatheringPeopleAmount, customStylesSelectDataGathering } from '../@types/customStyles';
 import api from '../services/api';
-
 
 Modal.setAppElement('#root')
 
 export function DataGathering() {
   const navigate = useNavigate();
 
+  const infoPictures = [
+    {
+      image: Etapa_1,
+      caption: ""
+    },
+    {
+      image: Etapa_2,
+      caption: ""
+    },
+    {
+      image: Etapa_3,
+      caption: ""
+    },
+    {
+      image: Etapa_4,
+      caption: ""
+    },
+    {
+      image: Etapa_5,
+      caption: ""
+    }
+  ];
+
   const [collectPeopleAmountIsOpen, setCollectPeopleAmountIsOpen] = useState(false);
+  const [infoIsOpen, setInfoIsOpen] = useState(false);
   const [newDataGatheringIsOpen, setNewDataGatheringIsOpen] = useState(false);
 
   const [newDataGathering, setNewDataGathering] = useState<DataGatheringItem>({ id_ingredient: '', name: '', initial_amount: 0, final_amount: 0, unit: '' });
@@ -181,7 +211,7 @@ export function DataGathering() {
 
   return (
     <div id="data-gathering-page">
-      <HeaderComponent title="Coleta de Dados" />
+      <HeaderComponent title="Coleta de Dados" handleInfo={() => setInfoIsOpen(true)} />
       {
         dataGatherings.length == 0 &&
         <div className="no-data-gatherings">
@@ -264,7 +294,7 @@ export function DataGathering() {
         onRequestClose={handleCloseCollectPeopleAmount}
         style={customStyleModalDataGatheringPeopleAmount}
       >
-        <div className="data-modal-content">
+        <div className="data-modal-container" style={{ alignItems: 'center' }}>
           <h3>Insira a quantidade de clientes do dia</h3>
           <input onChange={(e) => isNaN(e.target.valueAsNumber) ? '' : setCustomerAmount(e.target.valueAsNumber)} type="number" min="1" step="1" placeholder="" className="people-amount-input" />
         </div>
@@ -272,6 +302,71 @@ export function DataGathering() {
         <div className="form-buttons">
           <button onClick={handleCloseCollectPeopleAmount} className="data-cancel-btn">CANCELAR</button>
           <button onClick={handleCloseDataCollectionAndSubmit} className="data-confirm-btn">CONFIRMAR</button>
+        </div>
+      </Modal>
+
+      {/* INFO MODAL */}
+      <Modal
+        isOpen={infoIsOpen}
+        onRequestClose={() => setInfoIsOpen(false)}
+        style={{
+          content: {
+            width: "60%",
+            right: 'auto',
+
+            bottom: 'auto',
+            top: '5%',
+            left: '20%',
+            overflow: 'auto',
+            borderRadius: '10px',
+          }
+        }}
+      >
+        <div className="info-modal-header">
+          <h1>Como Realizar a Coleta de Dados?</h1>
+          <button onClick={() => setInfoIsOpen(false)}>
+            <X size={50} weight="fill" />
+          </button>
+        </div>
+        <hr
+          style={{
+            height: '1px',
+            width: "90%",
+            margin: "2px 0px"
+          }}
+        />
+        <div style={{ padding: "10px 0px" }}>
+          <Carousel
+            data={infoPictures}
+            width="60vw"
+            height="60vh"
+            captionStyle={{
+              fontSize: '1em',
+              color: 'black',
+              bottom: '-10%'
+            }}
+            radius="10px"
+            slideNumber={true}
+            slideNumberStyle={{
+              fontSize: '20px',
+              fontWeight: 'bold',
+            }}
+            captionPosition="bottom"
+            automatic={false}
+            dots={true}
+            pauseIconColor="black"
+            pauseIconSize="40px"
+            slideBackgroundColor="darkgrey"
+            slideImageFit="contain"
+            thumbnails={true}
+            thumbnailWidth="100px"
+            style={{
+              textAlign: "center",
+              margin: "20px auto",
+              maxHeight: '75vh',
+              maxWidth: '60vw'
+            }}
+          />
         </div>
       </Modal>
 

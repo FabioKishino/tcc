@@ -43,3 +43,14 @@
   right: 0;
   margin-right: 30px;
 }
+
+.info-box {
+  display: flex; 
+  padding-top: 20px;
+  margin-left: 5px;
+}
+
+.info-btn:hover {
+  cursor: pointer;
+  color: #fffafae8;
+}

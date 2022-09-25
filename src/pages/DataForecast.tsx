@@ -89,7 +89,7 @@ export function DataForecast() {
 
   return (
     <div id="data-forecast-page">
-      <HeaderComponent title="Previsão de Dados" />
+      <HeaderComponent title="Previsão de Dados" handleInfo={() => null} />
 
       <div className="data-forecast-page-content">
         <div className="data-forecast-select">

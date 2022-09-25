@@ -13,22 +13,22 @@ import api from '../services/api';
 
 Modal.setAppElement('#root')
 
-export function Portions () {
+export function Portions() {
 
   const [newPortionSize, setNewPortionSize] = useState(false);
   const [portionSize, setPortionSize] = useState<PortionSizeProps>({} as PortionSizeProps);
   const [portionSizeList, setPortionSizeList] = useState<PortionSizeProps[]>([]);
 
-  
-  function handleOpenNewPortionSize () {
+
+  function handleOpenNewPortionSize() {
     setNewPortionSize(true);
   }
 
-  function handleCloseNewPortionSize () {
+  function handleCloseNewPortionSize() {
     setNewPortionSize(false);
   }
-  
-  function handleNewPortionSizeAndSubmit () {
+
+  function handleNewPortionSizeAndSubmit() {
     setNewPortionSize(false);
     setPortionSizeList([...portionSizeList, portionSize]);
 
@@ -54,18 +54,18 @@ export function Portions () {
 
   useEffect(() => {
     const token = localStorage.getItem("@Auth:token");
-    api.get('/portionsizes', { 
-      headers: { 
+    api.get('/portionsizes', {
+      headers: {
         'ContentType': 'application/json',
         'Authorization': `Bearer ${token}`
-      } 
+      }
     }).then(response => setPortionSizeList(response.data.portion_sizes));
   }, [])
 
   return (
     <div id="portion-size-page">
-      <HeaderComponent title="Porções"/>
-      
+      <HeaderComponent title="Porções" handleInfo={() => null} />
+
       <Modal
         isOpen={newPortionSize}
         onRequestClose={handleCloseNewPortionSize}
@@ -73,33 +73,33 @@ export function Portions () {
       >
         <div className="portion-size-modal-content">
           <h2>Insira o novo tamanho de porção</h2>
-          <input 
-            type="text" 
+          <input
+            type="text"
             className="new-portion-size-input"
             placeholder="Ex: 1/2"
             // value={portionSize.name}
             onChange={inputHandler}
           />
         </div>
-        
+
         <div className="form-buttons">
           <button onClick={handleCloseNewPortionSize} className="data-cancel-btn">CANCELAR</button>
           <button onClick={handleNewPortionSizeAndSubmit} className="data-confirm-btn">CONFIRMAR</button>
         </div>
       </Modal>
 
-      {portionSizeList.length == 0 && 
+      {portionSizeList.length == 0 &&
         <div className="no-portion-sizes">
           <p>Não há tamanho de porções cadastradas :(</p>
         </div>
       }
 
-      {portionSizeList.map((item, index) => <PortionComponent key={index} id={item.id} name={item.name}/>)}
+      {portionSizeList.map((item, index) => <PortionComponent key={index} id={item.id} name={item.name} />)}
 
       <button id="plus-icon-btn" className="plus-icon" onClick={handleOpenNewPortionSize}>
-        <PlusCircle size={100} weight="fill"/>
+        <PlusCircle size={100} weight="fill" />
       </button>
 
-    </div> 
+    </div>
   )
 }
