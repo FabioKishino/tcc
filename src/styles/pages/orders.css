@@ -58,3 +58,7 @@
   font-weight: 300;
 }
 
+.funnel-icon:hover {
+  cursor: pointer;
+}
+

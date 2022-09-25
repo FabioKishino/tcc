@@ -41,7 +41,7 @@ function handleUserEdit() {
 export function User() {
   return (
     <div id="page-user">
-      <HeaderComponent title="Editar Restaurante" handleInfo={() => null} />
+      <HeaderComponent title="Editar Restaurante" />
       <div className="container">
         <form>
           <label>E-mail</label>

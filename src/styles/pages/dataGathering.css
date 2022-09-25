@@ -41,6 +41,13 @@
   margin-right: 20px; 
 }
 
+.question-icon {
+  position: fixed;
+  bottom: 8%;
+  right: 0;
+  margin-right: 20px; 
+}
+
 .data-modal-container {
   display: flex;
   flex-direction: column;

@@ -89,12 +89,13 @@ export function DataForecast() {
 
   return (
     <div id="data-forecast-page">
-      <HeaderComponent title="Previsão de Dados" handleInfo={() => null} />
+      <HeaderComponent title="Previsão de Dados" />
 
       <div className="data-forecast-page-content">
         <div className="data-forecast-select">
           <label>Ingredientes</label>
           <Select
+            isDisabled={ingredientsOptions.length == 0}
             styles={customStyleSelectDataForecast}
             placeholder="Selecionar ingrediente"
             options={ingredientsOptions}
@@ -108,8 +109,8 @@ export function DataForecast() {
         </div>
 
         <div className="data-forecast-input">
-          <label>Quantidade de dias para previsão</label>
-          <input onChange={(e) => isNaN(e.target.valueAsNumber) ? '' : setDaysToBeForecasted(e.target.valueAsNumber)} type="number" min="0" step="1" placeholder="Digite a quantidade de dias" />
+          <label >Quantidade de dias para previsão</label>
+          <input disabled={ingredientsOptions.length == 0} onChange={(e) => isNaN(e.target.valueAsNumber) ? '' : setDaysToBeForecasted(e.target.valueAsNumber)} type="number" min="0" step="1" placeholder="Digite a quantidade de dias" />
         </div>
 
 

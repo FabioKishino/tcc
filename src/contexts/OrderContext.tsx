@@ -10,7 +10,7 @@ import api from '../services/api';
 //   portion_size: string,
 //   status: string | number,
 //   created_at: string,
-  
+
 //   id_recipe?: string,
 //   portion_id?: string,
 //   priority?: string | number,
@@ -28,7 +28,7 @@ interface OrderContextType {
   handleCloseNewOrderMenu: () => void,
   recipeOptions: { value: string, label: string, id_recipe: string }[],
   amountOptions: { value: string, label: string, portion_id: string }[],
-  statusOptions: { value: string, label: string | number, priority: number}[],
+  statusOptions: { value: string, label: string | number, priority: number }[],
 }
 
 interface OrdersProviderProps {
@@ -45,54 +45,59 @@ export function OrdersProvider({ children }: OrdersProviderProps) {
 
   const [reload, setReload] = useState(false);
 
-  const [recipeOptions, setRecipeOptions] = useState([ 
-    { 
-      value: '1', 
-      label: 'Receita Teste', 
-      id_recipe: '1a118ff1-f009-46ba-98fa-b09bed39be3f' 
+  const [recipeOptions, setRecipeOptions] = useState([
+    {
+      value: '1',
+      label: 'Receita Teste',
+      id_recipe: '1a118ff1-f009-46ba-98fa-b09bed39be3f'
     },
-   ]);
-  
-  const [amountOptions, setAmountOptions] = useState([ 
-    { 
-      value: '1', 
+  ]);
+
+  const [amountOptions, setAmountOptions] = useState([
+    {
+      value: '1',
       label: 'Porção Teste',
-      portion_id: 'bb069028-f6e1-410f-b46e-e9557378b94a' 
+      portion_id: 'bb069028-f6e1-410f-b46e-e9557378b94a'
     }
   ]);
 
-  const [statusOptions, setStatusOptions] = useState([ 
-    { 
-      value: '1', 
-      label: "Em andamento", 
-      priority: 2 
-    }, 
-    { 
-      value: '2', 
-      label: 'Cancelado', 
-      priority: 1 
-    } 
+  const [statusOptions, setStatusOptions] = useState([
+    {
+      value: '1',
+      label: "Em Progresso",
+      priority: 2
+    },
+    {
+      value: '2',
+      label: 'Cancelado',
+      priority: 1
+    },
+    {
+      value: '2',
+      label: 'Concluído',
+      priority: 3
+    }
   ]);
-  
-  
-  function handleOpenNewOrderMenu () {
+
+
+  function handleOpenNewOrderMenu() {
     setNewOrderIsOpen(true);
   }
 
-  function handleCloseNewOrderMenu () {
+  function handleCloseNewOrderMenu() {
     setNewOrderIsOpen(false);
   }
-  
-  async function handleCloseNewOrderMenuAndSubmit () {
+
+  async function handleCloseNewOrderMenuAndSubmit() {
     setNewOrderIsOpen(false);
     setOrders([newOrder, ...orders]);
 
     const token = localStorage.getItem("@Auth:token");
-    const response = await api.post('/orders', newOrder, { 
-      headers: { 
+    const response = await api.post('/orders', newOrder, {
+      headers: {
         'ContentType': 'application/json',
         'Authorization': `Bearer ${token}`
-      } 
+      }
     });
 
     // api.post('/orders', newOrder, { 
@@ -106,25 +111,25 @@ export function OrdersProvider({ children }: OrdersProviderProps) {
     //   setReload(!reload)
     // })
     // .catch(error => {
-      
+
     // })
   }
 
   return (
-    <OrdersContext.Provider value={{ 
-        orders,
-        setOrders,
-        handleCloseNewOrderMenuAndSubmit, 
-        newOrder, 
-        setNewOrder, 
-        newOrderIsOpen, 
-        setNewOrderIsOpen,
-        handleOpenNewOrderMenu,
-        handleCloseNewOrderMenu,
-        recipeOptions,
-        amountOptions,
-        statusOptions
-      }}>
+    <OrdersContext.Provider value={{
+      orders,
+      setOrders,
+      handleCloseNewOrderMenuAndSubmit,
+      newOrder,
+      setNewOrder,
+      newOrderIsOpen,
+      setNewOrderIsOpen,
+      handleOpenNewOrderMenu,
+      handleCloseNewOrderMenu,
+      recipeOptions,
+      amountOptions,
+      statusOptions
+    }}>
       {children}
     </OrdersContext.Provider>
   )

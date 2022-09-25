@@ -5,10 +5,9 @@ import { ArrowLeft, Info } from 'phosphor-react'
 
 interface headerProps {
   title: string;
-  handleInfo: () => void;
 }
 
-export function HeaderComponent({ title, handleInfo }: headerProps) {
+export function HeaderComponent({ title }: headerProps) {
   return (
     <div id="header-component">
       <header className="header-content">
@@ -18,7 +17,6 @@ export function HeaderComponent({ title, handleInfo }: headerProps) {
           </Link>
         </button>
         <p>{title}</p>
-        {title == 'Coleta de Dados' ? <div className='info-box'><Info className='info-btn' weight='regular' onClick={() => handleInfo()} size={30}></Info></div> : null}
       </header>
     </div>
   )

@@ -53,7 +53,7 @@ export function Ingredients() {
 
   return (
     <div id="ingredients-page">
-      <HeaderComponent title="Ingredientes" handleInfo={() => null} />
+      <HeaderComponent title="Ingredientes" />
 
       <Modal
         isOpen={newIngredientModal}

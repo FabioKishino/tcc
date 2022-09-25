@@ -14,7 +14,7 @@ import { HeaderComponent } from '../components/HeaderComponent';
 import { DataGatheringComponent } from '../components/DataGatheringComponent';
 
 import '../styles/pages/dataGathering.css';
-import { PlusCircle, X } from 'phosphor-react';
+import { PlusCircle, Question, X } from 'phosphor-react';
 import { DataGatheringItem, DataGatheringReceived } from '../@types';
 
 import { customStyleModalNewDataGathering, customStyleModalDataGatheringPeopleAmount, customStylesSelectDataGathering } from '../@types/customStyles';
@@ -142,7 +142,6 @@ export function DataGathering() {
     }
   }
 
-
   // CANCELAR 
   function cancelDataGathering() {
     // This function should delete all the data gathered for the day
@@ -211,7 +210,7 @@ export function DataGathering() {
 
   return (
     <div id="data-gathering-page">
-      <HeaderComponent title="Coleta de Dados" handleInfo={() => setInfoIsOpen(true)} />
+      <HeaderComponent title="Coleta de Dados" />
       {
         dataGatherings.length == 0 &&
         <div className="no-data-gatherings">
@@ -243,13 +242,15 @@ export function DataGathering() {
           <button className="data-confirm-btn" onClick={handleOpenCollectPeopleAmount}>REALIZAR COLETA</button>
         </div>
       }
-
+      <button id="page-btns" className="question-icon" onClick={() => setInfoIsOpen(true)}>
+        <Question size={80} weight="fill" />
+      </button>
       <button id="page-btns" className="plus-icon" onClick={handleOpenNewDataGathering}>
         <PlusCircle size={80} weight="fill" />
       </button>
 
       {/* NEW DATA GATHERING MODAL */}
-      <Modal
+      < Modal
         isOpen={newDataGatheringIsOpen}
         onRequestClose={handleCloseNewDataGathering}
         style={customStyleModalNewDataGathering}

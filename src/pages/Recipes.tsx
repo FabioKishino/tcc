@@ -25,7 +25,7 @@ export function Recipes() {
 
   return (
     <div id="recipe-page">
-      <HeaderComponent title="Receitas" handleInfo={() => null} />
+      <HeaderComponent title="Receitas" />
 
       <div className="content">
         <RecipeComponent recipe={'Yakisoba'} />

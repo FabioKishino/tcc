@@ -64,7 +64,7 @@ export function Portions() {
 
   return (
     <div id="portion-size-page">
-      <HeaderComponent title="Porções" handleInfo={() => null} />
+      <HeaderComponent title="Porções" />
 
       <Modal
         isOpen={newPortionSize}

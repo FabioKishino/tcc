@@ -5,8 +5,8 @@ import Select from 'react-select'
 import { HeaderComponent } from '../components/HeaderComponent';
 import { OrderComponent } from '../components/OrderComponent'
 
-import { customStyleModal, customStylesSelect } from '../@types/customStyles';
-import { PlusCircle, X } from 'phosphor-react'
+import { customStyleModal, customStylesFilter, customStylesSelect } from '../@types/customStyles';
+import { Funnel, PlusCircle, X } from 'phosphor-react'
 import '../styles/pages/orders.css';
 
 import { OrdersContext } from '../contexts/OrderContext';
@@ -34,6 +34,9 @@ export function Orders() {
 
   const [reload, setReload] = useState(false)
   const reversedOrders = Array.from(orders).reverse()
+  const [status, setStatus] = useState<string>('Em Progresso')
+  const [showFilter, setShowFilter] = useState<boolean>(false)
+  let filteredOrders = Array.from(reversedOrders).filter((o) => o.status == status)
 
   function timer() {
     setTimeout(() => { setReload(!reload) }, 60000)
@@ -66,7 +69,7 @@ export function Orders() {
   return (
     <div id="orders-page">
 
-      <HeaderComponent title="Pedidos" handleInfo={() => null} />
+      <HeaderComponent title="Pedidos" />
 
       <Modal
         isOpen={newOrderIsOpen}
@@ -130,8 +133,31 @@ export function Orders() {
           <button onClick={handleCloseNewOrderMenuAndSubmit} className="confirm-btn">CONFIRMAR</button>
         </div>
       </Modal>
+      <div style={{ display: 'flex', justifyContent: 'center', marginTop: '7px' }}>
+        <div style={{ display: 'flex', justifyContent: 'right', width: '78vw', padding: '0px' }}>
+          <Funnel className='funnel-icon' onClick={() => setShowFilter(!showFilter)} size={32} weight="regular" />
+        </div>
+      </div>
+      {showFilter ? (
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <div style={{ display: 'block', height: 'fit-content', padding: '0px', margin: '10px 0px', borderRadius: '10px', backgroundColor: '#F5F5F5' }}>
+            <label>Status Desejado</label>
+            <Select
+              styles={customStylesFilter}
+              className="new-order-select"
+              placeholder="Escolha o status"
+              options={statusOptions}
+              defaultValue={statusOptions[0]}
+              isSearchable={false}
+              onChange={(e) => {
+                setStatus(e?.label as string)
+              }}
+            />
+          </div>
+        </div>
+      ) : null}
 
-      {reversedOrders.map((item, index) => <OrderComponent
+      {filteredOrders.map((item, index) => <OrderComponent
         key={index}
         id={item.id}
         recipe={item.recipe}

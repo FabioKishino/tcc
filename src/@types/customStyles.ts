@@ -14,6 +14,23 @@ export const customStylesSelect = {
   })
 }
 
+export const customStylesFilter = {
+  menuList: () => ({
+    backgroundColor: '#FFF',
+    color: 'black',
+    padding: 20,
+  }),
+  control: (styles: any) => ({
+    ...styles,
+    backgroundColor: '#F5F5F5',
+    width: '78vw',
+    marginTop: '8px'
+  }),
+  dropdownIndicator: () => ({
+    color: 'black',
+  })
+}
+
 export const customStyleModal = {
   content: {
     top: '50%',
@@ -111,7 +128,7 @@ export const customStyleModalNewDataGathering = {
   }
 }
 
-export const customStyleModalDataGatheringPeopleAmount = {	
+export const customStyleModalDataGatheringPeopleAmount = {
   content: {
     top: '50%',
     left: '50%',
