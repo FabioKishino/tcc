@@ -29,8 +29,16 @@ export function Ingredients() {
   }
 
   function handleCloseNewIngredientAndSubmit() {
-    // This function should send the new ingredient to the database and close the modal
-    console.log('PENDING: New ingredient sent to the database');
+    const token = localStorage.getItem("@Auth:token");
+    api.post('/ingredients', ingredient,
+      {
+        headers: {
+          'ContentType': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      })
+      .then(res => setIngredients(ingredients.concat(res.data)))
+      .catch(err => alert(err.message));
     setNewIngredientModal(false);
   }
 
@@ -47,7 +55,7 @@ export function Ingredients() {
         'ContentType': 'application/json',
         'Authorization': `Bearer ${token}`
       }
-    }).then(response => setIngredients(response.data.ingredients));
+    }).then(res => setIngredients(res.data.ingredients));
   }, [])
 
 

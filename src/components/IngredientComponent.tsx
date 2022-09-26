@@ -11,21 +11,21 @@ import api from '../services/api';
 
 Modal.setAppElement('#root')
 
-export function IngredientComponent ({ id, name }: IngredientProps) {
+export function IngredientComponent({ id, name }: IngredientProps) {
 
   const [deleteIngredient, setDeleteIngredient] = useState(false);
 
-  function handleOpenDeleteIngredient () {
+  function handleOpenDeleteIngredient() {
     setDeleteIngredient(true);
   }
 
-  function handleCloseDeleteIngredient () {
+  function handleCloseDeleteIngredient() {
     setDeleteIngredient(false);
   }
 
-  function handleCloseDeleteIngredientAndSubmit () {
+  function handleCloseDeleteIngredientAndSubmit() {
     setDeleteIngredient(false);
-    
+
     const token = localStorage.getItem('@Auth:token');
     api.delete(`/ingredients/${id}`, {
       headers: {
@@ -40,7 +40,7 @@ export function IngredientComponent ({ id, name }: IngredientProps) {
       console.log(error);
     })
   }
-  
+
   return (
     <div className="ingredient-component">
       <div className="ingredient-content">
@@ -63,8 +63,8 @@ export function IngredientComponent ({ id, name }: IngredientProps) {
         <div className="delete-ingredient-modal-content">
           <h1>Você tem certeza que deseja excluir o ingrediente cadastrado?</h1>
         </div>
-      
-        <div className="form-buttons"> 
+
+        <div className="form-buttons">
           <button onClick={handleCloseDeleteIngredient} className="cancel-btn">CANCELAR</button>
           <button onClick={handleCloseDeleteIngredientAndSubmit} className="confirm-btn">CONFIRMAR</button>
         </div>

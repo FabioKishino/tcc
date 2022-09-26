@@ -3,6 +3,14 @@ export interface User {
   password: string;
 }
 
+export interface UProfile {
+  id: string;
+  name: string;
+  email: string;
+  city: string;
+  state: string;
+}
+
 export interface Order {
   id: string,
 

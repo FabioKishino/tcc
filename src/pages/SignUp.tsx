@@ -28,7 +28,7 @@ const initialValues = {
 }
 
 
-export function SignUp () {
+export function SignUp() {
 
   const navigate = useNavigate();
   const { signIn } = useContext(AuthContext)
@@ -38,20 +38,20 @@ export function SignUp () {
   const [selectedUF, setSelectedUF] = useState('0')
   const [selectedCity, setSelectedCity] = useState('0')
   const [newRestaurant, setNewRestaurant] = useState(initialValues)
-  
+
   useEffect(() => {
     api.get("https://servicodados.ibge.gov.br/api/v1/localidades/estados?orderBy=nome")
-    .then(response => setUFs(response.data)
-    );
+      .then(response => setUFs(response.data)
+      );
   }, [])
 
   useEffect(() => {
     api.get(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${selectedUF}/municipios`)
-    .then(response => setCityOptions(response.data)
-    );
+      .then(response => setCityOptions(response.data)
+      );
   }, [selectedUF])
 
-  function handleSelectUF (event: ChangeEvent<HTMLSelectElement>) {
+  function handleSelectUF(event: ChangeEvent<HTMLSelectElement>) {
     const UF = event.target.value;
     setSelectedUF(UF);
 
@@ -62,7 +62,7 @@ export function SignUp () {
     });
   }
 
-  function handleSelectCity (event: ChangeEvent<HTMLSelectElement>) {
+  function handleSelectCity(event: ChangeEvent<HTMLSelectElement>) {
     const city = event.target.value;
     setSelectedCity(city);
 
@@ -75,14 +75,14 @@ export function SignUp () {
 
   const handleInputChange = (e: any) => {
     const { name, value } = e.target;
-    
+
     setNewRestaurant({
       ...newRestaurant,
       [name]: value,
     });
   }
 
-  async function handleSignUp () {
+  async function handleSignUp() {
 
     if (newRestaurant.password.length < 8) {
       alert("A senha deve ter no mínimo 8 caracteres")
@@ -93,7 +93,7 @@ export function SignUp () {
         navigate('/home');
         alert("Cadastro realizado com sucesso!")
         signIn(newRestaurant);
-        
+
       } catch (Error) {
         alert("Cadastro inválido");
         throw Error;
@@ -105,9 +105,9 @@ export function SignUp () {
     <div id="page-signup">
       <div className="container">
         <form className="sign-up-form">
-          <input name="email" value={newRestaurant.email} onChange={handleInputChange} type="email" placeholder="E-mail" required/>
-          <input name="name" value={newRestaurant.name} onChange={handleInputChange} type="text" placeholder="Username" required/>
-          <input name="password" value={newRestaurant.password} onChange={handleInputChange} id="password-input" type="password" placeholder="Password" required/> 
+          <input name="email" value={newRestaurant.email} onChange={handleInputChange} type="email" placeholder="E-mail" required />
+          <input name="name" value={newRestaurant.name} onChange={handleInputChange} type="text" placeholder="Username" required />
+          <input name="password" value={newRestaurant.password} onChange={handleInputChange} id="password-input" type="password" placeholder="Password" required />
 
           <select name="state" value={newRestaurant.state} onChange={handleSelectUF}>
             <option value="0">State</option>
@@ -130,7 +130,7 @@ export function SignUp () {
           <div className="buttons">
             <Link to="/" className="cancel-button">Cancel</Link>
             <button type="button" onClick={handleSignUp} className="create-account-button">Create Account</button>
-          </div>          
+          </div>
         </form>
       </div>
     </div>
