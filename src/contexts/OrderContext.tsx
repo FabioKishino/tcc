@@ -28,7 +28,8 @@ interface OrderContextType {
   handleCloseNewOrderMenu: () => void,
   recipeOptions: { value: string, label: string, id_recipe: string }[],
   amountOptions: { value: string, label: string, portion_id: string }[],
-  statusOptions: { value: string, label: string | number, priority: number }[],
+  statusOptions: { value: string, label: string }[],
+  priorityOptions: { value: string, label: string, priority: number }[],
 }
 
 interface OrdersProviderProps {
@@ -42,8 +43,6 @@ export function OrdersProvider({ children }: OrdersProviderProps) {
   const [orders, setOrders] = useState<Order[]>([]);
   const [newOrder, setNewOrder] = useState<Order>({} as Order);
   const [newOrderIsOpen, setNewOrderIsOpen] = useState(false);
-
-  const [reload, setReload] = useState(false);
 
   const [recipeOptions, setRecipeOptions] = useState([
     {
@@ -65,16 +64,31 @@ export function OrdersProvider({ children }: OrdersProviderProps) {
     {
       value: '1',
       label: "Em Progresso",
-      priority: 2
     },
     {
       value: '2',
       label: 'Cancelado',
-      priority: 1
     },
     {
       value: '2',
       label: 'Concluído',
+    }
+  ]);
+
+  const [priorityOptions, setPriorityOptions] = useState([
+    {
+      value: '1',
+      label: 'Baixa',
+      priority: 1
+    },
+    {
+      value: '2',
+      label: 'Média',
+      priority: 2
+    },
+    {
+      value: '3',
+      label: 'Alta',
       priority: 3
     }
   ]);
@@ -114,7 +128,8 @@ export function OrdersProvider({ children }: OrdersProviderProps) {
       handleCloseNewOrderMenu,
       recipeOptions,
       amountOptions,
-      statusOptions
+      statusOptions,
+      priorityOptions
     }}>
       {children}
     </OrdersContext.Provider>

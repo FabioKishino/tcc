@@ -10,7 +10,6 @@ import { Funnel, PlusCircle, X } from 'phosphor-react'
 import '../styles/pages/orders.css';
 
 import { OrdersContext } from '../contexts/OrderContext';
-import { AuthContext } from '../contexts/AuthContext';
 
 import api from '../services/api';
 
@@ -29,7 +28,8 @@ export function Orders() {
     handleCloseNewOrderMenu,
     recipeOptions,
     amountOptions,
-    statusOptions
+    statusOptions,
+    priorityOptions
   } = useContext(OrdersContext);
 
   const [reload, setReload] = useState(false)
@@ -118,6 +118,20 @@ export function Orders() {
               className="new-order-select"
               placeholder="Escolha o status"
               options={statusOptions}
+              isSearchable={false}
+              onChange={selection => {
+                const newObject = newOrder
+                newObject.priority = selection ? selection.label : ''
+                setNewOrder(newObject)
+              }
+              } />
+
+            <label>Prioridade</label>
+            <Select
+              styles={customStylesSelect}
+              className="new-order-select"
+              placeholder="Defina a prioridade"
+              options={priorityOptions}
               isSearchable={false}
               onChange={selection => {
                 const newObject = newOrder
