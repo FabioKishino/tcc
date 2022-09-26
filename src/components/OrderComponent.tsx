@@ -70,7 +70,7 @@ export function OrderComponent(props: Order) {
 
   return (
     <div id="order-list">
-      <div className={props.priority == 1 ? "order-component-low-priority" : props.priority == 2 ? "order-component-medium-priority" : "order-component-high-priority" }>
+      <div className={props.priority == 1 ? "order-component-low-priority" : props.priority == 2 ? "order-component-medium-priority" : "order-component-high-priority"}>
         <div className="order-content">
           <div className="order-recipe">
             <label>Prato</label>
@@ -89,7 +89,7 @@ export function OrderComponent(props: Order) {
 
           <div>
             <label>Prioridade</label>
-            <p>{priority == 1 ? "Baixa" : priority == 2 ? "Média" : "Alta"}</p>
+            <p>{priorityOptions.find((p) => parseInt(p.value) == props.priority)?.label}</p>
           </div>
 
           <div>

@@ -50,7 +50,7 @@ export function Orders() {
 
   useEffect(() => {
     const token = localStorage.getItem("@Auth:token");
-    api.get('/orders', {
+    api.get(`/orders?status=${status}`, {
       headers: {
         'ContentType': 'application/json',
         'Authorization': `Bearer ${token}`
@@ -58,10 +58,20 @@ export function Orders() {
     }).then(response => setOrders(response.data.orders));
   }, [orders.length])
 
+  useEffect(() => {
+    const token = localStorage.getItem("@Auth:token");
+    api.get(`/orders?status=${status}`, {
+      headers: {
+        'ContentType': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    }).then(response => setOrders(response.data.orders));
+  }, [status])
+
 
   useEffect(() => {
     const token = localStorage.getItem("@Auth:token");
-    api.get('/orders', {
+    api.get(`/orders?status=${status}`, {
       headers: {
         'ContentType': 'application/json',
         'Authorization': `Bearer ${token}`
@@ -188,9 +198,6 @@ export function Orders() {
         </div>
       ) : null}
 
-      
-
-      
 
       {orderByPriority ? (
         orderedOrders.map((item, index) => <OrderComponent
@@ -206,17 +213,17 @@ export function Orders() {
         />
         )
       ) : filteredOrders.map((item, index) => <OrderComponent
-      key={index}
-      id={item.id}
-      recipe={item.recipe}
-      portion_size={item.portion_size}
-      status={item.status}
-      created_at={item.created_at}
-      priority={item.priority}
-      id_recipe={item.id_recipe}
-      portion_id={item.portion_id}
-    />
-    )}   
+        key={index}
+        id={item.id}
+        recipe={item.recipe}
+        portion_size={item.portion_size}
+        status={item.status}
+        created_at={item.created_at}
+        priority={item.priority}
+        id_recipe={item.id_recipe}
+        portion_id={item.portion_id}
+      />
+      )}
 
       <button id="plus-icon-btn" className="plus-icon" onClick={handleOpenNewOrderMenu}>
         <PlusCircle size={100} weight="fill" />
