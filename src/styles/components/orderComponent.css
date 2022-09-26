@@ -19,6 +19,21 @@
   padding-right: 45px;
 }
 
+.order-component-in-progress {
+  width: 78vw;
+  height: 170px;
+
+  color: #000000;
+  background-color: #B2C900;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 25px;
+  padding-right: 45px;
+}
+
 .order-content {
   display: flex;
   width: 90%;
@@ -45,7 +60,7 @@
 .order-edit-btn button {
   display: flex;
   align-items: center;
-  background-color: #D9D9D9;
+  background-color: transparent;
   border: 0px;
   cursor: pointer;
 }

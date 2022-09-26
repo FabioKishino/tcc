@@ -52,7 +52,7 @@ export function Orders() {
         'Authorization': `Bearer ${token}`
       }
     }).then(response => setOrders(response.data.orders));
-  }, [])
+  }, [orders.length])
 
 
   useEffect(() => {
@@ -133,11 +133,20 @@ export function Orders() {
           <button onClick={handleCloseNewOrderMenuAndSubmit} className="confirm-btn">CONFIRMAR</button>
         </div>
       </Modal>
+
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: '7px' }}>
         <div style={{ display: 'flex', justifyContent: 'right', width: '78vw', padding: '0px' }}>
           <Funnel className='funnel-icon' onClick={() => setShowFilter(!showFilter)} size={32} weight="regular" />
         </div>
       </div>
+
+
+      {orders.length === 0 &&
+        <div className="no-orders">
+          <p>Não há pedidos no momento :(</p>
+        </div>
+      }
+      
       {showFilter ? (
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           <div style={{ display: 'block', height: 'fit-content', padding: '0px', margin: '10px 0px', borderRadius: '10px', backgroundColor: '#F5F5F5' }}>

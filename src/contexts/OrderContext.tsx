@@ -99,20 +99,6 @@ export function OrdersProvider({ children }: OrdersProviderProps) {
         'Authorization': `Bearer ${token}`
       }
     });
-
-    // api.post('/orders', newOrder, { 
-    //   headers: { 
-    //     'ContentType': 'application/json',
-    //     'Authorization': `Bearer ${token}`
-    //   } 
-    // })
-    // .then(response => {
-    //   setOrders([...orders, response.data]);
-    //   setReload(!reload)
-    // })
-    // .catch(error => {
-
-    // })
   }
 
   return (

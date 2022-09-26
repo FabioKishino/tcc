@@ -62,3 +62,21 @@
   cursor: pointer;
 }
 
+.no-orders {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.no-orders p {
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+
+  font-weight: 500;
+  color: #979797;
+}

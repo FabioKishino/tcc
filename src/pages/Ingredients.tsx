@@ -86,7 +86,7 @@ export function Ingredients() {
 
       {ingredients.length == 0 &&
         <div className="no-portion-sizes">
-          <p>Não há tamanho de porções cadastradas :(</p>
+          <p>Não há ingredientes cadastrados :(</p>
         </div>
       }
 

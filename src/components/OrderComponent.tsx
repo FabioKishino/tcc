@@ -40,7 +40,7 @@ export function OrderComponent (props: Order) {
   
   return (
     <div id="order-list">
-      <div className="order-component">
+      <div className={props.priority == 2 ? "order-component-in-progress" : "order-component"}>
         <div className="order-content">
           <div className="order-recipe">
             <label>Prato</label>
