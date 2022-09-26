@@ -236,7 +236,7 @@ export function DataGathering() {
           <button className="data-cancel-btn" onClick={cancelDataGathering}>CANCELAR</button>
 
           {/* This button should save all the fields */}
-          <button className="data-save-btn" onClick={saveDataGathering}>SAVE</button>
+          <button className="data-save-btn" onClick={saveDataGathering}>SALVAR</button>
 
           {/* This button should verify if all the fields has been completed and then open the Modal */}
           <button className="data-confirm-btn" onClick={handleOpenCollectPeopleAmount}>REALIZAR COLETA</button>

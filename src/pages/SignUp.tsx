@@ -130,7 +130,7 @@ export function SignUp() {
 
           <div className="buttons">
             <Link to="/" className="cancel-button">Cancel</Link>
-            <button type="button" onClick={handleSignUp} className="create-account-button">Create Account</button>
+            <button type="button" onClick={handleSignUp} className="create-account-button">Cadastrar</button>
           </div>
         </form>
       </div>
