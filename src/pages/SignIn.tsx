@@ -41,8 +41,8 @@ export function SignIn () {
           />
 
           <div className="buttons">
-            <button type="submit" className="login-button">Sign In</button>
             <Link to="/signup" className="signup-button">Sign Up</Link>
+            <button type="submit" className="login-button">Sign In</button>
           </div>
           
           <Link to="/" className="forget-password">Forget your password?</Link>

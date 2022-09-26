@@ -13,17 +13,17 @@
   margin-bottom: 20px;
 }
 
-#funnel-icon-btn {
-  background-color: #F5F5F5;
-  border: 0px;
-  cursor: pointer;
+.header-buttons {
+  padding-top: 45px;
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 
-.funnel-icon {
-  position: fixed;
-  bottom: 12%;
-  right: 0;
-  margin-right: 20px; 
+.header-buttons button {
+  padding-left: 10px;
+  cursor: pointer;
+  padding-right: 15px;
 }
 
 
@@ -72,10 +72,6 @@
   font-weight: 300;
 }
 
-.funnel-icon:hover {
-  cursor: pointer;
-}
-
 .no-orders {
   display: flex;
   height: 100%;
@@ -93,4 +89,12 @@
 
   font-weight: 500;
   color: #979797;
+}
+
+.priority-order-status {
+  display: flex;
+  justify-content: center;
+  padding-top: 30px;
+  text-align: center;
+  font-weight: 500;
 }

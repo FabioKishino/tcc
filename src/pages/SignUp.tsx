@@ -105,6 +105,7 @@ export function SignUp() {
     <div id="page-signup">
       <div className="container">
         <form className="sign-up-form">
+          <h2>Crie sua conta</h2>
           <input name="email" value={newRestaurant.email} onChange={handleInputChange} type="email" placeholder="E-mail" required />
           <input name="name" value={newRestaurant.name} onChange={handleInputChange} type="text" placeholder="Username" required />
           <input name="password" value={newRestaurant.password} onChange={handleInputChange} id="password-input" type="password" placeholder="Password" required />

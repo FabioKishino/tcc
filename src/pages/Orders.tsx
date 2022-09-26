@@ -1,12 +1,13 @@
 import { useContext, useEffect, useState } from 'react'
 import Modal from 'react-modal'
 import Select from 'react-select'
+import { Link } from 'react-router-dom'
 
-import { HeaderComponent } from '../components/HeaderComponent';
+import '../styles/components/headerComponent.css';
 import { OrderComponent } from '../components/OrderComponent'
 
 import { customStyleModal, customStylesFilter, customStylesSelect } from '../@types/customStyles';
-import { Funnel, PlusCircle, X } from 'phosphor-react'
+import { ArrowLeft, Funnel, ListNumbers, PlusCircle, X } from 'phosphor-react'
 import '../styles/pages/orders.css';
 
 import { OrdersContext } from '../contexts/OrderContext';
@@ -33,9 +34,12 @@ export function Orders() {
   } = useContext(OrdersContext);
 
   const [reload, setReload] = useState(false)
-  const reversedOrders = Array.from(orders).reverse()
   const [status, setStatus] = useState<string>('Em Progresso')
   const [showFilter, setShowFilter] = useState<boolean>(false)
+  const [orderByPriority, setOrderByPriority] = useState<boolean>(false)
+
+  const reversedOrders = Array.from(orders).reverse()
+  const orderedOrders = Array.from(orders).sort((a, b) => Number(b.priority) - Number(a.priority))
   let filteredOrders = Array.from(reversedOrders).filter((o) => o.status == status)
 
   function timer() {
@@ -69,7 +73,26 @@ export function Orders() {
   return (
     <div id="orders-page">
 
-      <HeaderComponent title="Pedidos" />
+      <div id="header-component">
+        <header className="header-content">
+          <button className="add-btn">
+            <Link to="/home">
+              <ArrowLeft size={64} weight="bold" color="black" />
+            </Link>
+          </button>
+          <p>Pedidos</p>
+
+          <div className="header-buttons">
+            <button onClick={() => setOrderByPriority(!orderByPriority)}>
+              <ListNumbers size={80} weight="regular" />
+            </button>
+
+            <button onClick={() => setShowFilter(!showFilter)}>
+              <Funnel size={80} weight="regular" />
+            </button>
+          </div>
+        </header>
+      </div>
 
       <Modal
         isOpen={newOrderIsOpen}
@@ -140,6 +163,12 @@ export function Orders() {
         </div>
       }
 
+      {orderByPriority == false ? (
+        <p className="priority-order-status">Ordenar por prioridade: <strong>&nbsp;OFF</strong></p>
+      ) : (
+        <p className="priority-order-status">Ordenar por prioridade: <strong>&nbsp;ON</strong></p>
+      )}
+
       {showFilter ? (
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           <div style={{ display: 'block', height: 'fit-content', padding: '0px', margin: '10px 0px', borderRadius: '10px', backgroundColor: '#F5F5F5' }}>
@@ -159,22 +188,35 @@ export function Orders() {
         </div>
       ) : null}
 
-      {filteredOrders.map((item, index) => <OrderComponent
-        key={index}
-        id={item.id}
-        recipe={item.recipe}
-        portion_size={item.portion_size}
-        status={item.status}
-        created_at={item.created_at}
-        priority={item.priority}
-        id_recipe={item.id_recipe}
-        portion_id={item.portion_id}
-      />
-      )}
+      
 
-      <button id="funnel-icon-btn" className="funnel-icon" onClick={() => setShowFilter(!showFilter)}>
-        <Funnel size={100} weight="fill" />
-      </button>
+      
+
+      {orderByPriority ? (
+        orderedOrders.map((item, index) => <OrderComponent
+          key={index}
+          id={item.id}
+          recipe={item.recipe}
+          portion_size={item.portion_size}
+          status={item.status}
+          created_at={item.created_at}
+          priority={item.priority}
+          id_recipe={item.id_recipe}
+          portion_id={item.portion_id}
+        />
+        )
+      ) : filteredOrders.map((item, index) => <OrderComponent
+      key={index}
+      id={item.id}
+      recipe={item.recipe}
+      portion_size={item.portion_size}
+      status={item.status}
+      created_at={item.created_at}
+      priority={item.priority}
+      id_recipe={item.id_recipe}
+      portion_id={item.portion_id}
+    />
+    )}   
 
       <button id="plus-icon-btn" className="plus-icon" onClick={handleOpenNewOrderMenu}>
         <PlusCircle size={100} weight="fill" />

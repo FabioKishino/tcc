@@ -96,7 +96,6 @@ export function User() {
   }, [selectedUF])
 
   function handleUserEdit() {
-
     const token = localStorage.getItem("@Auth:token");
     api.put('/restaurants', user,
       {

@@ -57,6 +57,7 @@ export function OrderComponent(props: Order) {
         const newOrders = [...orders]
         newOrders[oldOrderIndex] = res.data;
         setOrders(newOrders)
+        alert("Pedido atualizado com sucesso!")
       });
 
     setEditOrderIsOpen(false);
@@ -69,7 +70,7 @@ export function OrderComponent(props: Order) {
 
   return (
     <div id="order-list">
-      <div className={props.priority == 2 ? "order-component-in-progress" : "order-component"}>
+      <div className={props.priority == 1 ? "order-component-low-priority" : props.priority == 2 ? "order-component-medium-priority" : "order-component-high-priority" }>
         <div className="order-content">
           <div className="order-recipe">
             <label>Prato</label>
@@ -87,9 +88,15 @@ export function OrderComponent(props: Order) {
           </div>
 
           <div>
+            <label>Prioridade</label>
+            <p>{priority == 1 ? "Baixa" : priority == 2 ? "Média" : "Alta"}</p>
+          </div>
+
+          <div>
             <label>Criado há</label>
             <p>{created_ago} min</p>
           </div>
+
         </div>
 
         <div className="order-edit-btn">

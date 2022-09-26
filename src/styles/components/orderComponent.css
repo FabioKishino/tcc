@@ -19,12 +19,42 @@
   padding-right: 45px;
 }
 
-.order-component-in-progress {
+.order-component-low-priority {
   width: 78vw;
   height: 170px;
 
   color: #000000;
-  background-color: #B2C900;
+  background-color: #5459d6;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 25px;
+  padding-right: 45px;
+}
+
+.order-component-medium-priority {
+  width: 78vw;
+  height: 170px;
+
+  color: #000000;
+  background-color: #59a337;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 25px;
+  padding-right: 45px;
+}
+
+.order-component-high-priority {
+  width: 78vw;
+  height: 170px;
+
+  color: #000000;
+  background-color: #fc3834;
 
   display: flex;
   align-items: center;
@@ -48,13 +78,7 @@
 
 .order-content p{
   font-size: 26px;
-  width: 250px;
-}
-
-.order-edit-btn {
-  padding-left: 30px;
-  display: flex;
-  align-items: center;
+  width: auto;
 }
 
 .order-edit-btn button {

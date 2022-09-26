@@ -57,6 +57,11 @@
   width: 100%;
 }
 
+.sign-up-form h2 {
+  text-align: center;
+  padding-bottom: 15px;
+}
+
 .container .cancel-button {
   font-weight: 300;
   font-size: 26px;

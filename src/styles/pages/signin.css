@@ -47,7 +47,7 @@
 
   border: 0px;
 
-  background-color: #B2C900;
+  background-color: #63B90E;
   border-radius: 15px;
 
   padding: 20px 80px 20px 80px;
@@ -61,12 +61,12 @@
   text-decoration: none;
   color: #000000;
 
-  background-color: #63B90E;
+  background-color: #B2C900;
   border-radius: 15px;
 
   padding: 20px 80px 20px 80px;
 
-  margin-left: 20px;
+  margin-right: 20px;
 }
 
 .signin-container .buttons {
