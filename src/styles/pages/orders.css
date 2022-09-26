@@ -13,6 +13,20 @@
   margin-bottom: 20px;
 }
 
+#funnel-icon-btn {
+  background-color: #F5F5F5;
+  border: 0px;
+  cursor: pointer;
+}
+
+.funnel-icon {
+  position: fixed;
+  bottom: 12%;
+  right: 0;
+  margin-right: 20px; 
+}
+
+
 .plus-icon {
   position: fixed;
   bottom: 0;

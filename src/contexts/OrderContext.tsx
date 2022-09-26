@@ -44,21 +44,50 @@ export function OrdersProvider({ children }: OrdersProviderProps) {
   const [newOrder, setNewOrder] = useState<Order>({} as Order);
   const [newOrderIsOpen, setNewOrderIsOpen] = useState(false);
 
-  const [recipeOptions, setRecipeOptions] = useState([
-    {
-      value: '1',
-      label: 'Receita Teste',
-      id_recipe: '1a118ff1-f009-46ba-98fa-b09bed39be3f'
-    },
-  ]);
+  const [recipeOptions, setRecipeOptions] = useState<any[]>([]);
+  const [amountOptions, setAmountOptions] = useState<any[]>([]);
 
-  const [amountOptions, setAmountOptions] = useState([
-    {
-      value: '1',
-      label: 'Porção Teste',
-      portion_id: 'bb069028-f6e1-410f-b46e-e9557378b94a'
-    }
-  ]);
+  useEffect(() => {
+    setRecipeOptions([]);
+    setAmountOptions([]);
+    const token = localStorage.getItem("@Auth:token");
+
+    // GET RECIPES
+    api.get('/recipes', {
+      headers: {
+        'ContentType': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    }).then(response => {
+      const recipes = [] as any[]
+      response.data.recipes.map((r: any, index: number) => {
+        recipes.push({
+          value: (index + 1).toString(),
+          id_recipe: r.id,
+          label: r.name
+        })
+      })
+      setRecipeOptions(recipeOptions.concat(recipes));
+    });
+
+    // GET PORTION SIZES
+    api.get('/portionsizes', {
+      headers: {
+        'ContentType': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    }).then(response => {
+      const portions = [] as any[]
+      response.data.portion_sizes.map((p: any, index: number) => {
+        portions.push({
+          value: (index + 1).toString(),
+          portion_id: p.id,
+          label: p.name
+        })
+      })
+      setAmountOptions(amountOptions.concat(portions));
+    });
+  }, [])
 
   const [statusOptions, setStatusOptions] = useState([
     {
@@ -70,7 +99,7 @@ export function OrdersProvider({ children }: OrdersProviderProps) {
       label: 'Cancelado',
     },
     {
-      value: '2',
+      value: '3',
       label: 'Concluído',
     }
   ]);

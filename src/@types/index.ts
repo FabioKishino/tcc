@@ -18,12 +18,12 @@ export interface Order {
   portion_size?: PortionSize,
   created_at: string,
   end_at?: string,
-  status?: string | number,
+  priority?: number,
+  status?: string,
 
   // Envio:
   id_recipe: string,
   portion_id: string,
-  priority: string | number,
 
 }
 

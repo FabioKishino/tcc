@@ -112,20 +112,6 @@ export function Orders() {
               }
               } />
 
-            <label>Status</label>
-            <Select
-              styles={customStylesSelect}
-              className="new-order-select"
-              placeholder="Escolha o status"
-              options={statusOptions}
-              isSearchable={false}
-              onChange={selection => {
-                const newObject = newOrder
-                newObject.priority = selection ? selection.label : ''
-                setNewOrder(newObject)
-              }
-              } />
-
             <label>Prioridade</label>
             <Select
               styles={customStylesSelect}
@@ -135,7 +121,7 @@ export function Orders() {
               isSearchable={false}
               onChange={selection => {
                 const newObject = newOrder
-                newObject.priority = selection ? selection.priority : ''
+                newObject.priority = selection ? selection.priority : 0
                 setNewOrder(newObject)
               }
               } />
@@ -148,19 +134,12 @@ export function Orders() {
         </div>
       </Modal>
 
-      <div style={{ display: 'flex', justifyContent: 'center', marginTop: '7px' }}>
-        <div style={{ display: 'flex', justifyContent: 'right', width: '78vw', padding: '0px' }}>
-          <Funnel className='funnel-icon' onClick={() => setShowFilter(!showFilter)} size={32} weight="regular" />
-        </div>
-      </div>
-
-
       {orders.length === 0 &&
         <div className="no-orders">
           <p>Não há pedidos no momento :(</p>
         </div>
       }
-      
+
       {showFilter ? (
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           <div style={{ display: 'block', height: 'fit-content', padding: '0px', margin: '10px 0px', borderRadius: '10px', backgroundColor: '#F5F5F5' }}>
@@ -192,6 +171,10 @@ export function Orders() {
         portion_id={item.portion_id}
       />
       )}
+
+      <button id="funnel-icon-btn" className="funnel-icon" onClick={() => setShowFilter(!showFilter)}>
+        <Funnel size={100} weight="fill" />
+      </button>
 
       <button id="plus-icon-btn" className="plus-icon" onClick={handleOpenNewOrderMenu}>
         <PlusCircle size={100} weight="fill" />
