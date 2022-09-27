@@ -117,9 +117,9 @@ export function User() {
             <form>
               <label>E-mail</label>
               <input type="email" defaultValue={user.email} placeholder={'Digite seu email'} onChange={(e) => setUser({ ...user, email: e.target.value })} />
-              <label>Name</label>
+              <label>Nome</label>
               <input type="text" defaultValue={user.name} placeholder={'Digite o nome do restaurante'} onChange={(e) => setUser({ ...user, name: e.target.value })} />
-              <label>State</label>
+              <label>Estado</label>
               <Select
                 styles={customStyles}
                 className="select-city"
@@ -127,7 +127,7 @@ export function User() {
                 defaultValue={UFs.find((u) => u.sigla == user.state)}
                 onChange={(e) => [setSelectedUF(e?.sigla as string), setUser({ ...user, state: e?.sigla as string })]}
               />
-              <label>City</label>
+              <label>Cidade</label>
               <Select
                 styles={customStyles}
                 className="select-city"

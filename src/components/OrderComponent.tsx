@@ -66,7 +66,7 @@ export function OrderComponent(props: Order) {
   const created_at = new Date(props.created_at);
   const now = new Date().getTime();
 
-  const created_ago = ((now - created_at.getTime()) / (1000 * 60)).toFixed(0);
+  const created_ago = (Math.abs((now - created_at.getTime()) / (1000 * 60))).toFixed(0);
 
   return (
     <div id="order-list">

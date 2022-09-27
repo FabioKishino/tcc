@@ -108,10 +108,10 @@ export function SignUp() {
           <h2>Crie sua conta</h2>
           <input name="email" value={newRestaurant.email} onChange={handleInputChange} type="email" placeholder="E-mail" required />
           <input name="name" value={newRestaurant.name} onChange={handleInputChange} type="text" placeholder="Username" required />
-          <input name="password" value={newRestaurant.password} onChange={handleInputChange} id="password-input" type="password" placeholder="Password" required />
+          <input name="password" value={newRestaurant.password} onChange={handleInputChange} id="password-input" type="password" placeholder="Senha" required />
 
           <select name="state" value={newRestaurant.state} onChange={handleSelectUF}>
-            <option value="0">State</option>
+            <option value="0">Estado</option>
             {UFs.map((uf) => (
               <option value={uf.sigla}>
                 {uf.sigla}
@@ -120,7 +120,7 @@ export function SignUp() {
           </select>
 
           <select name="city" value={newRestaurant.city} onChange={handleSelectCity}>
-            <option value="0">City</option>
+            <option value="0">Cidade</option>
             {cityOptions.map((city) => (
               <option value={city.nome}>
                 {city.nome}
@@ -129,7 +129,7 @@ export function SignUp() {
           </select>
 
           <div className="buttons">
-            <Link to="/" className="cancel-button">Cancel</Link>
+            <Link to="/" className="cancel-button">Cancelar</Link>
             <button type="button" onClick={handleSignUp} className="create-account-button">Cadastrar</button>
           </div>
         </form>

@@ -39,7 +39,7 @@ export function Orders() {
   const [orderByPriority, setOrderByPriority] = useState<boolean>(false)
 
   const reversedOrders = Array.from(orders).reverse()
-  const orderedOrders = Array.from(orders).sort((a, b) => Number(b.priority) - Number(a.priority))
+  let orderedOrders = Array.from(orders).sort((a, b) => Number(b.priority) - Number(a.priority)).filter((o) => o.status == status)
   let filteredOrders = Array.from(reversedOrders).filter((o) => o.status == status)
 
   function timer() {
@@ -65,7 +65,7 @@ export function Orders() {
         'ContentType': 'application/json',
         'Authorization': `Bearer ${token}`
       }
-    }).then(response => setOrders(response.data.orders));
+    }).then(response => { setOrders(response.data.orders) });
   }, [status])
 
 
