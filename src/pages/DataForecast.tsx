@@ -42,6 +42,9 @@ export function DataForecast() {
         })
       })
       setIngredientsOptions(ingredientsOptions.concat(ingredients));
+    }).catch(err => {
+      alert("Houve um problema, recarregue a página")
+      console.log(err)
     });
   }, [])
 

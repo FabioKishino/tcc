@@ -55,7 +55,10 @@ export function Orders() {
         'ContentType': 'application/json',
         'Authorization': `Bearer ${token}`
       }
-    }).then(response => setOrders(response.data.orders));
+    }).then(response => setOrders(response.data.orders))
+      .catch(err => {
+        console.log(err)
+      });
   }, [orders.length])
 
   useEffect(() => {

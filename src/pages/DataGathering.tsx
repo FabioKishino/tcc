@@ -95,8 +95,12 @@ export function DataGathering() {
           unit: i.unit
         })
       })
+
       setDataGatherings(data)
-    })
+    }).catch(err => {
+      alert("Houve um problema, recarregue a página")
+      console.log(err)
+    });
 
   }, [])
 

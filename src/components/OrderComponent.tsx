@@ -58,6 +58,9 @@ export function OrderComponent(props: Order) {
         newOrders[oldOrderIndex] = res.data;
         setOrders(newOrders)
         alert("Pedido atualizado com sucesso!")
+      }).catch(err => {
+        alert("Houve um problema, tente novamente")
+        console.log(err)
       });
 
     setEditOrderIsOpen(false);
