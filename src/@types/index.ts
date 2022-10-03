@@ -30,6 +30,7 @@ export interface Order {
 export interface Recipe {
   id: string,
   name: string,
+  ingredients: IngredientProps[]
 }
 
 export interface PortionSize {

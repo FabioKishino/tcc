@@ -2,7 +2,7 @@ export const customStylesSelect = {
   menuList: () => ({
     backgroundColor: '#DCDCDC',
     color: 'black',
-    padding: 20,
+    padding: 10,
   }),
   control: (styles: any) => ({
     ...styles,
@@ -14,11 +14,13 @@ export const customStylesSelect = {
   })
 }
 
+
+
 export const customStylesFilter = {
   menuList: () => ({
     backgroundColor: '#FFF',
     color: 'black',
-    padding: 20,
+    padding: 10,
   }),
   control: (styles: any) => ({
     ...styles,
@@ -45,6 +47,48 @@ export const customStyleModal = {
     overflow: 'auto',
     borderRadius: '10px',
   }
+}
+
+// Recipes Page
+export const customStyleModalRecipes = {
+  content: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+    width: '50%',
+    height: 'auto',
+    border: '1px solid #CCC',
+    background: '#FFFFFF',
+    overflow: 'hidden',
+    borderRadius: '10px',
+
+  }
+}
+
+export const customStylesSelectIngredients = {
+  menuList: () => ({
+    backgroundColor: '#DCDCDC',
+    color: 'black',
+    fontWeight: '300',
+    padding: 10,
+  }),
+  control: (styles: any) => ({
+    ...styles,
+    backgroundColor: '#DCDCDC',
+    border: '0px',
+    fontWeight: '300',
+    padding: 10,
+  }),
+  dropdownIndicator: () => ({
+    display: 'none',
+  })
 }
 
 // Portion Size Page
