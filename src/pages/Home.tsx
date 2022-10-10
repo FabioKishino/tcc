@@ -57,6 +57,13 @@ export function Home () {
       </header>
 
       <div className="home-content">
+        <div className="order-button">
+          <Link to="/orders">
+            <p>Pedidos</p>
+            <ListNumbers size={80} weight="bold" color="black"/>
+          </Link>
+        </div>
+
         <div className="menu-button">
           <Link to="/recipes">
             <p>Receitas</p>
@@ -64,12 +71,7 @@ export function Home () {
           </Link>
         </div>
 
-        <div className="order-button">
-          <Link to="/orders">
-            <p>Pedidos</p>
-            <ListNumbers size={80} weight="bold" color="black"/>
-          </Link>
-        </div>
+        
         
         <div className="ingredients-button">
           <Link to="/ingredients">

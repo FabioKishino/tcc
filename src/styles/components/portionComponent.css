@@ -25,12 +25,6 @@
   font-size: 36px;
 }
 
-.order-edit-btn {
-  padding-left: 30px;
-  display: flex;
-  align-items: center;
-}
-
 .delete-portion-size-btn button {
   display: flex;
   align-items: center;

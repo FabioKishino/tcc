@@ -63,7 +63,6 @@ export function Recipes() {
 
   }, [])
 
-
   return (
     <div id="recipe-page">
       <HeaderComponent title="Receitas" />
@@ -112,11 +111,20 @@ export function Recipes() {
         </div>
       </Modal>
 
-      {recipes.length == 0 &&
+      {/* {recipes.length == 0 &&
         <div className="no-recipes">
           <p>Não há receitas cadastradas :(</p>
         </div>
-      }
+      } */}
+
+      <div className="recipes-list">
+        <RecipeComponent id={"Teste"} name={"Nome"}/>
+        <RecipeComponent id={"Teste 1"} name={"Teste"}/>
+        <RecipeComponent id={"Teste 2"} name={"LALALALA"}/>
+        {/* <RecipeComponent id={"Teste"} name={"Nome"}/>
+        <RecipeComponent id={"Teste"} name={"Nome"}/>
+        <RecipeComponent id={"Teste"} name={"Nome"}/> */}
+      </div> 
 
       {/* {recipes.map((item, index) => <RecipeComponent key={index} id={item.id} name={item.name} />)} */}
 

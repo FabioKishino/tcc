@@ -1,4 +1,4 @@
-#home-page {
+#recipe-page {
   width: 100vw;
   height: 100vh;
  
@@ -11,6 +11,12 @@
   border: 0px;
   cursor: pointer;
   margin-bottom: 20px;
+}
+
+.recipes-list {
+  /* width: 100%; */
+  display: flex;
+  flex-direction: row;
 }
 
 .plus-icon {

@@ -25,12 +25,6 @@
   font-size: 36px;
 }
 
-.order-edit-btn {
-  padding-left: 30px;
-  display: flex;
-  align-items: center;
-}
-
 .delete-ingredient-btn button {
   display: flex;
   align-items: center;
