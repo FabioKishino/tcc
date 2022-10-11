@@ -91,6 +91,23 @@ export const customStylesSelectIngredients = {
   })
 }
 
+// Recipe Page
+export const customStyleModalRecipe = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+    width: '50%',
+    border: '1px solid #CCC',
+    background: '#FFFFFF',
+    overflow: 'auto',
+    borderRadius: '10px',
+  }
+}
+
 // Portion Size Page
 export const customStyleModalPortionSize = {
   content: {

@@ -119,9 +119,9 @@ export function Recipes() {
 
       <div className="recipes-list">
         <RecipeComponent id={"Teste"} name={"Nome"}/>
-        <RecipeComponent id={"Teste 1"} name={"Teste"}/>
+        {/* <RecipeComponent id={"Teste 1"} name={"Teste"}/>
         <RecipeComponent id={"Teste 2"} name={"LALALALA"}/>
-        {/* <RecipeComponent id={"Teste"} name={"Nome"}/>
+        <RecipeComponent id={"Teste"} name={"Nome"}/>
         <RecipeComponent id={"Teste"} name={"Nome"}/>
         <RecipeComponent id={"Teste"} name={"Nome"}/> */}
       </div> 
