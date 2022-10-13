@@ -28,11 +28,29 @@ export interface Order {
 }
 
 export interface Recipe {
-  id: string,
+  id_recipe: string,
   name: string,
-  // ingredients: IngredientProps[]
 }
 
+export interface RecipeIngredients {
+  id_ingredient: string,
+  amount: number;
+  unit: string;
+}
+
+export interface RecipeIngredientsResponse {
+  id_recipe: string,
+  name: string,
+  ingredients: {
+    ingredient: {
+      id: string,
+      name: string,
+    }, 
+    amount: number, 
+    unit: string
+  }[]
+}
+ 
 export interface PortionSize {
   id: string,
   name: string,
@@ -41,8 +59,8 @@ export interface PortionSize {
 // Components V
 
 export interface IngredientProps {
-  id: string,
-  name: string;
+  id_ingredient: string,
+  name: string;  
 }
 
 export interface PortionSizeProps {

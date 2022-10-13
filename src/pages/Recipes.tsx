@@ -7,7 +7,7 @@ import Select from 'react-select'
 import { HeaderComponent } from '../components/HeaderComponent';
 import { RecipeComponent } from '../components/RecipeComponent'
 
-import { IngredientProps, Recipe } from '../@types';
+import { IngredientProps, RecipeIngredients, Recipe } from '../@types';
 import { customStylesSelectIngredients, customStyleModalRecipes } from '../@types/customStyles';
 import { PlusCircle, X } from 'phosphor-react'
 import '../styles/pages/recipes.css';
@@ -20,6 +20,8 @@ export function Recipes() {
   const [newRecipe, setNewRecipe] = useState(false);
   const [recipe, setRecipe] = useState<Recipe>({} as Recipe);
   const [recipes, setRecipes] = useState<Recipe[]>([]);
+  const [ingredientsOptions, setIngredientsOptions] = useState<any[]>([]);
+  const [selectedIngredients, setSelectedIngredients] = useState<RecipeIngredients[]>([]);
 
   function handleOpenNewRecipe () {
     setNewRecipe(true);
@@ -29,8 +31,25 @@ export function Recipes() {
     setNewRecipe(false);
   }
 
-  function handleCloseNewRecipeAndSubmit () {
+  async function handleCloseNewRecipeAndSubmit () {
     setNewRecipe(false);
+
+    const recipe_data = {
+      name: recipe.name,
+      recipe_ingredients: selectedIngredients
+    }
+    
+    const token = localStorage.getItem('@Auth:token');
+    await api.post('/recipes', recipe_data, {
+      headers: {
+        'ContentType': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    }).then(response => {
+      console.log(response);
+    }).catch(error => {
+      console.log(error);
+    })
   }
 
   const inputHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,8 +57,6 @@ export function Recipes() {
     const enteredName = event.target.value
     setRecipe({ ...recipe, name: enteredName })
   }
-
-  const [ingredientsOptions, setIngredientsOptions] = useState<any[]>([]);
 
   useEffect(() => {
     setIngredientsOptions([]);
@@ -63,10 +80,31 @@ export function Recipes() {
 
   }, [])
 
+  // Load all recipes from the database
+  useEffect(() => {
+    const token = localStorage.getItem("@Auth:token");
+    api.get('/recipes', {
+      headers: {
+        'ContentType': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    }).then(response => {
+      const recipes = [] as any[]
+      response.data.recipes.map((r: any) => {
+        recipes.push({
+          id_recipe: r.id,
+          name: r.name
+        })
+      })
+      setRecipes(recipes);
+    });
+  }, [])
+
   return (
     <div id="recipe-page">
       <HeaderComponent title="Receitas" />
 
+      {/* NEW RECIPE MODAL */}
       <Modal
         isOpen={newRecipe}
         onRequestClose={handleCloseNewRecipe}
@@ -86,21 +124,25 @@ export function Recipes() {
             styles={customStylesSelectIngredients}
             className="new-recipe-select"
             placeholder="Selecione os ingredientes..."
-            options={ingredientsOptions.map((i: Recipe, index: number) => {
+            options={ingredientsOptions.map((i: IngredientProps, index: number) => {
               return {
-                id: i.id,
+                id_ingredient: i.id_ingredient,
                 label: i.name,
                 value: (index + 1).toString()
               }
             })}
             isSearchable={false}
             isMulti={true}
-            // onChange={selection => {
-            //   const newRecipe = recipe
-            //   newRecipe.ingredients = selection ? selection.value : ''
-            //   setNewRecipe(newRecipe)
-            //   }
-            // } 
+            onChange={(e) => {
+              const ingredients = e.map((i: any) => {
+                return {
+                  id_ingredient: i.id_ingredient,
+                  amount: 0,
+                  unit: "g"
+                }
+              }) as RecipeIngredients[];
+              setSelectedIngredients(ingredients);
+            }}
           />
         </div>
 
@@ -111,22 +153,17 @@ export function Recipes() {
         </div>
       </Modal>
 
-      {/* {recipes.length == 0 &&
+      {recipes.length == 0 &&
         <div className="no-recipes">
           <p>Não há receitas cadastradas :(</p>
         </div>
-      } */}
+      }
 
       <div className="recipes-list">
-        <RecipeComponent id={"Teste"} name={"Nome"}/>
-        {/* <RecipeComponent id={"Teste 1"} name={"Teste"}/>
-        <RecipeComponent id={"Teste 2"} name={"LALALALA"}/>
-        <RecipeComponent id={"Teste"} name={"Nome"}/>
-        <RecipeComponent id={"Teste"} name={"Nome"}/>
-        <RecipeComponent id={"Teste"} name={"Nome"}/> */}
+        {recipes.map((item, index) => <RecipeComponent key={index} id_recipe={item.id_recipe} name={item.name}/>)}
       </div> 
 
-      {/* {recipes.map((item, index) => <RecipeComponent key={index} id={item.id} name={item.name} />)} */}
+      
 
       <button id="plus-icon-btn" className="plus-icon" onClick={handleOpenNewRecipe}>
         <PlusCircle size={100} weight="fill" />

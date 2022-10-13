@@ -144,7 +144,7 @@ export function OrdersProvider({ children }: OrdersProviderProps) {
     }).catch(err => {
       alert("Houve um problema, tente novamente")
       console.log(err)
-    });;
+    });
   }
 
   return (

@@ -11,7 +11,7 @@ import api from '../services/api';
 
 Modal.setAppElement('#root')
 
-export function IngredientComponent({ id, name }: IngredientProps) {
+export function IngredientComponent({ id_ingredient, name }: IngredientProps) {
 
   const [deleteIngredient, setDeleteIngredient] = useState(false);
 
@@ -27,16 +27,16 @@ export function IngredientComponent({ id, name }: IngredientProps) {
     setDeleteIngredient(false);
 
     const token = localStorage.getItem('@Auth:token');
-    api.delete(`/ingredients/${id}`, {
+    api.delete(`/ingredients/${id_ingredient}`, {
       headers: {
         'ContentType': 'application/json',
         'Authorization': `Bearer ${token}`
       }
     }).then(response => {
-      alert('Ingredient deleted successfully!');
+      alert('Ingrediente deletado com sucesso!');
       window.location.reload()
     }).catch(error => {
-      alert("Error deleting Ingredient! Try again later.");
+      alert("Erro ao deletar esse Ingrediente! Tente novamente mais tarde!");
       console.log(error);
     })
   }

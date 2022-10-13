@@ -59,6 +59,21 @@
   color: #000000;
 }
 
+.recipe-ingredients-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+} 
+
+.recipe-ingredients-header button {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  background-color: #FFFFFF;
+  border: 0px;
+  cursor: pointer;
+}
+
 
 .dropdown-btn {
   background-color: #D9D9D9;

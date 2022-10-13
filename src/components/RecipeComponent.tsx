@@ -5,18 +5,20 @@ import api from '../services/api';
 import Modal from 'react-modal'
 
 import { customStyleModal, customStyleModalRecipe, customStylesSelect } from '../@types/customStyles';
-import { Recipe } from '../@types';
+import { Recipe, RecipeIngredientsResponse } from '../@types';
 
 import { Pencil, Trash, X, List } from 'phosphor-react'
 import '../styles/components/recipeComponent.css';
 
 Modal.setAppElement('#root')
 
-export function RecipeComponent({id, name}: Recipe) {
+export function RecipeComponent({id_recipe, name }: Recipe) {
 
   const [editRecipeIsOpen, setEditRecipeIsOpen] = useState(false);
   const [deleteRecipeIsOpen, setDeleteRecipeIsOpen] = useState(false);
   const [closeDropDown, setCloseDropDown] = useState(false);
+  const [recipeIngredients, setRecipeIngredients] = useState<RecipeIngredientsResponse[]>([])
+  const [showRecipeIngredientsIsOpen, setShowRecipeIngredientsIsOpen] = useState(false);
 
   function handleOpenEditRecipe() {
     setEditRecipeIsOpen(true);
@@ -29,6 +31,7 @@ export function RecipeComponent({id, name}: Recipe) {
 
   function handleCloseEditRecipeAndSubmit () {
     setEditRecipeIsOpen(false);
+    // Missing edition of recipe
   }
 
   function handleOpenDeleteRecipe() {
@@ -42,19 +45,59 @@ export function RecipeComponent({id, name}: Recipe) {
 
   function handleCloseDeleteRecipeAndSubmit () {
     setDeleteRecipeIsOpen(false);
+
+    const token = localStorage.getItem('@Auth:token');
+    // Delete recipe from database
+    api.delete(`/recipes/${id_recipe}`, {
+      headers: {
+        'ContentType': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    }).then(response => {
+      alert('Receita deletada com sucesso!');
+      window.location.reload()
+    }).catch(error => {
+      alert("Erro ao deletar essa receita! Tente novamente mais tarde!");
+      console.log(error);
+    })
   }
+
 
   useEffect(() => {
     setCloseDropDown(false);
   }, [editRecipeIsOpen || deleteRecipeIsOpen])
-  
 
+
+  function handleOpenShowRecipeIngredients() {
+    setShowRecipeIngredientsIsOpen(true);
+    setRecipeIngredients([])
+    // Get ingredients by recipe id from database
+    const token = localStorage.getItem('@Auth:token');
+
+    api.get(`/recipes/${id_recipe}`, {
+      headers: {
+        'ContentType': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    }).then(response => {
+      setRecipeIngredients(response.data);
+    }).catch(error => {
+      console.log(error);
+    })
+  }
+
+  function handleCloseShowRecipeIngredients() {
+    setShowRecipeIngredientsIsOpen(false);
+  }
+
+  
   // TO DO LIST
-  // 1. Enviar criação
-  // 2. Excluir do banco de dados a receita
-  // 3. UseEffect para puxar as receitas
-  // 4. Modal para editar
-  // 5. Enviar edicao
+  // 1. Enviar criação - DONE
+  // 2. Exibir ingredientes da receita
+  // 3. Excluir do banco de dados a receita - DONE
+  // 4. UseEffect para puxar as receitas - DONE
+  // 5. Modal para editar
+  // 6. Enviar edicao
   
 
   return (
@@ -67,7 +110,7 @@ export function RecipeComponent({id, name}: Recipe) {
         </div>
 
         <div className="recipe-show-ingredients-button">
-          <button>Exibir ingredientes</button>  
+          <button onClick={handleOpenShowRecipeIngredients}>Exibir ingredientes</button>
         </div>
 
         
@@ -139,7 +182,23 @@ export function RecipeComponent({id, name}: Recipe) {
           </div>
         </Modal>
 
+        {/* SHOW RECIPE INGREDIENTS */}
+        <Modal
+          isOpen={showRecipeIngredientsIsOpen}
+          onRequestClose={handleCloseShowRecipeIngredients}
+          style={customStyleModalRecipe}
+        >
+          <div className="recipe-ingredients-header">
+            <h1>Ingredientes</h1>
+            <button onClick={handleCloseShowRecipeIngredients}>
+              <X size={50} weight="fill" />
+            </button>
+          </div>
 
+          <div className="recipe-ingredients-list">
+            {recipeIngredients.map((item) => {return <li>{item.name}</li>})}
+          </div> 
+        </Modal>
       </div>
     </div>
   )
