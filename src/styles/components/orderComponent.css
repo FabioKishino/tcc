@@ -93,6 +93,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding-bottom: 25px;
 } 
 
 .order-edit-header button {
@@ -113,7 +114,9 @@
 }
 
 .order-edit-form label {
+  font-size: 24px;
   padding-left: 10px;
+  padding-bottom: 5px;
 }
 
 .order-edit-form input {

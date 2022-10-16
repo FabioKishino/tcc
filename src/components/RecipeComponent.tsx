@@ -5,7 +5,7 @@ import api from '../services/api';
 import Modal from 'react-modal'
 
 import { customStyleModal, customStyleModalRecipe, customStylesSelect } from '../@types/customStyles';
-import { Recipe, RecipeIngredientsResponse } from '../@types';
+import { IngredientProps, Recipe, RecipeIngredients } from '../@types';
 
 import { Pencil, Trash, X, List } from 'phosphor-react'
 import '../styles/components/recipeComponent.css';
@@ -17,12 +17,39 @@ export function RecipeComponent({id_recipe, name }: Recipe) {
   const [editRecipeIsOpen, setEditRecipeIsOpen] = useState(false);
   const [deleteRecipeIsOpen, setDeleteRecipeIsOpen] = useState(false);
   const [closeDropDown, setCloseDropDown] = useState(false);
-  const [recipeIngredients, setRecipeIngredients] = useState<RecipeIngredientsResponse[]>([])
+  
+  const [recipeIngredients, setRecipeIngredients] = useState<any[]>([])
   const [showRecipeIngredientsIsOpen, setShowRecipeIngredientsIsOpen] = useState(false);
+  const [ingredientOptions, setIngredientOptions] = useState<any[]>([]);
+
+  const [recipe, setRecipe] = useState<Recipe>({} as Recipe);
+  const [selectedIngredients, setSelectedIngredients] = useState<RecipeIngredients[]>([]);
 
   function handleOpenEditRecipe() {
     setEditRecipeIsOpen(true);
     setCloseDropDown(true);
+
+    // Get Ingredients Options
+    setIngredientOptions([])
+    const token = localStorage.getItem('@Auth:token');
+    api.get('/ingredients', {
+      headers: {
+        'ContentType': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    }).then(response => {
+      const ingredients = [] as any[]
+      response.data.ingredients.map((i: any) => {
+
+        ingredients.push({
+          id_ingredient: i.id,
+          name: i.name
+        })
+      })
+      setIngredientOptions(ingredients);
+    });
+
+    console.log(ingredientOptions)
   }
 
   function handleCloseEditRecipe() {
@@ -31,7 +58,7 @@ export function RecipeComponent({id_recipe, name }: Recipe) {
 
   function handleCloseEditRecipeAndSubmit () {
     setEditRecipeIsOpen(false);
-    // Missing edition of recipe
+    handleRecipeEdit();
   }
 
   function handleOpenDeleteRecipe() {
@@ -62,7 +89,6 @@ export function RecipeComponent({id_recipe, name }: Recipe) {
     })
   }
 
-
   useEffect(() => {
     setCloseDropDown(false);
   }, [editRecipeIsOpen || deleteRecipeIsOpen])
@@ -71,7 +97,6 @@ export function RecipeComponent({id_recipe, name }: Recipe) {
   function handleOpenShowRecipeIngredients() {
     setShowRecipeIngredientsIsOpen(true);
     setRecipeIngredients([])
-    // Get ingredients by recipe id from database
     const token = localStorage.getItem('@Auth:token');
 
     api.get(`/recipes/${id_recipe}`, {
@@ -80,7 +105,7 @@ export function RecipeComponent({id_recipe, name }: Recipe) {
         'Authorization': `Bearer ${token}`
       }
     }).then(response => {
-      setRecipeIngredients(response.data);
+      setRecipeIngredients(response.data.ingredients);
     }).catch(error => {
       console.log(error);
     })
@@ -90,15 +115,32 @@ export function RecipeComponent({id_recipe, name }: Recipe) {
     setShowRecipeIngredientsIsOpen(false);
   }
 
-  
-  // TO DO LIST
-  // 1. Enviar criação - DONE
-  // 2. Exibir ingredientes da receita
-  // 3. Excluir do banco de dados a receita - DONE
-  // 4. UseEffect para puxar as receitas - DONE
-  // 5. Modal para editar
-  // 6. Enviar edicao
-  
+  const recipeNameInputHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    const enteredRecipeName = event.target.value
+    setRecipe({ ...recipe, name: enteredRecipeName })
+    console.log(recipe)
+  }
+
+  // Function to handle recipe edit
+  function handleRecipeEdit () {
+
+    const recipe_edit_data = {
+      name: recipe.name,
+      recipe_ingredients: selectedIngredients
+    }
+
+    const token = localStorage.getItem('@Auth:token');
+    api.put(`/recipes/${id_recipe}`, recipe_edit_data,
+      {
+        headers: {
+          'ContentType': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      })
+      .then(res => setRecipe(res.data))
+      .catch(err => alert(err.message));
+  }
 
   return (
     <div id="recipe-list">
@@ -113,25 +155,24 @@ export function RecipeComponent({id_recipe, name }: Recipe) {
           <button onClick={handleOpenShowRecipeIngredients}>Exibir ingredientes</button>
         </div>
 
-        
-          <div className="dropdown">
-            <button className="dropdown-btn">
-              <List size={35} weight="bold" color="black"/>
-            </button>
-            { closeDropDown == false && 
-            <div className="dropdown-content">
-              <div className="dropdown-link">
-                <a onClick={handleOpenEditRecipe}><Pencil className="dropdown-icon" size={20} weight="fill" /></a>
-                <a onClick={handleOpenEditRecipe}>Editar</a>
-              </div>
-
-              <div className="dropdown-link">
-                <a onClick={handleOpenDeleteRecipe}><Trash className="dropdown-icon" size={20} weight="bold" /></a>
-                <a onClick={handleOpenDeleteRecipe}>Excluir</a>
-              </div>
+        <div className="dropdown">
+          <button className="dropdown-btn">
+            <List size={35} weight="bold" color="black"/>
+          </button>
+          { closeDropDown == false && 
+          <div className="dropdown-content">
+            <div className="dropdown-link">
+              <a onClick={handleOpenEditRecipe}><Pencil className="dropdown-icon" size={20} weight="fill" /></a>
+              <a onClick={handleOpenEditRecipe}>Editar</a>
             </div>
-            }
+
+            <div className="dropdown-link">
+              <a onClick={handleOpenDeleteRecipe}><Trash className="dropdown-icon" size={20} weight="bold" /></a>
+              <a onClick={handleOpenDeleteRecipe}>Excluir</a>
+            </div>
           </div>
+          }
+        </div>
 
 
         {/* EDIT RECIPE MODAL */}
@@ -140,25 +181,49 @@ export function RecipeComponent({id_recipe, name }: Recipe) {
           onRequestClose={handleCloseEditRecipe}
           style={customStyleModal}
         >
-          <div className="order-edit-header">
+          <div className="recipe-edit-header">
             <h1>Editar receita</h1>
             <button onClick={handleCloseEditRecipe}>
               <X size={50} weight="fill" />
             </button>
           </div>
-          <div className="order-edit-form">
+          <div className="recipe-edit-form">
             <form>
               <label>Prato</label>
+              <input
+                id='ingredients-select'
+                type="text" 
+                placeholder={name}
+                required
+                onChange={recipeNameInputHandler}
+              />
+
+              <label>Ingredientes</label>
               <Select
                 styles={customStylesSelect}
-                className="new-order-select"
-                isDisabled
-                // defaultValue={recipeOptions.find((r) => r.label == props.recipe?.name)}
-                placeholder={name}
-                // options={recipeOptions}
+                placeholder="Selecione os ingredientes da receita"
+                options={ingredientOptions.map((i: IngredientProps, index: number) => {
+                  return {
+                    id_ingredient: i.id_ingredient,
+                    label: i.name,
+                    value: (index + 1).toString()
+                  }
+                })}
                 isSearchable={false}
+                isMulti={true}
+                onChange={(e) => {
+                  const ingredients = e.map((i: any) => {
+                    return {
+                      id_ingredient: i.id_ingredient,
+                      amount: 0,
+                      unit: "g"
+                    }
+                  }) as RecipeIngredients[];
+                  setSelectedIngredients(ingredients);
+                  console.log(selectedIngredients)
+                }}
               />
-            </form>
+            </form>             
           </div>
           <div className="form-buttons">
             <button onClick={handleCloseEditRecipe} className="cancel-edit-btn">CANCELAR</button>
@@ -196,7 +261,10 @@ export function RecipeComponent({id_recipe, name }: Recipe) {
           </div>
 
           <div className="recipe-ingredients-list">
-            {recipeIngredients.map((item) => {return <li>{item.name}</li>})}
+            {recipeIngredients.map((item) => { return (
+              <li>{item.ingredient.name}</li>
+              ); 
+            })}
           </div> 
         </Modal>
       </div>

@@ -38,19 +38,7 @@ export interface RecipeIngredients {
   unit: string;
 }
 
-export interface RecipeIngredientsResponse {
-  id_recipe: string,
-  name: string,
-  ingredients: {
-    ingredient: {
-      id: string,
-      name: string,
-    }, 
-    amount: number, 
-    unit: string
-  }[]
-}
- 
+
 export interface PortionSize {
   id: string,
   name: string,

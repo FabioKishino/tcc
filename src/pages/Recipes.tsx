@@ -46,7 +46,8 @@ export function Recipes() {
         'Authorization': `Bearer ${token}`
       }
     }).then(response => {
-      console.log(response);
+      alert("Receita cadastrada com sucesso!");
+      window.location.reload();
     }).catch(error => {
       console.log(error);
     })
@@ -77,7 +78,6 @@ export function Recipes() {
       })
       setIngredientsOptions(ingredientsOptions.concat(ingredients));
     });
-
   }, [])
 
   // Load all recipes from the database
