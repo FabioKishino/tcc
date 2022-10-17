@@ -45,7 +45,7 @@ export function SignIn() {
             <button type="submit" className="login-button">Logar</button>
           </div>
 
-          <Link to="/" className="forget-password">Esqueceu sua senha?</Link>
+          <Link to="/forgot-password" className="forget-password">Esqueceu sua senha?</Link>
 
         </form>
       </div>

@@ -146,7 +146,7 @@ export function DataGathering() {
     }
   }
 
-  // CANCELAR 
+  // CANCELAR
   function cancelDataGathering() {
     // This function should delete all the data gathered for the day
     navigate('/home');
@@ -186,8 +186,6 @@ export function DataGathering() {
   }
 
   function savePeopleAmount() {
-
-
     const token = localStorage.getItem("@Auth:token");
     api.post('/data/collect/additional', {
       customer_amount: customerAmount
@@ -201,8 +199,6 @@ export function DataGathering() {
         alert('Houve um problema na coleta, tente novamente')
         console.log(err)
       })
-
-
   }
 
   function deleteDataGathering(index: number) {

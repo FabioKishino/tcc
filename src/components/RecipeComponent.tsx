@@ -196,6 +196,7 @@ export function RecipeComponent({id_recipe, name }: Recipe) {
                 placeholder={name}
                 required
                 onChange={recipeNameInputHandler}
+                value={name}
               />
 
               <label>Ingredientes</label>
@@ -220,7 +221,6 @@ export function RecipeComponent({id_recipe, name }: Recipe) {
                     }
                   }) as RecipeIngredients[];
                   setSelectedIngredients(ingredients);
-                  console.log(selectedIngredients)
                 }}
               />
             </form>             

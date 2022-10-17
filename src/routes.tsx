@@ -10,6 +10,9 @@ import { DataForecast } from './pages/DataForecast';
 import { Recipes } from './pages/Recipes';
 import { Portions } from './pages/Portions';
 import { Ingredients } from './pages/Ingredients';
+import { ForgotPassword } from './pages/ForgotPassword';
+import { EmailConfirmation } from './pages/EmailConfirmation';
+import { PasswordReset } from './pages/PasswordReset';
 
 export function SiteRoutes() {
   return (
@@ -25,6 +28,9 @@ export function SiteRoutes() {
         <Route path="/recipes" element={<Recipes />} />
         <Route path="/portions" element={<Portions />} />
         <Route path="/ingredients" element={<Ingredients />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/email-confirmation" element={<EmailConfirmation />} />
+        <Route path="/password-reset/:id_restaurant/:token" element={<PasswordReset />} />
       </Routes>
     </BrowserRouter>
   )
