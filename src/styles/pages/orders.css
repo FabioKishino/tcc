@@ -93,8 +93,11 @@
 
 .priority-order-status {
   display: flex;
-  justify-content: center;
   padding-top: 30px;
-  text-align: center;
+  justify-content: center;
   font-weight: 500;
+}
+
+.orders-filter label{
+ padding-left: 5px;
 }

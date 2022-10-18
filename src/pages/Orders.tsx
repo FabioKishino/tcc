@@ -184,7 +184,7 @@ export function Orders() {
 
       {showFilter ? (
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <div style={{ display: 'block', height: 'fit-content', padding: '0px', margin: '10px 0px', borderRadius: '10px', backgroundColor: '#F5F5F5' }}>
+          <div className="orders-filter" style={{ display: 'block', height: 'fit-content', padding: '0px', margin: '10px 0px', borderRadius: '10px', backgroundColor: '#F5F5F5' }}>
             <label>Status Desejado</label>
             <Select
               styles={customStylesFilter}
