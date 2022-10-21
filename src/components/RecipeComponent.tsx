@@ -3,12 +3,14 @@ import Select from 'react-select';
 import api from '../services/api';
 
 import Modal from 'react-modal'
+import { PopUpAlert } from './PopUpAlert';
 
-import { customStyleModal, customStyleModalRecipe, customStylesSelect } from '../@types/customStyles';
+import { customStyleModalEditRecipe, customStyleModalRecipe, customStyleModalShowIngredients, customStylesSelect } from '../@types/customStyles';
 import { IngredientProps, Recipe, RecipeIngredients } from '../@types';
 
 import { Pencil, Trash, X, List } from 'phosphor-react'
 import '../styles/components/recipeComponent.css';
+
 
 Modal.setAppElement('#root')
 
@@ -24,6 +26,28 @@ export function RecipeComponent({id_recipe, name }: Recipe) {
 
   const [recipe, setRecipe] = useState<Recipe>({} as Recipe);
   const [selectedIngredients, setSelectedIngredients] = useState<RecipeIngredients[]>([]);
+
+  const [modalSuccessEditIsOpen, setModalSuccessEditIsOpen] = useState<boolean>(false);
+  const [modalErrorEditIsOpen, setModalErrorEditIsOpen] = useState<boolean>(false);
+
+  const [modalSuccessDeleteIsOpen, setModalSuccessDeleteIsOpen] = useState<boolean>(false);
+  const [modalErrorDeleteIsOpen, setModalErrorDeleteIsOpen] = useState<boolean>(false);
+
+  function showModalSuccessEdit () {
+    setModalSuccessEditIsOpen(true);
+  }
+
+  function showModalErrorEdit () {
+    setModalErrorEditIsOpen(true);
+  }
+
+  function showModalSuccessDelete () {
+    setModalSuccessDeleteIsOpen(true);
+  }
+
+  function showModalErrorDelete () {
+    setModalErrorDeleteIsOpen(true);
+  }
 
   function handleOpenEditRecipe() {
     setEditRecipeIsOpen(true);
@@ -47,9 +71,9 @@ export function RecipeComponent({id_recipe, name }: Recipe) {
         })
       })
       setIngredientOptions(ingredients);
-    });
-
-    console.log(ingredientOptions)
+    }).catch(error => {
+      console.log(error);
+    })
   }
 
   function handleCloseEditRecipe() {
@@ -81,10 +105,9 @@ export function RecipeComponent({id_recipe, name }: Recipe) {
         'Authorization': `Bearer ${token}`
       }
     }).then(response => {
-      alert('Receita deletada com sucesso!');
-      window.location.reload()
+      showModalSuccessDelete();
     }).catch(error => {
-      alert("Erro ao deletar essa receita! Tente novamente mais tarde!");
+      showModalErrorDelete();
       console.log(error);
     })
   }
@@ -124,7 +147,6 @@ export function RecipeComponent({id_recipe, name }: Recipe) {
 
   // Function to handle recipe edit
   function handleRecipeEdit () {
-
     const recipe_edit_data = {
       name: recipe.name,
       recipe_ingredients: selectedIngredients
@@ -137,9 +159,13 @@ export function RecipeComponent({id_recipe, name }: Recipe) {
           'ContentType': 'application/json',
           'Authorization': `Bearer ${token}`
         }
-      })
-      .then(res => setRecipe(res.data))
-      .catch(err => alert(err.message));
+      }).then(res => {
+        setRecipe(res.data)
+        showModalSuccessEdit();
+      }).catch(err => {
+        alert(err.message)
+        showModalErrorEdit();
+      });
   }
 
   return (
@@ -179,7 +205,7 @@ export function RecipeComponent({id_recipe, name }: Recipe) {
         <Modal
           isOpen={editRecipeIsOpen}
           onRequestClose={handleCloseEditRecipe}
-          style={customStyleModal}
+          style={customStyleModalEditRecipe}
         >
           <div className="recipe-edit-header">
             <h1>Editar receita</h1>
@@ -196,7 +222,6 @@ export function RecipeComponent({id_recipe, name }: Recipe) {
                 placeholder={name}
                 required
                 onChange={recipeNameInputHandler}
-                value={name}
               />
 
               <label>Ingredientes</label>
@@ -238,7 +263,7 @@ export function RecipeComponent({id_recipe, name }: Recipe) {
           style={customStyleModalRecipe}
         >
           <div className="delete-portion-size-modal-content">
-            <h1>Você tem certeza que deseja excluir a receita cadastrada?</h1>
+            <h2>Você tem certeza que deseja excluir a receita cadastrada?</h2>
           </div>
         
           <div className="form-buttons"> 
@@ -251,7 +276,7 @@ export function RecipeComponent({id_recipe, name }: Recipe) {
         <Modal
           isOpen={showRecipeIngredientsIsOpen}
           onRequestClose={handleCloseShowRecipeIngredients}
-          style={customStyleModalRecipe}
+          style={customStyleModalShowIngredients}
         >
           <div className="recipe-ingredients-header">
             <h1>Ingredientes</h1>
@@ -267,6 +292,13 @@ export function RecipeComponent({id_recipe, name }: Recipe) {
             })}
           </div> 
         </Modal>
+
+        <PopUpAlert status={"Prato Atualizado!"} isOpen={modalSuccessEditIsOpen} setIsOpen={() => setModalSuccessEditIsOpen(false)}/>
+        <PopUpAlert status={"Houve um problema, tente novamente."} isOpen={modalErrorEditIsOpen} setIsOpen={() => setModalErrorEditIsOpen(false)}/>
+
+        <PopUpAlert status={"Prato Deletado"} isOpen={modalSuccessDeleteIsOpen} setIsOpen={() => setModalSuccessDeleteIsOpen(false)}/>
+        <PopUpAlert status={"Houve um problema, tente novamente."} isOpen={modalErrorDeleteIsOpen} setIsOpen={() => setModalErrorDeleteIsOpen(false)}/>
+
       </div>
     </div>
   )

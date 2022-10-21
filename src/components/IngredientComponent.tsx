@@ -2,6 +2,8 @@ import { useState } from 'react'
 
 import Modal from 'react-modal'
 
+import { PopUpAlert } from './PopUpAlert';
+
 import '../styles/components/ingredientComponent.css';
 import { Trash } from 'phosphor-react';
 import { customStyleModalIngredients } from '../@types/customStyles';
@@ -9,11 +11,16 @@ import { customStyleModalIngredients } from '../@types/customStyles';
 import { IngredientProps } from '../@types';
 import api from '../services/api';
 
+
 Modal.setAppElement('#root')
 
 export function IngredientComponent({ id_ingredient, name }: IngredientProps) {
 
   const [deleteIngredient, setDeleteIngredient] = useState(false);
+  
+  const [alertSuccessIsOpen, setAlertSuccessIsOpen] = useState(false);
+  const [alertErrorIsOpen, setAlertErrorIsOpen] = useState(false);
+
 
   function handleOpenDeleteIngredient() {
     setDeleteIngredient(true);
@@ -21,6 +28,14 @@ export function IngredientComponent({ id_ingredient, name }: IngredientProps) {
 
   function handleCloseDeleteIngredient() {
     setDeleteIngredient(false);
+  }
+
+  function showAlertSuccessDeleteIngredient() {
+    setAlertSuccessIsOpen(true);
+  }
+  
+  function showModalErrorDeleteIngredient() {
+    setAlertErrorIsOpen(true);
   }
 
   function handleCloseDeleteIngredientAndSubmit() {
@@ -33,10 +48,9 @@ export function IngredientComponent({ id_ingredient, name }: IngredientProps) {
         'Authorization': `Bearer ${token}`
       }
     }).then(response => {
-      alert('Ingrediente deletado com sucesso!');
-      window.location.reload()
+      showAlertSuccessDeleteIngredient();
     }).catch(error => {
-      alert("Erro ao deletar esse Ingrediente! Tente novamente mais tarde!");
+      showModalErrorDeleteIngredient();
       console.log(error);
     })
   }
@@ -69,6 +83,10 @@ export function IngredientComponent({ id_ingredient, name }: IngredientProps) {
           <button onClick={handleCloseDeleteIngredientAndSubmit} className="confirm-btn">CONFIRMAR</button>
         </div>
       </Modal>
+
+      <PopUpAlert status={"Ingrediente Deletado"} isOpen={alertSuccessIsOpen} setIsOpen={() => setAlertSuccessIsOpen(false)}/>
+      <PopUpAlert status={"Houve um problema, tente novamente."} isOpen={alertErrorIsOpen} setIsOpen={() => setAlertErrorIsOpen(false)}/>
+
     </div>
   )
 }

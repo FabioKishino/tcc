@@ -1,0 +1,19 @@
+.modal-content p {
+  font-size: 1.4rem;
+  font-weight: 300;
+  margin: 50px;
+  padding: 0;
+  text-align: center;
+}
+
+.modal-content button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}

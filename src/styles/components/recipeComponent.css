@@ -74,6 +74,7 @@
   background-color: #FFFFFF;
   border: 0px;
   cursor: pointer;
+  padding-left: 60px;
 }
 
 .recipe-ingredients-list li {

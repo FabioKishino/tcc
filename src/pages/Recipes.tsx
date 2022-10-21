@@ -6,6 +6,7 @@ import Select from 'react-select'
 
 import { HeaderComponent } from '../components/HeaderComponent';
 import { RecipeComponent } from '../components/RecipeComponent'
+import { PopUpAlert } from '../components/PopUpAlert';
 
 import { IngredientProps, RecipeIngredients, Recipe } from '../@types';
 import { customStylesSelectIngredients, customStyleModalRecipes } from '../@types/customStyles';
@@ -22,6 +23,9 @@ export function Recipes() {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [ingredientsOptions, setIngredientsOptions] = useState<any[]>([]);
   const [selectedIngredients, setSelectedIngredients] = useState<RecipeIngredients[]>([]);
+  
+  const [alertSuccessIsOpen, setAlertConfirmationIsOpen] = useState<boolean>(false);
+  const [alertErrorIsOpen, setAlertErrorIsOpen] = useState<boolean>(false);
 
   function handleOpenNewRecipe () {
     setNewRecipe(true);
@@ -29,6 +33,14 @@ export function Recipes() {
 
   function handleCloseNewRecipe () {
     setNewRecipe(false);
+  }
+
+  function showAlertSuccess () {
+    setAlertConfirmationIsOpen(true);
+  }
+
+  function showAlertError () {
+    setAlertErrorIsOpen(true);
   }
 
   async function handleCloseNewRecipeAndSubmit () {
@@ -46,9 +58,9 @@ export function Recipes() {
         'Authorization': `Bearer ${token}`
       }
     }).then(response => {
-      alert("Receita cadastrada com sucesso!");
-      window.location.reload();
+      showAlertSuccess();
     }).catch(error => {
+      showAlertError();
       console.log(error);
     })
   }
@@ -77,7 +89,10 @@ export function Recipes() {
         })
       })
       setIngredientsOptions(ingredientsOptions.concat(ingredients));
-    });
+    }).catch(error => {
+      showAlertError();
+      console.log(error);
+    })
   }, [])
 
   // Load all recipes from the database
@@ -163,11 +178,15 @@ export function Recipes() {
         {recipes.map((item, index) => <RecipeComponent key={index} id_recipe={item.id_recipe} name={item.name}/>)}
       </div> 
 
-      
-
       <button id="plus-icon-btn" className="plus-icon" onClick={handleOpenNewRecipe}>
         <PlusCircle size={100} weight="fill" />
       </button>
+
+
+      <PopUpAlert status={"Receita cadastrada com sucesso!"} isOpen={alertSuccessIsOpen} setIsOpen={() => setAlertConfirmationIsOpen(false)}/>
+      <PopUpAlert status={"Houve um problema, tente novamente."} isOpen={alertErrorIsOpen} setIsOpen={() => setAlertConfirmationIsOpen(false)}/>
+
+
     </div>
   )
 }

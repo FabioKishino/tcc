@@ -35,10 +35,12 @@
 
 .delete-portion-size-modal-content {
   display: flex;
+  justify-content: center;
   align-items: center;
   text-align: center;
-  padding-bottom: 50px;
-  font-size: 20px;
+  font-size: 1.6rem;
+  font-weight: 500;
+  margin: 50px;
 } 
 
 .form-buttons {

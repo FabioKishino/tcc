@@ -1,4 +1,4 @@
-import '../styles/pages/ModalConfirmation.css';
+import '../styles/components/popUpAlert.css';
 
 import Modal from 'react-modal'
 import { useState } from 'react';
@@ -13,7 +13,7 @@ const customStyle = {
     bottom: 'auto',
     marginRight: '-50%',
     transform: 'translate(-50%, -50%)',
-    width: '50%',
+    width: 'auto',
     border: '1px solid #CCC',
     background: '#FFFFFF',
     overflow: 'auto',
@@ -27,16 +27,24 @@ interface ModalProps {
   setIsOpen: () => void;
 }
 
-export function ModalConfirmation ({status, isOpen, setIsOpen}: ModalProps) {
+export function PopUpAlert ({status, isOpen, setIsOpen}: ModalProps) {
+
+  const [modalIsOpen, setModalIsOpen] = useState(isOpen);
 
   return (
     <Modal
       isOpen={isOpen}
-      onRequestClose={setIsOpen}
+      onRequestClose={() => setModalIsOpen(false)}
       style={customStyle}
     >
-      <div className="modal-container">
+      <div className="modal-content">
         <p>{status}</p>
+        <button onClick={() => 
+          {
+            setIsOpen();
+            window.location.reload();
+          }
+        }>Ok</button>
       </div>
     </Modal>
   )

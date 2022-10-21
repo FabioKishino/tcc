@@ -4,12 +4,14 @@ import Modal from 'react-modal'
 
 import { HeaderComponent } from '../components/HeaderComponent';
 import { IngredientComponent } from '../components/IngredientComponent';
+import { PopUpAlert } from '../components/PopUpAlert';
 
 import { PlusCircle } from 'phosphor-react'
 import { customStyleModalIngredients } from '../@types/customStyles';
 import { IngredientProps } from '../@types';
 import '../styles/pages/ingredients.css';
 import api from '../services/api';
+
 
 
 Modal.setAppElement('#root')
@@ -19,6 +21,8 @@ export function Ingredients() {
   const [ingredient, setIngredient] = useState<IngredientProps>({} as IngredientProps);
   const [ingredients, setIngredients] = useState<IngredientProps[]>([]);
 
+  const [alertSuccessIsOpen, setAlertSuccessIsOpen] = useState(false);
+  const [alertErrorIsOpen, setAlertErrorIsOpen] = useState(false);
 
   function handleOpenNewIngredient() {
     setNewIngredientModal(true);
@@ -26,6 +30,14 @@ export function Ingredients() {
 
   function handleCloseNewIngredient() {
     setNewIngredientModal(false);
+  }
+
+  function showAlertSuccessCreateNewIngredient() {
+    setAlertSuccessIsOpen(true);
+  }
+  
+  function showModalErrorCreateNewIngredient() {
+    setAlertErrorIsOpen(true);
   }
 
   function handleCloseNewIngredientAndSubmit() {
@@ -37,8 +49,13 @@ export function Ingredients() {
           'Authorization': `Bearer ${token}`
         }
       })
-      .then(res => setIngredients(ingredients.concat(res.data)))
-      .catch(err => alert(err.message));
+      .then(res => {
+        setIngredients(ingredients.concat(res.data))
+        showAlertSuccessCreateNewIngredient();
+      }).catch(err => {
+        showModalErrorCreateNewIngredient();
+        console.log(err);
+      });
     setNewIngredientModal(false);
   }
 
@@ -96,6 +113,10 @@ export function Ingredients() {
       <button id="plus-icon-btn" className="plus-icon" onClick={handleOpenNewIngredient}>
         <PlusCircle size={100} weight="fill" />
       </button>
+
+      <PopUpAlert status={"Ingrediente Cadastrado"} isOpen={alertSuccessIsOpen} setIsOpen={() => setAlertSuccessIsOpen(false)}/>
+      <PopUpAlert status={"Houve um problema, tente novamente."} isOpen={alertErrorIsOpen} setIsOpen={() => setAlertErrorIsOpen(false)}/>
+
     </div>
   )
 }
