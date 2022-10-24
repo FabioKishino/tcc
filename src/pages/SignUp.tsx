@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import '../styles/pages/signup.css';
 import api from '../services/api';
 import { AuthContext } from '../contexts/AuthContext';
+import { PopUpAlert } from '../components/PopUpAlert';
 
 
 interface IBGEUFResponse {
@@ -38,6 +39,10 @@ export function SignUp() {
   const [selectedUF, setSelectedUF] = useState('0')
   const [selectedCity, setSelectedCity] = useState('0')
   const [newRestaurant, setNewRestaurant] = useState(initialValues)
+
+  const [alertSuccessSignUpIsOpen, setAlertSuccessSignUpIsOpen] = useState(false);
+  const [alertInvalidPasswordIsOpen, setAlertInvalidPasswordIsOpen] = useState(false);
+  const [alertErrorSignUpIsOpen ,setAlertErrorSignUpIsOpen] = useState(false);
 
   useEffect(() => {
     api.get("https://servicodados.ibge.gov.br/api/v1/localidades/estados?orderBy=nome")
@@ -82,20 +87,35 @@ export function SignUp() {
     });
   }
 
+  function handleOpenAlertSuccessSignUp () {
+    setAlertSuccessSignUpIsOpen(true);
+  }
+
+  function handleOpenAlertInvalidPassword () {
+    setAlertInvalidPasswordIsOpen(true);
+  }
+
+  function handleOpenAlertErrorSignUp() {
+    setAlertErrorSignUpIsOpen(true);
+  }
+
   async function handleSignUp() {
 
     if (newRestaurant.password.length < 8) {
-      alert("A senha deve ter no mínimo 8 caracteres")
+      handleOpenAlertInvalidPassword();
       return
     } else {
       try {
         const response = await api.post('/restaurants', newRestaurant)
-        navigate('/home');
-        alert("Cadastro realizado com sucesso!")
-        signIn(newRestaurant);
-
+        
+        handleOpenAlertSuccessSignUp();
+        setTimeout(() => {
+          navigate('/home');
+          signIn(newRestaurant);
+        }, 5000)
+      
       } catch (Error) {
-        alert("Cadastro inválido");
+        handleOpenAlertErrorSignUp();
         throw Error;
       }
     }
@@ -134,6 +154,12 @@ export function SignUp() {
           </div>
         </form>
       </div>
+
+      <PopUpAlert status={"Cadastrado realizado com sucesso"} isOpen={alertSuccessSignUpIsOpen} setClosed={() => setAlertSuccessSignUpIsOpen(false)}/>
+      <PopUpAlert status={"A senha deve ter no mínimo 8 caracteres"} isOpen={alertInvalidPasswordIsOpen} setClosed={() => setAlertInvalidPasswordIsOpen(false)}/>
+      <PopUpAlert status={"Email ja cadastrado!"} isOpen={alertErrorSignUpIsOpen} setClosed={() => setAlertErrorSignUpIsOpen(false)}/>
+
+    
     </div>
   )
 }

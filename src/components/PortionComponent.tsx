@@ -7,6 +7,7 @@ import { PortionSizeProps } from '../@types'
 import { Trash } from 'phosphor-react';
 import { customStyleModalPortionSize } from '../@types/customStyles';
 import api from '../services/api';
+import { PopUpAlert } from './PopUpAlert';
 
 
 Modal.setAppElement('#root')
@@ -15,12 +16,33 @@ export function PortionComponent ({ id, name }: PortionSizeProps) {
 
   const [deletePortion, setDeletePortion] = useState(false);
 
+  const [alertSuccessIsOpen, setAlertSuccessIsOpen] = useState(false);
+  const [alertErrorIsOpen, setAlertErrorIsOpen] = useState(false);
+
   function handleOpenDeletePortionSize () {
     setDeletePortion(true);
   }
 
   function handleCloseDeletePortionSize () {
     setDeletePortion(false);
+  }
+
+  function showAlertSuccessDeletePortionSize() {
+    setAlertSuccessIsOpen(true);
+  }
+  
+  function showModalErrorDeletePortionSize() {
+    setAlertErrorIsOpen(true);
+  }
+
+  function handleCloseSuccessDeletePortionSize () {
+    setAlertSuccessIsOpen(false);
+    window.location.reload();
+  }
+
+  function handleCloseErrorDeletePortionSize () {
+    setAlertSuccessIsOpen(false);
+    window.location.reload();
   }
 
   function handleCloseDeletePortionSizeAndSubmit () {
@@ -33,10 +55,9 @@ export function PortionComponent ({ id, name }: PortionSizeProps) {
         'Authorization': `Bearer ${token}`
       }
     }).then(response => {
-      alert('Portion size deleted successfully!');
-      window.location.reload()
+      showAlertSuccessDeletePortionSize()
     }).catch(error => {
-      alert("Error deleting portion size! Try again later.");
+      showModalErrorDeletePortionSize()
       console.log(error);
     })
   }
@@ -69,6 +90,10 @@ export function PortionComponent ({ id, name }: PortionSizeProps) {
           <button onClick={handleCloseDeletePortionSizeAndSubmit} className="confirm-btn">CONFIRMAR</button>
         </div>
       </Modal>
+
+      <PopUpAlert status={"Tamanho de Porção Deletada!"} isOpen={alertSuccessIsOpen} setClosed={handleCloseSuccessDeletePortionSize}/>
+      <PopUpAlert status={"Houve um problema, tente novamente."} isOpen={alertErrorIsOpen} setClosed={handleCloseErrorDeletePortionSize}/>
+
     </div>
   )
 }

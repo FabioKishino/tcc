@@ -114,8 +114,8 @@ export function Ingredients() {
         <PlusCircle size={100} weight="fill" />
       </button>
 
-      <PopUpAlert status={"Ingrediente Cadastrado"} isOpen={alertSuccessIsOpen} setIsOpen={() => setAlertSuccessIsOpen(false)}/>
-      <PopUpAlert status={"Houve um problema, tente novamente."} isOpen={alertErrorIsOpen} setIsOpen={() => setAlertErrorIsOpen(false)}/>
+      <PopUpAlert status={"Ingrediente Cadastrado"} isOpen={alertSuccessIsOpen} setClosed={() => setAlertSuccessIsOpen(false)}/>
+      <PopUpAlert status={"Houve um problema, tente novamente."} isOpen={alertErrorIsOpen} setClosed={() => setAlertErrorIsOpen(false)}/>
 
     </div>
   )

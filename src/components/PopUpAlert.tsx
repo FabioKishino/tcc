@@ -24,10 +24,10 @@ const customStyle = {
 interface ModalProps {
   status: string;
   isOpen: boolean;
-  setIsOpen: () => void;
+  setClosed: () => void;
 }
 
-export function PopUpAlert ({status, isOpen, setIsOpen}: ModalProps) {
+export function PopUpAlert ({status, isOpen, setClosed}: ModalProps) {
 
   const [modalIsOpen, setModalIsOpen] = useState(isOpen);
 
@@ -41,8 +41,8 @@ export function PopUpAlert ({status, isOpen, setIsOpen}: ModalProps) {
         <p>{status}</p>
         <button onClick={() => 
           {
-            setIsOpen();
-            window.location.reload();
+            setClosed();
+            // window.location.reload();
           }
         }>Ok</button>
       </div>

@@ -84,8 +84,8 @@ export function IngredientComponent({ id_ingredient, name }: IngredientProps) {
         </div>
       </Modal>
 
-      <PopUpAlert status={"Ingrediente Deletado"} isOpen={alertSuccessIsOpen} setIsOpen={() => setAlertSuccessIsOpen(false)}/>
-      <PopUpAlert status={"Houve um problema, tente novamente."} isOpen={alertErrorIsOpen} setIsOpen={() => setAlertErrorIsOpen(false)}/>
+      <PopUpAlert status={"Ingrediente Deletado"} isOpen={alertSuccessIsOpen} setClosed={() => setAlertSuccessIsOpen(false)}/>
+      <PopUpAlert status={"Houve um problema, tente novamente."} isOpen={alertErrorIsOpen} setClosed={() => setAlertErrorIsOpen(false)}/>
 
     </div>
   )

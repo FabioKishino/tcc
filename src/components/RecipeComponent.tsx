@@ -49,6 +49,26 @@ export function RecipeComponent({id_recipe, name }: Recipe) {
     setModalErrorDeleteIsOpen(true);
   }
 
+  function handleCloseSuccessEditRecipe () {
+    setModalSuccessEditIsOpen(false);
+    window.location.reload();
+  }
+
+  function handleCloseErrorEditRecipe () {
+    setModalErrorEditIsOpen(false);
+    window.location.reload();
+  }
+
+  function handleCloseSuccessDeleteRecipe () {
+    setModalErrorEditIsOpen(false);
+    window.location.reload();
+  }
+
+  function handleCloseErrorDeleteRecipe () {
+    setModalErrorDeleteIsOpen(false);
+    window.location.reload();
+  }
+
   function handleOpenEditRecipe() {
     setEditRecipeIsOpen(true);
     setCloseDropDown(true);
@@ -76,10 +96,6 @@ export function RecipeComponent({id_recipe, name }: Recipe) {
     })
   }
 
-  function handleCloseEditRecipe() {
-    setEditRecipeIsOpen(false);
-  }
-
   function handleCloseEditRecipeAndSubmit () {
     setEditRecipeIsOpen(false);
     handleRecipeEdit();
@@ -88,10 +104,6 @@ export function RecipeComponent({id_recipe, name }: Recipe) {
   function handleOpenDeleteRecipe() {
     setDeleteRecipeIsOpen(true);
     setCloseDropDown(true);
-  }
-
-  function handleCloseDeleteRecipe() {
-    setDeleteRecipeIsOpen(false);
   }
 
   function handleCloseDeleteRecipeAndSubmit () {
@@ -163,7 +175,6 @@ export function RecipeComponent({id_recipe, name }: Recipe) {
         setRecipe(res.data)
         showModalSuccessEdit();
       }).catch(err => {
-        alert(err.message)
         showModalErrorEdit();
       });
   }
@@ -204,12 +215,12 @@ export function RecipeComponent({id_recipe, name }: Recipe) {
         {/* EDIT RECIPE MODAL */}
         <Modal
           isOpen={editRecipeIsOpen}
-          onRequestClose={handleCloseEditRecipe}
+          onRequestClose={() => setEditRecipeIsOpen(false)}
           style={customStyleModalEditRecipe}
         >
           <div className="recipe-edit-header">
             <h1>Editar receita</h1>
-            <button onClick={handleCloseEditRecipe}>
+            <button onClick={() => setEditRecipeIsOpen(false)}>
               <X size={50} weight="fill" />
             </button>
           </div>
@@ -251,7 +262,7 @@ export function RecipeComponent({id_recipe, name }: Recipe) {
             </form>             
           </div>
           <div className="form-buttons">
-            <button onClick={handleCloseEditRecipe} className="cancel-edit-btn">CANCELAR</button>
+            <button onClick={() => setEditRecipeIsOpen(false)} className="cancel-edit-btn">CANCELAR</button>
             <button onClick={handleCloseEditRecipeAndSubmit} className="confirm-edit-btn">SALVAR ALTERAÇÕES</button>
           </div>
         </Modal>
@@ -259,7 +270,7 @@ export function RecipeComponent({id_recipe, name }: Recipe) {
         {/* DELETE RECIPE MODAL */}
         <Modal
           isOpen={deleteRecipeIsOpen}
-          onRequestClose={handleCloseDeleteRecipe}
+          onRequestClose={() => setDeleteRecipeIsOpen(false)}
           style={customStyleModalRecipe}
         >
           <div className="delete-portion-size-modal-content">
@@ -267,7 +278,7 @@ export function RecipeComponent({id_recipe, name }: Recipe) {
           </div>
         
           <div className="form-buttons"> 
-            <button onClick={handleCloseDeleteRecipe} className="cancel-btn">CANCELAR</button>
+            <button onClick={() => setDeleteRecipeIsOpen(false)} className="cancel-btn">CANCELAR</button>
             <button onClick={handleCloseDeleteRecipeAndSubmit} className="confirm-btn">CONFIRMAR</button>
           </div>
         </Modal>
@@ -293,11 +304,11 @@ export function RecipeComponent({id_recipe, name }: Recipe) {
           </div> 
         </Modal>
 
-        <PopUpAlert status={"Prato Atualizado!"} isOpen={modalSuccessEditIsOpen} setIsOpen={() => setModalSuccessEditIsOpen(false)}/>
-        <PopUpAlert status={"Houve um problema, tente novamente."} isOpen={modalErrorEditIsOpen} setIsOpen={() => setModalErrorEditIsOpen(false)}/>
+        <PopUpAlert status={"Prato Atualizado!"} isOpen={modalSuccessEditIsOpen} setClosed={handleCloseSuccessEditRecipe}/>
+        <PopUpAlert status={"Houve um problema, tente novamente."} isOpen={modalErrorEditIsOpen} setClosed={handleCloseErrorEditRecipe}/>
 
-        <PopUpAlert status={"Prato Deletado"} isOpen={modalSuccessDeleteIsOpen} setIsOpen={() => setModalSuccessDeleteIsOpen(false)}/>
-        <PopUpAlert status={"Houve um problema, tente novamente."} isOpen={modalErrorDeleteIsOpen} setIsOpen={() => setModalErrorDeleteIsOpen(false)}/>
+        <PopUpAlert status={"Prato Deletado"} isOpen={modalSuccessDeleteIsOpen} setClosed={handleCloseSuccessDeleteRecipe}/>
+        <PopUpAlert status={"Houve um problema, tente novamente."} isOpen={modalErrorDeleteIsOpen} setClosed={handleCloseErrorDeleteRecipe}/>
 
       </div>
     </div>

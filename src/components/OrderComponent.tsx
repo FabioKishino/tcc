@@ -10,6 +10,7 @@ import { Pencil, X } from 'phosphor-react'
 import '../styles/components/orderComponent.css';
 import { customStyleModal, customStylesSelect } from '../@types/customStyles';
 import api from '../services/api';
+import { PopUpAlert } from './PopUpAlert';
 
 Modal.setAppElement('#root')
 
@@ -27,13 +28,17 @@ export function OrderComponent(props: Order) {
   const [portionSize, setPortionSize] = useState<any>(props.portion_size);
   const [status, setStatus] = useState<any>(props.status);
   const [priority, setPriority] = useState<any>(props.priority);
+  
+  const [alertSuccessIsOpen, setAlertSuccessIsOpen] = useState(false);
+  const [alertErrorIsOpen, setAlertErrorIsOpen] = useState(false);
 
-  function handleOpenEditMenu() {
-    setEditOrderIsOpen(true);
+  
+  function showAlertSuccessUpdateOrder() {
+    setAlertSuccessIsOpen(true);
   }
-
-  function handleCloseEditMenu() {
-    setEditOrderIsOpen(false);
+  
+  function showModalErrorUpdateOrder() {
+    setAlertErrorIsOpen(true);
   }
 
   function handleCloseEditMenuAndSubmit() {
@@ -57,9 +62,9 @@ export function OrderComponent(props: Order) {
         const newOrders = [...orders]
         newOrders[oldOrderIndex] = res.data;
         setOrders(newOrders)
-        alert("Pedido atualizado com sucesso!")
+        showAlertSuccessUpdateOrder();
       }).catch(err => {
-        alert("Houve um problema, tente novamente")
+        showModalErrorUpdateOrder();
         console.log(err)
       });
 
@@ -68,7 +73,6 @@ export function OrderComponent(props: Order) {
 
   const created_at = new Date(props.created_at);
   const now = new Date().getTime();
-
   const created_ago = (Math.abs((now - created_at.getTime()) / (1000 * 60))).toFixed(0);
 
   return (
@@ -103,18 +107,18 @@ export function OrderComponent(props: Order) {
         </div>
 
         <div className="order-edit-btn">
-          <button onClick={handleOpenEditMenu}>
+          <button onClick={() => setEditOrderIsOpen(true)}>
             <Pencil size={64} weight="fill" />
           </button>
 
           <Modal
             isOpen={editOrderIsOpen}
-            onRequestClose={handleCloseEditMenu}
+            onRequestClose={() => setEditOrderIsOpen(false)}
             style={customStyleModal}
           >
             <div className="order-edit-header">
               <h1>Editar pedido</h1>
-              <button onClick={handleCloseEditMenu}>
+              <button onClick={() => setEditOrderIsOpen(false)}>
                 <X size={50} weight="fill" />
               </button>
             </div>
@@ -166,10 +170,14 @@ export function OrderComponent(props: Order) {
               </form>
             </div>
             <div className="form-buttons">
-              <button onClick={handleCloseEditMenu} className="cancel-btn">CANCELAR</button>
+              <button onClick={() => setEditOrderIsOpen(false)} className="cancel-btn">CANCELAR</button>
               <button onClick={handleCloseEditMenuAndSubmit} className="confirm-btn">CONFIRMAR</button>
             </div>
           </Modal>
+
+          <PopUpAlert status={"Pedido Atualizado!"} isOpen={alertSuccessIsOpen} setClosed={() => setAlertSuccessIsOpen(false)}/>
+          <PopUpAlert status={"Houve um problema, tente novamente."} isOpen={alertErrorIsOpen} setClosed={() => setAlertErrorIsOpen(false)}/>
+
         </div>
       </div>
     </div>
