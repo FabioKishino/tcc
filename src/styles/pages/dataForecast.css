@@ -93,6 +93,12 @@
   justify-content: space-between;
 }
 
+.data-forecast-header button {
+  background-color: #FFFFFF;
+  border: 0px;
+  cursor: pointer;
+}
+
 ul {
   list-style-type: none; /* Remove bullets */
   padding: 0; /* Remove padding */

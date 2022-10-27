@@ -157,20 +157,11 @@ export function DataForecast() {
             <X size={50} weight="fill" />
           </button>
         </div>
-        <hr
-          style={{
-            height: '1px',
-            width: "90%",
-            margin: "2px 0px"
-          }}
-        />
         <ul>
           {forecastedData.map((d, index) => <ForecastedDataComponent key={index} date={d.date} ingredients={d.ingredients}></ForecastedDataComponent>)}
         </ul>
-
       </Modal>
       
-
       <PopUpAlert status={"Houve um problema, recarregue a página"} isOpen={alertErrorLoadTrainedModels} setClosed={() => setAlertErrorLoadTrainedModels(false)}/>
       <PopUpAlert status={"Houve um problema na coleta, tente novamente"} isOpen={alertErrorPredictDataIsOpen} setClosed={() => setAlertErrorPredictDataIsOpen(false)}/>
 
