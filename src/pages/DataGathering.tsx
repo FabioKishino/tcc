@@ -19,6 +19,7 @@ import { DataGatheringItem, DataGatheringReceived } from '../@types';
 
 import { customStyleModalNewDataGathering, customStyleModalDataGatheringPeopleAmount, customStylesSelectDataGathering } from '../@types/customStyles';
 import api from '../services/api';
+import { PopUpAlert } from '../components/PopUpAlert';
 
 Modal.setAppElement('#root')
 
@@ -51,13 +52,42 @@ export function DataGathering() {
   const [collectPeopleAmountIsOpen, setCollectPeopleAmountIsOpen] = useState(false);
   const [infoIsOpen, setInfoIsOpen] = useState(false);
   const [newDataGatheringIsOpen, setNewDataGatheringIsOpen] = useState(false);
-
   const [newDataGathering, setNewDataGathering] = useState<DataGatheringItem>({ id_ingredient: '', name: '', initial_amount: 0, final_amount: 0, unit: '' });
   const [dataGatherings, setDataGatherings] = useState<DataGatheringItem[]>([]);
-
   const [customerAmount, setCustomerAmount] = useState(0);
-
   const [ingredientsOptions, setIngredientsOptions] = useState<DataGatheringItem[]>([]);
+
+  const [alertErrorDataGatheringWhenPageLoadsIsOpen, setAlertErrorDataGatheringWhenPageLoadsIsOpen] = useState(false);
+  const [alertErrorDataGatheringPeopleIsOpen, setAlertErrorDataGatheringPeopleIsOpen] = useState(false);
+  const [alertErrorDataGatheringIsOpen, setAlertErrorDataGatheringIsOpen] = useState(false);
+  const [alertErrorDataGatheringIngredientInitialValueIsOpen, setAlertErrorDataGatheringIngredientInitialValueIsOpen] = useState(false);
+  const [alertErrrorDataGatheringIngredientFinalValue, setAlertErrrorDataGatheringIngredientFinalValue] = useState(false);
+  const [alertSuccessDataGathering, setAlertSuccessDataGathering] = useState(false);
+
+
+  function showModalErrorDataGatheringWhenPageLoads() {
+    setAlertErrorDataGatheringWhenPageLoadsIsOpen(true);
+  }
+  
+  function showModalErrorDataGatheringPeople () {
+    setAlertErrorDataGatheringPeopleIsOpen(true);
+  }
+
+  function showModalErrorDataGathering () {
+    setAlertErrorDataGatheringIsOpen(true);
+  }
+
+  function showModalErrorDataGatheringIngredientInitialValue () {
+    setAlertErrorDataGatheringIngredientInitialValueIsOpen(true);
+  }
+
+  function showModalErrorDataGatheringIngredientFinalValue() {
+    setAlertErrrorDataGatheringIngredientFinalValue(true);
+  }
+
+  function showModalSuccessDataGathering () {
+    setAlertSuccessDataGathering(true);
+  }
 
   useEffect(() => {
     setIngredientsOptions([]);
@@ -98,19 +128,11 @@ export function DataGathering() {
 
       setDataGatherings(data)
     }).catch(err => {
-      alert("Houve um problema, recarregue a página")
+      showModalErrorDataGatheringWhenPageLoads();
       console.log(err)
     });
 
   }, [])
-
-  function handleOpenNewDataGathering() {
-    setNewDataGatheringIsOpen(true);
-  }
-
-  function handleCloseNewDataGathering() {
-    setNewDataGatheringIsOpen(false);
-  }
 
   function handleCloseNewDataGatheringAndSubmit() {
     if (!dataGatherings.filter((i: any) => i.name == newDataGathering.name && i.id_ingredient == newDataGathering.id_ingredient).length) {
@@ -127,18 +149,9 @@ export function DataGathering() {
     })
   }
 
-  // QUANTIDADE DE PESSOAS
-  function handleOpenCollectPeopleAmount() {
-    setCollectPeopleAmountIsOpen(true);
-  }
-
-  function handleCloseCollectPeopleAmount() {
-    setCollectPeopleAmountIsOpen(false);
-  }
-
   async function handleCloseDataCollectionAndSubmit() {
     if (customerAmount <= 0 || !Number.isInteger(customerAmount)) {
-      alert('Quantidade de pessoas inválida!')
+      showModalErrorDataGatheringPeople();
     } else {
       saveDataGathering();
       savePeopleAmount();
@@ -146,7 +159,6 @@ export function DataGathering() {
     }
   }
 
-  // CANCELAR
   function cancelDataGathering() {
     // This function should delete all the data gathered for the day
     navigate('/home');
@@ -158,10 +170,10 @@ export function DataGathering() {
     dataGatherings.map((i) => {
       if (i.initial_amount == 0) {
         invalidData = true;
-        alert(`A quantidade inicial deve ser superior a 0`)
+        showModalErrorDataGatheringIngredientInitialValue();
       } else if (i.final_amount > i.initial_amount) {
         invalidData = true;
-        alert('A quantidade final não pode ser maior que a inicial!')
+        showModalErrorDataGatheringIngredientFinalValue();
       }
     })
 
@@ -177,9 +189,9 @@ export function DataGathering() {
             'Authorization': `Bearer ${token}`
           }
         }).then(res => {
-          alert(res.data.message)
+          showModalSuccessDataGathering();
         }).catch(err => {
-          alert('Houve um problema na coleta, tente novamente')
+          showModalErrorDataGathering();
           console.log(err)
         })
     }
@@ -196,7 +208,7 @@ export function DataGathering() {
           'Authorization': `Bearer ${token}`
         }
       }).then(res => { }).catch(err => {
-        alert('Houve um problema na coleta, tente novamente')
+        showModalErrorDataGathering();
         console.log(err)
       })
   }
@@ -232,27 +244,22 @@ export function DataGathering() {
       {
         dataGatherings.length > 0 &&
         <div className="data-form-buttons">
-          {/* This button should delete all the fields and go back to Home Page */}
           <button className="data-cancel-btn" onClick={cancelDataGathering}>CANCELAR</button>
-
-          {/* This button should save all the fields */}
           <button className="data-save-btn" onClick={saveDataGathering}>SALVAR</button>
-
-          {/* This button should verify if all the fields has been completed and then open the Modal */}
-          <button className="data-confirm-btn" onClick={handleOpenCollectPeopleAmount}>REALIZAR COLETA</button>
+          <button className="data-confirm-btn" onClick={() => setCollectPeopleAmountIsOpen(true)}>REALIZAR COLETA</button>
         </div>
       }
       <button id="page-btns" className="question-icon" onClick={() => setInfoIsOpen(true)}>
         <Question size={80} weight="fill" />
       </button>
-      <button id="page-btns" className="plus-icon" onClick={handleOpenNewDataGathering}>
+      <button id="page-btns" className="plus-icon" onClick={() => setNewDataGatheringIsOpen(true)}>
         <PlusCircle size={80} weight="fill" />
       </button>
 
       {/* NEW DATA GATHERING MODAL */}
       < Modal
         isOpen={newDataGatheringIsOpen}
-        onRequestClose={handleCloseNewDataGathering}
+        onRequestClose={() => setNewDataGatheringIsOpen(false)}
         style={customStyleModalNewDataGathering}
       >
         <div className="data-modal-container">
@@ -283,7 +290,7 @@ export function DataGathering() {
           </div>
 
           <div className="form-buttons">
-            <button onClick={handleCloseNewDataGathering} className="data-cancel-btn">CANCELAR</button>
+            <button onClick={() => setNewDataGatheringIsOpen(false)} className="data-cancel-btn">CANCELAR</button>
             <button onClick={handleCloseNewDataGatheringAndSubmit} className="data-confirm-btn">CONFIRMAR</button>
           </div>
         </div>
@@ -292,7 +299,7 @@ export function DataGathering() {
       {/* PEOPLE AMOUNT MODAL */}
       <Modal
         isOpen={collectPeopleAmountIsOpen}
-        onRequestClose={handleCloseCollectPeopleAmount}
+        onRequestClose={() => setCollectPeopleAmountIsOpen(false)}
         style={customStyleModalDataGatheringPeopleAmount}
       >
         <div className="data-modal-container" style={{ alignItems: 'center' }}>
@@ -301,7 +308,7 @@ export function DataGathering() {
         </div>
 
         <div className="form-buttons">
-          <button onClick={handleCloseCollectPeopleAmount} className="data-cancel-btn">CANCELAR</button>
+          <button onClick={() => setCollectPeopleAmountIsOpen(false)} className="data-cancel-btn">CANCELAR</button>
           <button onClick={handleCloseDataCollectionAndSubmit} className="data-confirm-btn">CONFIRMAR</button>
         </div>
       </Modal>
@@ -370,6 +377,13 @@ export function DataGathering() {
           />
         </div>
       </Modal>
+
+      <PopUpAlert status={"Houve um problema, recarregue a página."} isOpen={alertErrorDataGatheringWhenPageLoadsIsOpen} setClosed={() => setAlertErrorDataGatheringWhenPageLoadsIsOpen(false)} />
+      <PopUpAlert status={"A quantidade de pessoas deve ser positiva e inteira."} isOpen={alertErrorDataGatheringPeopleIsOpen} setClosed={() => setAlertErrorDataGatheringPeopleIsOpen(false)}/>
+      <PopUpAlert status={"Houve um problema na coleta, tente novamente."} isOpen={alertErrorDataGatheringIsOpen} setClosed={() => setAlertErrorDataGatheringIsOpen(false)}/>
+      <PopUpAlert status={"A quantidade inicial deve ser superior a 0"} isOpen={alertErrorDataGatheringIngredientInitialValueIsOpen} setClosed={() => setAlertErrorDataGatheringIngredientInitialValueIsOpen(false)}/>
+      <PopUpAlert status={"A quantidade final não pode ser maior que a inicial!"} isOpen={alertErrrorDataGatheringIngredientFinalValue} setClosed={() => setAlertErrrorDataGatheringIngredientFinalValue(false)}/>
+      <PopUpAlert status={"Coleta Realizada Ccom Sucesso."} isOpen={alertSuccessDataGathering} setClosed={() => setAlertSuccessDataGathering(false)}/>
 
     </div >
   )

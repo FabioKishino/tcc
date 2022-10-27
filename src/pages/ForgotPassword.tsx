@@ -2,11 +2,12 @@ import '../styles/pages/forgotPassword.css';
 
 import api from '../services/api';
 import { useState } from 'react';
-
+import { PopUpAlert } from '../components/PopUpAlert';
 
 
 export function ForgotPassword () {
   const [email, setEmail] = useState({email: ''});
+  const [alertError, setAlertError] = useState(false);
 
   function sendForgotPasswordEmail () {
     const token = localStorage.getItem("@Auth:token");
@@ -20,7 +21,7 @@ export function ForgotPassword () {
       window.location.href = '/email-confirmation';
       console.log(response);
     }).catch(error => {
-      alert(error);
+      showModalError();
       console.log(error);
     })
   }
@@ -33,6 +34,10 @@ export function ForgotPassword () {
 
   function backToSignInPage () {
     window.location.href = '/';
+  }
+
+  function showModalError() {
+    setAlertError(true);
   }
   
   return (
@@ -56,6 +61,9 @@ export function ForgotPassword () {
           <button className="forgot-password-confirm-btn" onClick={sendForgotPasswordEmail}>Enviar</button>
         </div>
       </div>
+
+      <PopUpAlert status={"Houve um problema ao enviar o e-mail de reset de senha, tente novamente."} isOpen={alertError} setClosed={() => setAlertError(false)}/>
+
     </div>
   )
 }

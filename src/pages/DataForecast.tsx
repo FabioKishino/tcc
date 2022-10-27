@@ -1,18 +1,19 @@
 import { useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react';
+import api from '../services/api';
 
 import Modal from 'react-modal';
 import Select from "react-select";
 
 import { HeaderComponent } from "../components/HeaderComponent";
+import { ForecastedDataComponent } from '../components/ForecastedDataComponent';
+import { PopUpAlert } from '../components/PopUpAlert';
 
+import { X } from 'phosphor-react';
 import { customStyleModal, customStyleSelectDataForecast } from "../@types/customStyles";
 import '../styles/pages/dataForecast.css';
-import api from '../services/api';
-import { X } from 'phosphor-react';
-import { ForecastedData } from '../@types';
-import { ForecastedDataComponent } from '../components/ForecastedDataComponent';
 
+import { ForecastedData } from '../@types';
 
 export function DataForecast() {
 
@@ -22,7 +23,28 @@ export function DataForecast() {
   const [forecastedData, setForecastedData] = useState<ForecastedData[]>([]);
 
   const [ingredientsOptions, setIngredientsOptions] = useState<{ value: string, label: string }[]>([]);
+  const [alertErrorLoadTrainedModels, setAlertErrorLoadTrainedModels] = useState(false);
+  const [alertErrorPredictDataIsOpen, setAlertErrorPredictDataIsOpen] = useState(false);
+  const [alertErrorPredictDaysIsOpen, setAlertErrorPredictDaysIsOpen] = useState(false);
+  const [alertErrorPredictIngredientsIsOpen, setAlertErrorPredictIngredientsIsOpen] = useState(false);
+  
   const navigate = useNavigate();
+
+  function showModalErrorLoadTrainedModels () {
+    setAlertErrorLoadTrainedModels(true);
+  }
+ 
+  function showModalErrorPredictData () {
+    setAlertErrorPredictDataIsOpen(true);
+  }
+
+  function showModalErrorPredictDays () {
+    setAlertErrorPredictDaysIsOpen(true);
+  }
+
+  function showModalErrorPredictIngredients () {
+    setAlertErrorPredictIngredientsIsOpen(true);
+  }
 
   useEffect(() => {
     setIngredientsOptions([]);
@@ -43,7 +65,7 @@ export function DataForecast() {
       })
       setIngredientsOptions(ingredientsOptions.concat(ingredients));
     }).catch(err => {
-      alert("Houve um problema, recarregue a página")
+      showModalErrorLoadTrainedModels();
       console.log(err)
     });
   }, [])
@@ -55,9 +77,9 @@ export function DataForecast() {
   function handlePredictData() {
     setForecastedData([])
     if (daysToBeForecasted < 0 || !Number.isInteger(daysToBeForecasted)) {
-      alert("A quantidade de dias deve ser positiva e inteira")
+      showModalErrorPredictDays();
     } else if (selectedIngredients == '') {
-      alert('Você deve selecionar ao menos 1 ingrediente')
+      showModalErrorPredictIngredients();
     } else {
       const token = localStorage.getItem("@Auth:token");
       api.get(`/forecast?ingredients=${selectedIngredients}&days_to_be_forecasted=${daysToBeForecasted}`,
@@ -84,7 +106,7 @@ export function DataForecast() {
           setForecastedData(data)
           setForecastedResultsIsOpen(true);
         }).catch(err => {
-          alert('Houve um problema na coleta, tente novamente')
+          showModalErrorPredictData();
           console.log(err)
         })
     }
@@ -147,6 +169,14 @@ export function DataForecast() {
         </ul>
 
       </Modal>
+      
+
+      <PopUpAlert status={"Houve um problema, recarregue a página"} isOpen={alertErrorLoadTrainedModels} setClosed={() => setAlertErrorLoadTrainedModels(false)}/>
+      <PopUpAlert status={"Houve um problema na coleta, tente novamente"} isOpen={alertErrorPredictDataIsOpen} setClosed={() => setAlertErrorPredictDataIsOpen(false)}/>
+
+      <PopUpAlert status={"A quantidade de dias deve ser positiva e inteira"} isOpen={alertErrorPredictDaysIsOpen} setClosed={() => setAlertErrorPredictDaysIsOpen(false)}/>
+      <PopUpAlert status={"Você deve selecionar ao menos um ingrediente"} isOpen={alertErrorPredictIngredientsIsOpen} setClosed={() => setAlertErrorPredictIngredientsIsOpen(false)}/>
+
 
     </div>
   )
