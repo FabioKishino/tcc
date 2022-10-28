@@ -107,8 +107,7 @@ export function Ingredients() {
         </div>
       }
 
-      {ingredients.map((item, index) => <IngredientComponent key={index} id_ingredient={item.id_ingredient} name={item.name} />)}
-
+      {ingredients.map((item, index) => <IngredientComponent key={index} id={item.id} name={item.name} />)}
 
       <button id="plus-icon-btn" className="plus-icon" onClick={handleOpenNewIngredient}>
         <PlusCircle size={100} weight="fill" />

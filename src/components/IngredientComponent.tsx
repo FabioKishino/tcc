@@ -14,7 +14,7 @@ import api from '../services/api';
 
 Modal.setAppElement('#root')
 
-export function IngredientComponent({ id_ingredient, name }: IngredientProps) {
+export function IngredientComponent({ id, name }: IngredientProps) {
 
   const [deleteIngredient, setDeleteIngredient] = useState(false);
   
@@ -33,6 +33,11 @@ export function IngredientComponent({ id_ingredient, name }: IngredientProps) {
   function showAlertSuccessDeleteIngredient() {
     setAlertSuccessIsOpen(true);
   }
+
+  function closeAlertSuccessDeleteIngredient() {
+    setAlertSuccessIsOpen(false);
+    window.location.reload();
+  }
   
   function showModalErrorDeleteIngredient() {
     setAlertErrorIsOpen(true);
@@ -42,7 +47,7 @@ export function IngredientComponent({ id_ingredient, name }: IngredientProps) {
     setDeleteIngredient(false);
 
     const token = localStorage.getItem('@Auth:token');
-    api.delete(`/ingredients/${id_ingredient}`, {
+    api.delete(`/ingredients/${id}`, {
       headers: {
         'ContentType': 'application/json',
         'Authorization': `Bearer ${token}`
@@ -84,7 +89,7 @@ export function IngredientComponent({ id_ingredient, name }: IngredientProps) {
         </div>
       </Modal>
 
-      <PopUpAlert status={"Ingrediente Deletado"} isOpen={alertSuccessIsOpen} setClosed={() => setAlertSuccessIsOpen(false)}/>
+      <PopUpAlert status={"Ingrediente Deletado"} isOpen={alertSuccessIsOpen} setClosed={closeAlertSuccessDeleteIngredient}/>
       <PopUpAlert status={"Houve um problema, tente novamente."} isOpen={alertErrorIsOpen} setClosed={() => setAlertErrorIsOpen(false)}/>
 
     </div>

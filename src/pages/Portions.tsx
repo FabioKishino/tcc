@@ -19,15 +19,6 @@ export function Portions() {
   const [portionSize, setPortionSize] = useState<PortionSizeProps>({} as PortionSizeProps);
   const [portionSizeList, setPortionSizeList] = useState<PortionSizeProps[]>([]);
 
-
-  function handleOpenNewPortionSize() {
-    setNewPortionSize(true);
-  }
-
-  function handleCloseNewPortionSize() {
-    setNewPortionSize(false);
-  }
-
   function handleNewPortionSizeAndSubmit() {
     setNewPortionSize(false);
     setPortionSizeList([...portionSizeList, portionSize]);
@@ -68,7 +59,7 @@ export function Portions() {
 
       <Modal
         isOpen={newPortionSize}
-        onRequestClose={handleCloseNewPortionSize}
+        onRequestClose={() => setNewPortionSize(false)}
         style={customStyleModalPortionSize}
       >
         <div className="portion-size-modal-content">
@@ -83,7 +74,7 @@ export function Portions() {
         </div>
 
         <div className="form-buttons">
-          <button onClick={handleCloseNewPortionSize} className="data-cancel-btn">CANCELAR</button>
+          <button onClick={() => setNewPortionSize(false)} className="data-cancel-btn">CANCELAR</button>
           <button onClick={handleNewPortionSizeAndSubmit} className="data-confirm-btn">CONFIRMAR</button>
         </div>
       </Modal>
@@ -96,7 +87,7 @@ export function Portions() {
 
       {portionSizeList.map((item, index) => <PortionComponent key={index} id={item.id} name={item.name} />)}
 
-      <button id="plus-icon-btn" className="plus-icon" onClick={handleOpenNewPortionSize}>
+      <button id="plus-icon-btn" className="plus-icon" onClick={() => setNewPortionSize(true)}>
         <PlusCircle size={100} weight="fill" />
       </button>
 

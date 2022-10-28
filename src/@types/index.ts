@@ -47,7 +47,7 @@ export interface PortionSize {
 // Components V
 
 export interface IngredientProps {
-  id_ingredient: string,
+  id: string,
   name: string;  
 }
 

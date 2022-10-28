@@ -80,6 +80,7 @@ export const customStylesSelectIngredients = {
     color: 'black',
     fontWeight: '300',
     padding: 10,
+    // maxHeight: '50px',
   }),
   control: (styles: any) => ({
     ...styles,

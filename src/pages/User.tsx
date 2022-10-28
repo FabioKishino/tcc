@@ -104,8 +104,8 @@ export function User() {
           'Authorization': `Bearer ${token}`
         }
       })
-      .then(res => setUser(res.data))
-      .catch(err => alert(err.message));
+    .then(res => setUser(res.data))
+    .catch(err => alert(err.message));
   }
 
   return (
