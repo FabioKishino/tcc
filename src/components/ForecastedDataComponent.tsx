@@ -7,11 +7,11 @@ Modal.setAppElement('#root')
 
 export function ForecastedDataComponent({ date, ingredients }: ForecastedData) {
 
-  function formatDate () {
+  function formatDate() {
     const dateArray = date.split('-');
-    const day = dateArray[2];
+    const day = dateArray[0];
     const month = dateArray[1];
-    const year = dateArray[0];
+    const year = dateArray[2];
     return `${day}/${month}/${year}`;
   }
 

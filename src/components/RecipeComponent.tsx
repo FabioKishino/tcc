@@ -14,12 +14,12 @@ import '../styles/components/recipeComponent.css';
 
 Modal.setAppElement('#root')
 
-export function RecipeComponent({id_recipe, name }: Recipe) {
+export function RecipeComponent({ id_recipe, name }: Recipe) {
 
   const [editRecipeIsOpen, setEditRecipeIsOpen] = useState(false);
   const [deleteRecipeIsOpen, setDeleteRecipeIsOpen] = useState(false);
   const [closeDropDown, setCloseDropDown] = useState(false);
-  
+
   const [recipeIngredients, setRecipeIngredients] = useState<any[]>([])
   const [showRecipeIngredientsIsOpen, setShowRecipeIngredientsIsOpen] = useState(false);
   const [ingredientOptions, setIngredientOptions] = useState<any[]>([]);
@@ -33,46 +33,7 @@ export function RecipeComponent({id_recipe, name }: Recipe) {
   const [modalSuccessDeleteIsOpen, setModalSuccessDeleteIsOpen] = useState<boolean>(false);
   const [modalErrorDeleteIsOpen, setModalErrorDeleteIsOpen] = useState<boolean>(false);
 
-  function showModalSuccessEdit () {
-    setModalSuccessEditIsOpen(true);
-  }
-
-  function showModalErrorEdit () {
-    setModalErrorEditIsOpen(true);
-  }
-
-  function showModalSuccessDelete () {
-    setModalSuccessDeleteIsOpen(true);
-  }
-
-  function showModalErrorDelete () {
-    setModalErrorDeleteIsOpen(true);
-  }
-
-  function handleCloseSuccessEditRecipe () {
-    setModalSuccessEditIsOpen(false);
-    window.location.reload();
-  }
-
-  function handleCloseErrorEditRecipe () {
-    setModalErrorEditIsOpen(false);
-    window.location.reload();
-  }
-
-  function handleCloseSuccessDeleteRecipe () {
-    setModalErrorEditIsOpen(false);
-    window.location.reload();
-  }
-
-  function handleCloseErrorDeleteRecipe () {
-    setModalErrorDeleteIsOpen(false);
-    window.location.reload();
-  }
-
-  function handleOpenEditRecipe() {
-    setEditRecipeIsOpen(true);
-    setCloseDropDown(true);
-
+  useEffect(() => {
     // Get Ingredients Options
     setIngredientOptions([])
     const token = localStorage.getItem('@Auth:token');
@@ -83,20 +44,84 @@ export function RecipeComponent({id_recipe, name }: Recipe) {
       }
     }).then(response => {
       const ingredients = [] as any[]
-      response.data.ingredients.map((i: any) => {
+      response.data.ingredients.map((i: any, index: number) => {
 
         ingredients.push({
           id_ingredient: i.id,
-          name: i.name
+          name: i.name,
+          label: i.name,
+          value: (index + 1).toString()
         })
       })
       setIngredientOptions(ingredients);
     }).catch(error => {
       console.log(error);
     })
+  }, [])
+
+  function showModalSuccessEdit() {
+    setModalSuccessEditIsOpen(true);
   }
 
-  function handleCloseEditRecipeAndSubmit () {
+  function showModalErrorEdit() {
+    setModalErrorEditIsOpen(true);
+  }
+
+  function showModalSuccessDelete() {
+    setModalSuccessDeleteIsOpen(true);
+  }
+
+  function showModalErrorDelete() {
+    setModalErrorDeleteIsOpen(true);
+  }
+
+  function handleCloseSuccessEditRecipe() {
+    setModalSuccessEditIsOpen(false);
+    window.location.reload();
+  }
+
+  function handleCloseErrorEditRecipe() {
+    setModalErrorEditIsOpen(false);
+    window.location.reload();
+  }
+
+  function handleCloseSuccessDeleteRecipe() {
+    setModalErrorEditIsOpen(false);
+    window.location.reload();
+  }
+
+  function handleCloseErrorDeleteRecipe() {
+    setModalErrorDeleteIsOpen(false);
+    window.location.reload();
+  }
+
+  function handleOpenEditRecipe() {
+    setEditRecipeIsOpen(true);
+    setCloseDropDown(true);
+
+    const token = localStorage.getItem('@Auth:token');
+    api.get(`/recipes/${id_recipe}`, {
+      headers: {
+        'ContentType': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    }).then(response => {
+      setRecipeIngredients(response.data.ingredients);
+      setSelectedIngredients(response.data.ingredients.map((i: any) => {
+        return {
+          id_ingredient: i.ingredient.id,
+          amount: i.amount,
+          unit: i.unit
+        }
+      }));
+      setRecipe({ ...recipe, name: name })
+    }).catch(error => {
+      console.log(error);
+    })
+
+  }
+
+  function handleCloseEditRecipeAndSubmit() {
     setEditRecipeIsOpen(false);
     handleRecipeEdit();
   }
@@ -106,7 +131,7 @@ export function RecipeComponent({id_recipe, name }: Recipe) {
     setCloseDropDown(true);
   }
 
-  function handleCloseDeleteRecipeAndSubmit () {
+  function handleCloseDeleteRecipeAndSubmit() {
     setDeleteRecipeIsOpen(false);
 
     const token = localStorage.getItem('@Auth:token');
@@ -158,7 +183,7 @@ export function RecipeComponent({id_recipe, name }: Recipe) {
   }
 
   // Function to handle recipe edit
-  function handleRecipeEdit () {
+  function handleRecipeEdit() {
     const recipe_edit_data = {
       name: recipe.name,
       recipe_ingredients: selectedIngredients
@@ -194,20 +219,20 @@ export function RecipeComponent({id_recipe, name }: Recipe) {
 
         <div className="dropdown">
           <button className="dropdown-btn">
-            <List size={35} weight="bold" color="black"/>
+            <List size={35} weight="bold" color="black" />
           </button>
-          { closeDropDown == false && 
-          <div className="dropdown-content">
-            <div className="dropdown-link">
-              <a onClick={handleOpenEditRecipe}><Pencil className="dropdown-icon" size={20} weight="fill" /></a>
-              <a onClick={handleOpenEditRecipe}>Editar</a>
-            </div>
+          {closeDropDown == false &&
+            <div className="dropdown-content">
+              <div className="dropdown-link">
+                <a onClick={handleOpenEditRecipe}><Pencil className="dropdown-icon" size={20} weight="fill" /></a>
+                <a onClick={handleOpenEditRecipe}>Editar</a>
+              </div>
 
-            <div className="dropdown-link">
-              <a onClick={handleOpenDeleteRecipe}><Trash className="dropdown-icon" size={20} weight="bold" /></a>
-              <a onClick={handleOpenDeleteRecipe}>Excluir</a>
+              <div className="dropdown-link">
+                <a onClick={handleOpenDeleteRecipe}><Trash className="dropdown-icon" size={20} weight="bold" /></a>
+                <a onClick={handleOpenDeleteRecipe}>Excluir</a>
+              </div>
             </div>
-          </div>
           }
         </div>
 
@@ -229,8 +254,8 @@ export function RecipeComponent({id_recipe, name }: Recipe) {
               <label>Prato</label>
               <input
                 id='ingredients-select'
-                type="text" 
-                placeholder={name}
+                type="text"
+                defaultValue={name}
                 required
                 onChange={recipeNameInputHandler}
               />
@@ -239,13 +264,8 @@ export function RecipeComponent({id_recipe, name }: Recipe) {
               <Select
                 styles={customStylesSelect}
                 placeholder="Selecione os ingredientes da receita"
-                options={ingredientOptions.map((i: IngredientProps, index: number) => {
-                  return {
-                    id_ingredient: i.id_ingredient,
-                    label: i.name,
-                    value: (index + 1).toString()
-                  }
-                })}
+                options={ingredientOptions}
+                defaultValue={ingredientOptions.filter((i) => recipeIngredients.find((ri: any) => ri.ingredient.id == i.id_ingredient))}
                 isSearchable={false}
                 isMulti={true}
                 onChange={(e) => {
@@ -259,7 +279,7 @@ export function RecipeComponent({id_recipe, name }: Recipe) {
                   setSelectedIngredients(ingredients);
                 }}
               />
-            </form>             
+            </form>
           </div>
           <div className="form-buttons">
             <button onClick={() => setEditRecipeIsOpen(false)} className="cancel-edit-btn">CANCELAR</button>
@@ -276,8 +296,8 @@ export function RecipeComponent({id_recipe, name }: Recipe) {
           <div className="delete-portion-size-modal-content">
             <h2>Você tem certeza que deseja excluir a receita cadastrada?</h2>
           </div>
-        
-          <div className="form-buttons"> 
+
+          <div className="form-buttons">
             <button onClick={() => setDeleteRecipeIsOpen(false)} className="cancel-btn">CANCELAR</button>
             <button onClick={handleCloseDeleteRecipeAndSubmit} className="confirm-btn">CONFIRMAR</button>
           </div>
@@ -297,18 +317,19 @@ export function RecipeComponent({id_recipe, name }: Recipe) {
           </div>
 
           <div className="recipe-ingredients-list">
-            {recipeIngredients.map((item) => { return (
-              <li>{item.ingredient.name}</li>
-              ); 
+            {recipeIngredients.map((item) => {
+              return (
+                <li>{item.ingredient.name}</li>
+              );
             })}
-          </div> 
+          </div>
         </Modal>
 
-        <PopUpAlert status={"Prato Atualizado!"} isOpen={modalSuccessEditIsOpen} setClosed={handleCloseSuccessEditRecipe}/>
-        <PopUpAlert status={"Houve um problema, tente novamente."} isOpen={modalErrorEditIsOpen} setClosed={handleCloseErrorEditRecipe}/>
+        <PopUpAlert status={"Prato Atualizado!"} isOpen={modalSuccessEditIsOpen} setClosed={handleCloseSuccessEditRecipe} />
+        <PopUpAlert status={"Houve um problema, tente novamente."} isOpen={modalErrorEditIsOpen} setClosed={handleCloseErrorEditRecipe} />
 
-        <PopUpAlert status={"Prato Deletado"} isOpen={modalSuccessDeleteIsOpen} setClosed={handleCloseSuccessDeleteRecipe}/>
-        <PopUpAlert status={"Houve um problema, tente novamente."} isOpen={modalErrorDeleteIsOpen} setClosed={handleCloseErrorDeleteRecipe}/>
+        <PopUpAlert status={"Prato Deletado"} isOpen={modalSuccessDeleteIsOpen} setClosed={handleCloseSuccessDeleteRecipe} />
+        <PopUpAlert status={"Houve um problema, tente novamente."} isOpen={modalErrorDeleteIsOpen} setClosed={handleCloseErrorDeleteRecipe} />
 
       </div>
     </div>

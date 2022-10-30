@@ -23,34 +23,34 @@ export function Recipes() {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [ingredientsOptions, setIngredientsOptions] = useState<any[]>([]);
   const [selectedIngredients, setSelectedIngredients] = useState<RecipeIngredients[]>([]);
-  
+
   const [alertSuccessIsOpen, setAlertConfirmationIsOpen] = useState<boolean>(false);
   const [alertErrorIsOpen, setAlertErrorIsOpen] = useState<boolean>(false);
 
-  function handleOpenNewRecipe () {
+  function handleOpenNewRecipe() {
     setNewRecipe(true);
   }
 
-  function handleCloseNewRecipe () {
+  function handleCloseNewRecipe() {
     setNewRecipe(false);
   }
 
-  function showAlertSuccess () {
+  function showAlertSuccess() {
     setAlertConfirmationIsOpen(true);
   }
 
-  function showAlertError () {
+  function showAlertError() {
     setAlertErrorIsOpen(true);
   }
 
-  async function handleCloseNewRecipeAndSubmit () {
+  async function handleCloseNewRecipeAndSubmit() {
     setNewRecipe(false);
 
     const recipe_data = {
       name: recipe.name,
       recipe_ingredients: selectedIngredients
     }
-    
+
     const token = localStorage.getItem('@Auth:token');
     await api.post('/recipes', recipe_data, {
       headers: {
@@ -139,7 +139,7 @@ export function Recipes() {
             styles={customStylesSelectIngredients}
             className="new-recipe-select"
             placeholder="Selecione os ingredientes..."
-            options={ingredientsOptions.map((i: IngredientProps, index: number) => {
+            options={ingredientsOptions.map((i: any, index: number) => {
               return {
                 id_ingredient: i.id_ingredient,
                 label: i.name,
@@ -175,15 +175,15 @@ export function Recipes() {
       }
 
       <div className="recipes-list">
-        {recipes.map((item, index) => <RecipeComponent key={index} id_recipe={item.id_recipe} name={item.name}/>)}
-      </div> 
+        {recipes.map((item, index) => <RecipeComponent key={index} id_recipe={item.id_recipe} name={item.name} />)}
+      </div>
 
       <button id="plus-icon-btn" className="plus-icon" onClick={handleOpenNewRecipe}>
         <PlusCircle size={100} weight="fill" />
       </button>
 
-      <PopUpAlert status={"Receita cadastrada com sucesso!"} isOpen={alertSuccessIsOpen} setClosed={() => setAlertConfirmationIsOpen(false)}/>
-      <PopUpAlert status={"Houve um problema, tente novamente."} isOpen={alertErrorIsOpen} setClosed={() => setAlertConfirmationIsOpen(false)}/>
+      <PopUpAlert status={"Receita cadastrada com sucesso!"} isOpen={alertSuccessIsOpen} setClosed={() => setAlertConfirmationIsOpen(false)} />
+      <PopUpAlert status={"Houve um problema, tente novamente."} isOpen={alertErrorIsOpen} setClosed={() => setAlertConfirmationIsOpen(false)} />
 
     </div>
   )
