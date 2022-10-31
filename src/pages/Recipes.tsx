@@ -112,7 +112,10 @@ export function Recipes() {
         })
       })
       setRecipes(recipes);
-    });
+    }).catch(error => {
+      showAlertError();
+      console.log(error);
+    })
   }, [alertSuccessIsOpen])
 
   return (
@@ -182,7 +185,7 @@ export function Recipes() {
         <PlusCircle size={100} weight="fill" />
       </button>
 
-      <PopUpAlert status={"Receita cadastrada com sucesso!"} isOpen={alertSuccessIsOpen} setClosed={() => setAlertConfirmationIsOpen(false)} />
+      <PopUpAlert status={"Prato cadastrado!"} isOpen={alertSuccessIsOpen} setClosed={() => setAlertConfirmationIsOpen(false)} />
       <PopUpAlert status={"Houve um problema, tente novamente."} isOpen={alertErrorIsOpen} setClosed={() => setAlertConfirmationIsOpen(false)} />
 
     </div>

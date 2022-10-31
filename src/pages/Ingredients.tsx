@@ -72,7 +72,7 @@ export function Ingredients() {
         'ContentType': 'application/json',
         'Authorization': `Bearer ${token}`
       }
-    }).then(res => setIngredients(res.data.ingredients));
+    }).then(res => setIngredients(res.data.ingredients)).catch(err => showModalErrorCreateNewIngredient());
   }, [])
 
 

@@ -29,6 +29,7 @@ export function AuthProvider ({ children }: AuthProviderProps) {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
   const [token, setToken] = useState<string | null>(null)
 
+
   useEffect(() => {
     const loadingStoragedData = () => {
       const storageUser = localStorage.getItem("@Auth:user");
@@ -44,13 +45,13 @@ export function AuthProvider ({ children }: AuthProviderProps) {
   }, []);
 
   async function signIn ({email, password}: SignInData) {
-    const response = await api.post<string>('/authenticate', { email, password });
-    
     try {
+
+      const response = await api.post<string>('/authenticate', { email, password });
+
       const token = response.data;
 
       console.log("Token: "+token);
-      
       
       api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
@@ -60,10 +61,8 @@ export function AuthProvider ({ children }: AuthProviderProps) {
       setToken(token);
       setUser(response.config.data);
       setIsAuthenticated(true);
-
     } catch (error) {
-      alert("E-mail ou senha inválidos");
-      throw new Error("Erro ao fazer login");
+      setIsAuthenticated(false);
     }
   }
 

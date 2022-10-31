@@ -30,6 +30,10 @@ interface OrderContextType {
   amountOptions: { value: string, label: string, portion_id: string }[],
   statusOptions: { value: string, label: string }[],
   priorityOptions: { value: string, label: string, priority: number }[],
+  alertSuccessIsOpen: boolean,
+  setAlertSuccessIsOpen: (alertSuccessIsOpen: boolean) => void,
+  alertErrorCreateOrder: boolean,
+  setAlertErrorCreateOrder: (alertErrorCreateOrder: boolean) => void,
 }
 
 interface OrdersProviderProps {
@@ -46,6 +50,9 @@ export function OrdersProvider({ children }: OrdersProviderProps) {
 
   const [recipeOptions, setRecipeOptions] = useState<any[]>([]);
   const [amountOptions, setAmountOptions] = useState<any[]>([]);
+
+  const [alertSuccessIsOpen, setAlertSuccessIsOpen] = useState<boolean>(false)
+  const [alertErrorCreateOrder, setAlertErrorCreateOrder] = useState<boolean>(false)
 
   useEffect(() => {
     setRecipeOptions([]);
@@ -141,8 +148,10 @@ export function OrdersProvider({ children }: OrdersProviderProps) {
         'ContentType': 'application/json',
         'Authorization': `Bearer ${token}`
       }
+    }).then(response => {
+      setAlertSuccessIsOpen(true);
     }).catch(err => {
-      alert("Houve um problema, tente novamente")
+      setAlertErrorCreateOrder(true);
       console.log(err)
     });
   }
@@ -161,7 +170,11 @@ export function OrdersProvider({ children }: OrdersProviderProps) {
       recipeOptions,
       amountOptions,
       statusOptions,
-      priorityOptions
+      priorityOptions,
+      alertSuccessIsOpen,
+      setAlertSuccessIsOpen,
+      alertErrorCreateOrder,
+      setAlertErrorCreateOrder,
     }}>
       {children}
     </OrdersContext.Provider>

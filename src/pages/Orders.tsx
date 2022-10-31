@@ -13,6 +13,7 @@ import '../styles/pages/orders.css';
 import { OrdersContext } from '../contexts/OrderContext';
 
 import api from '../services/api';
+import { PopUpAlert } from '../components/PopUpAlert';
 
 Modal.setAppElement('#root')
 
@@ -30,17 +31,27 @@ export function Orders() {
     recipeOptions,
     amountOptions,
     statusOptions,
-    priorityOptions
+    priorityOptions,
+    alertSuccessIsOpen,
+    setAlertSuccessIsOpen,
+    alertErrorCreateOrder,
+    setAlertErrorCreateOrder,
   } = useContext(OrdersContext);
 
   const [reload, setReload] = useState(false)
   const [status, setStatus] = useState<string>('Em Progresso')
   const [showFilter, setShowFilter] = useState<boolean>(false)
   const [orderByPriority, setOrderByPriority] = useState<boolean>(false)
+  const [alertError, setAlertError] = useState<boolean>(false)
+  
 
   const reversedOrders = Array.from(orders).reverse()
   let orderedOrders = Array.from(orders).sort((a, b) => Number(b.priority) - Number(a.priority)).filter((o) => o.status == status)
   let filteredOrders = Array.from(reversedOrders).filter((o) => o.status == status)
+
+  function showModalError() {
+    setAlertError(true)
+  }
 
   function timer() {
     setTimeout(() => { setReload(!reload) }, 60000)
@@ -57,6 +68,7 @@ export function Orders() {
       }
     }).then(response => setOrders(response.data.orders))
       .catch(err => {
+        showModalError();
         console.log(err)
       });
   }, [orders.length])
@@ -68,7 +80,7 @@ export function Orders() {
         'ContentType': 'application/json',
         'Authorization': `Bearer ${token}`
       }
-    }).then(response => { setOrders(response.data.orders) });
+    }).then(response => { setOrders(response.data.orders) }).catch(err => { showModalError(); });
   }, [status])
 
 
@@ -79,13 +91,12 @@ export function Orders() {
         'ContentType': 'application/json',
         'Authorization': `Bearer ${token}`
       }
-    }).then(response => setOrders(response.data.orders));
+    }).then(response => setOrders(response.data.orders)).catch(err => { showModalError(); });
   }, [reload])
 
 
   return (
     <div id="orders-page">
-
       <div id="header-component">
         <header className="header-content">
           <button className="add-btn">
@@ -231,6 +242,13 @@ export function Orders() {
       <button id="plus-icon-btn" className="plus-icon" onClick={handleOpenNewOrderMenu}>
         <PlusCircle size={100} weight="fill" />
       </button>
+
+
+      <PopUpAlert status={"Houve um problema, tente novamente"} isOpen={alertError} setClosed={() => setAlertError(false)}/>
+      <PopUpAlert status={"Houve um problema, tente novamente"} isOpen={alertErrorCreateOrder} setClosed={() => setAlertErrorCreateOrder(false)}/>
+
+      <PopUpAlert status={"Pedido Realizado"} isOpen={alertSuccessIsOpen} setClosed={() => setAlertSuccessIsOpen(false)}/>
+
     </div>
   )
 }

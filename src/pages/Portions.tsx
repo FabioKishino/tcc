@@ -10,6 +10,7 @@ import { PlusCircle, Trash } from 'phosphor-react'
 import { customStyleModalPortionSize } from '../@types/customStyles';
 import '../styles/pages/portions.css';
 import api from '../services/api';
+import { PopUpAlert } from '../components/PopUpAlert';
 
 Modal.setAppElement('#root')
 
@@ -18,6 +19,16 @@ export function Portions() {
   const [newPortionSize, setNewPortionSize] = useState(false);
   const [portionSize, setPortionSize] = useState<PortionSizeProps>({} as PortionSizeProps);
   const [portionSizeList, setPortionSizeList] = useState<PortionSizeProps[]>([]);
+  const [alertSuccessCreateNewPortionSizeIsOpen, setAlertSuccessCreateNewPortionSizeIsOpen] = useState(false);
+  const [alertErrorCreateNewPortionSizeIsOpen, setAlertErrorCreateNewPortionSizeIsOpen] = useState(false);
+
+  function showModalSuccessCreateNewPortionSize () {
+    setAlertSuccessCreateNewPortionSizeIsOpen(true)
+  }
+
+  function showModalErrorCreateNewPortionSize () {
+    setAlertErrorCreateNewPortionSizeIsOpen(true)
+  }
 
   function handleNewPortionSizeAndSubmit() {
     setNewPortionSize(false);
@@ -30,10 +41,10 @@ export function Portions() {
         'Authorization': `Bearer ${token}`
       }
     }).then(response => {
-      console.log(response.data);
+      showModalSuccessCreateNewPortionSize();
       setPortionSizeList([...portionSizeList, response.data]);
     }).catch(error => {
-      console.log(error);
+      showModalErrorCreateNewPortionSize();
     })
   }
 
@@ -90,6 +101,9 @@ export function Portions() {
       <button id="plus-icon-btn" className="plus-icon" onClick={() => setNewPortionSize(true)}>
         <PlusCircle size={100} weight="fill" />
       </button>
+
+      <PopUpAlert status={"Tamanho de Porção Cadastrado"} isOpen={alertSuccessCreateNewPortionSizeIsOpen} setClosed={() => setAlertSuccessCreateNewPortionSizeIsOpen(false)} />
+      <PopUpAlert status={"Houve um problema, tente novamente."} isOpen={alertErrorCreateNewPortionSizeIsOpen} setClosed={() => setAlertErrorCreateNewPortionSizeIsOpen(false)} />
 
     </div>
   )

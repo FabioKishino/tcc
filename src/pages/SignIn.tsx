@@ -9,11 +9,22 @@ import '../styles/pages/signin.css';
 export function SignIn() {
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
-  const { signIn } = useContext(AuthContext)
+  const { signIn, setIsAuthenticated, isAuthenticated } = useContext(AuthContext)
 
   async function handleSignIn(data: any) {
-    await signIn(data)
-    navigate('/home');
+
+    setIsAuthenticated(false);
+  
+    await signIn(data);
+
+    console.log(isAuthenticated)
+
+    if (isAuthenticated) {
+      navigate('/home');
+    } else {
+      alert('Erro no login');
+    }
+
   }
 
 

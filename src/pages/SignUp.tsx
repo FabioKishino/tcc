@@ -42,7 +42,8 @@ export function SignUp() {
 
   const [alertSuccessSignUpIsOpen, setAlertSuccessSignUpIsOpen] = useState(false);
   const [alertInvalidPasswordIsOpen, setAlertInvalidPasswordIsOpen] = useState(false);
-  const [alertErrorSignUpIsOpen ,setAlertErrorSignUpIsOpen] = useState(false);
+  const [alertErrorEmailAlreadyExistIsOpen , setAlertErrorEmailAlreadyExistIsOpen] = useState(false);
+  const [alertErrorSignUpIsOpen, setAlertErrorSignUpIsOpen] = useState(false);
 
   useEffect(() => {
     api.get("https://servicodados.ibge.gov.br/api/v1/localidades/estados?orderBy=nome")
@@ -95,13 +96,20 @@ export function SignUp() {
     setAlertInvalidPasswordIsOpen(true);
   }
 
+  function handleOpenAlertErrorEmailAlreadyExist() {
+    setAlertErrorEmailAlreadyExistIsOpen(true);
+  }
+
   function handleOpenAlertErrorSignUp() {
     setAlertErrorSignUpIsOpen(true);
   }
 
   async function handleSignUp() {
 
-    if (newRestaurant.password.length < 8) {
+    if (newRestaurant.email.length == 0 || newRestaurant.name.length == 0 || newRestaurant.password.length == 0 || newRestaurant.state.length == 0 || newRestaurant.city.length == 0) {
+      handleOpenAlertErrorSignUp();
+      return
+    } else if (newRestaurant.password.length < 8) {
       handleOpenAlertInvalidPassword();
       return
     } else {
@@ -115,7 +123,7 @@ export function SignUp() {
         }, 5000)
       
       } catch (Error) {
-        handleOpenAlertErrorSignUp();
+        handleOpenAlertErrorEmailAlreadyExist();
         throw Error;
       }
     }
@@ -157,7 +165,9 @@ export function SignUp() {
 
       <PopUpAlert status={"Cadastrado realizado com sucesso"} isOpen={alertSuccessSignUpIsOpen} setClosed={() => setAlertSuccessSignUpIsOpen(false)}/>
       <PopUpAlert status={"A senha deve ter no mínimo 8 caracteres"} isOpen={alertInvalidPasswordIsOpen} setClosed={() => setAlertInvalidPasswordIsOpen(false)}/>
-      <PopUpAlert status={"Email ja cadastrado!"} isOpen={alertErrorSignUpIsOpen} setClosed={() => setAlertErrorSignUpIsOpen(false)}/>
+      <PopUpAlert status={"Email ja cadastrado!"} isOpen={alertErrorEmailAlreadyExistIsOpen} setClosed={() => setAlertErrorEmailAlreadyExistIsOpen(false)}/>
+      <PopUpAlert status={"Todos os campos são obrigatórios, tente novamente!"} isOpen={alertErrorSignUpIsOpen} setClosed={() => setAlertErrorSignUpIsOpen(false)}/>
+
 
     
     </div>
