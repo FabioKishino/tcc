@@ -17,7 +17,7 @@ export interface Order {
   recipe?: Recipe,
   portion_size?: PortionSize,
   created_at: string,
-  end_at?: string,
+  end_at: string,
   priority?: number,
   status?: string,
 

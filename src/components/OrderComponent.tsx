@@ -28,6 +28,8 @@ export function OrderComponent(props: Order) {
   const [portionSize, setPortionSize] = useState<any>(props.portion_size);
   const [status, setStatus] = useState<any>(props.status);
   const [priority, setPriority] = useState<any>(props.priority);
+
+  const [endAt, setEndAt] = useState<any>(props.end_at);
   
   const [alertSuccessIsOpen, setAlertSuccessIsOpen] = useState(false);
   const [alertErrorIsOpen, setAlertErrorIsOpen] = useState(false);
@@ -61,7 +63,7 @@ export function OrderComponent(props: Order) {
         const oldOrderIndex = orders.findIndex((o) => o.id == props.id)
         const newOrders = [...orders]
         newOrders[oldOrderIndex] = res.data;
-        setOrders(newOrders)
+        setOrders(newOrders);
         showAlertSuccessUpdateOrder();
       }).catch(err => {
         showModalErrorUpdateOrder();
@@ -74,6 +76,9 @@ export function OrderComponent(props: Order) {
   const created_at = new Date(props.created_at);
   const now = new Date().getTime();
   const created_ago = (Math.abs((now - created_at.getTime()) / (1000 * 60))).toFixed(0);
+
+  const end_at = new Date(endAt);
+  const ended_ago = (Math.abs((now - end_at.getTime()) / (1000 * 60))).toFixed(0);
 
   return (
     <div id="order-list">
@@ -100,8 +105,8 @@ export function OrderComponent(props: Order) {
           </div>
 
           <div>
-            <label>Criado há</label>
-            <p>{created_ago} min</p>
+            <label>{status == "Concluído" ? "Concluído há" : "Criado há"}</label>
+            <p>{status == "Concluído" ? ended_ago : created_ago} min</p>
           </div>
 
         </div>

@@ -221,6 +221,7 @@ export function Orders() {
           portion_size={item.portion_size}
           status={item.status}
           created_at={item.created_at}
+          end_at={item.end_at}
           priority={item.priority}
           id_recipe={item.id_recipe}
           portion_id={item.portion_id}
@@ -233,6 +234,7 @@ export function Orders() {
         portion_size={item.portion_size}
         status={item.status}
         created_at={item.created_at}
+        end_at={item.end_at}
         priority={item.priority}
         id_recipe={item.id_recipe}
         portion_id={item.portion_id}

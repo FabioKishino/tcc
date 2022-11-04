@@ -1,37 +1,30 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AuthContext } from '../contexts/AuthContext';
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 import TakeLogo from '../images/TakeLogo.svg'
 import '../styles/pages/signin.css';
+import { PopUpAlert } from '../components/PopUpAlert';
 
 export function SignIn() {
-  const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
-  const { signIn, setIsAuthenticated, isAuthenticated } = useContext(AuthContext)
+  const { signIn } = useContext(AuthContext)
+  const [alertErrorSignInIsOpen, setAlertErrorSignInIsOpen] = useState(false);
 
-  async function handleSignIn(data: any) {
-
-    setIsAuthenticated(false);
-  
-    await signIn(data);
-
-    console.log(isAuthenticated)
-
-    if (isAuthenticated) {
-      navigate('/home');
-    } else {
-      alert('Erro no login');
-    }
-
+  async function handleSignIn(data: any) {  
+    signIn(data).then(
+      (response) => {window.location.href = '/home';}
+    ).catch(
+      (error) => {setAlertErrorSignInIsOpen(true)}
+    );
   }
 
 
   return (
     <div id="page-signin">
       <div className="signin-container">
-        <form onSubmit={handleSubmit(handleSignIn)}>
+        <form onSubmit={(handleSubmit(handleSignIn))}>
           <img src={TakeLogo} alt="TakeLogo" />
 
           <input
@@ -59,6 +52,9 @@ export function SignIn() {
           <Link to="/forgot-password" className="forget-password">Esqueceu sua senha?</Link>
 
         </form>
+
+        <PopUpAlert status={"Email/senha incorretos"} isOpen={alertErrorSignInIsOpen} setClosed={() => setAlertErrorSignInIsOpen(false)}/>
+
       </div>
     </div>
   )

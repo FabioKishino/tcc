@@ -29,7 +29,6 @@ export function AuthProvider ({ children }: AuthProviderProps) {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
   const [token, setToken] = useState<string | null>(null)
 
-
   useEffect(() => {
     const loadingStoragedData = () => {
       const storageUser = localStorage.getItem("@Auth:user");
@@ -50,8 +49,6 @@ export function AuthProvider ({ children }: AuthProviderProps) {
       const response = await api.post<string>('/authenticate', { email, password });
 
       const token = response.data;
-
-      console.log("Token: "+token);
       
       api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
@@ -60,12 +57,11 @@ export function AuthProvider ({ children }: AuthProviderProps) {
 
       setToken(token);
       setUser(response.config.data);
-      setIsAuthenticated(true);
+
     } catch (error) {
-      setIsAuthenticated(false);
+      throw new Error();
     }
   }
-
 
   const signOut = () => {
     localStorage.clear();

@@ -119,7 +119,11 @@ export function SignUp() {
         handleOpenAlertSuccessSignUp();
         setTimeout(() => {
           navigate('/home');
-          signIn(newRestaurant);
+            try {
+              signIn(newRestaurant);
+            } catch (error) {
+              console.log(error)
+            }
         }, 5000)
       
       } catch (Error) {
