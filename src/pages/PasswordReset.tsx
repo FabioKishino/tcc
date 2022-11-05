@@ -8,7 +8,7 @@ import { PopUpAlert } from '../components/PopUpAlert';
 
 export function PasswordReset() {
 
-  const { id_restaurant, token } = useParams();
+  const { id_restaurant } = useParams();
   const [password, setPassword] = useState('');
   const [alertSuccessIsOpen, setAlertSuccessIsOpen] = useState(false);
   const [alertErrorIsOpen, setAlertErrorIsOpen] = useState(false);
