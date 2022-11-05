@@ -27,7 +27,7 @@ interface ModalProps {
   setClosed: () => void;
 }
 
-export function PopUpAlert ({status, isOpen, setClosed}: ModalProps) {
+export function PopUpAlert({ status, isOpen, setClosed }: ModalProps) {
 
   const [modalIsOpen, setModalIsOpen] = useState(isOpen);
 
@@ -39,11 +39,10 @@ export function PopUpAlert ({status, isOpen, setClosed}: ModalProps) {
     >
       <div className="modal-content">
         <p>{status}</p>
-        <button onClick={() => 
-          {
-            setClosed();
-            // window.location.reload();
-          }
+        <button onClick={() => {
+          setClosed();
+          // window.location.reload();
+        }
         }>Ok</button>
       </div>
     </Modal>
