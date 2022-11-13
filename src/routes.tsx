@@ -30,7 +30,7 @@ export function SiteRoutes() {
         <Route path="/ingredients" element={<Ingredients />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/email-confirmation" element={<EmailConfirmation />} />
-        <Route path="/password-reset/:id_restaurant/:token" element={<PasswordReset />} />
+        <Route path="/password-reset/:id_restaurant" element={<PasswordReset />} />
       </Routes>
     </BrowserRouter>
   )
