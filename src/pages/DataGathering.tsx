@@ -383,7 +383,7 @@ export function DataGathering() {
       <PopUpAlert status={"Houve um problema na coleta, tente novamente."} isOpen={alertErrorDataGatheringIsOpen} setClosed={() => setAlertErrorDataGatheringIsOpen(false)}/>
       <PopUpAlert status={"A quantidade inicial deve ser superior a 0"} isOpen={alertErrorDataGatheringIngredientInitialValueIsOpen} setClosed={() => setAlertErrorDataGatheringIngredientInitialValueIsOpen(false)}/>
       <PopUpAlert status={"A quantidade final não pode ser maior que a inicial!"} isOpen={alertErrrorDataGatheringIngredientFinalValue} setClosed={() => setAlertErrrorDataGatheringIngredientFinalValue(false)}/>
-      <PopUpAlert status={"Coleta Realizada Ccom Sucesso."} isOpen={alertSuccessDataGathering} setClosed={() => setAlertSuccessDataGathering(false)}/>
+      <PopUpAlert status={"Coleta Realizada Com Sucesso."} isOpen={alertSuccessDataGathering} setClosed={() => setAlertSuccessDataGathering(false)}/>
 
     </div >
   )
