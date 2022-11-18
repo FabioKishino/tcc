@@ -16,7 +16,7 @@
   justify-content: center;
 
   border-radius: 25px;
-  padding-right: 45px;
+  padding-left: 3vh;
 }
 
 .order-component-low-priority {
@@ -31,7 +31,7 @@
   justify-content: center;
 
   border-radius: 25px;
-  padding-right: 45px;
+  padding-left: 3vh;
 }
 
 .order-component-medium-priority {
@@ -46,7 +46,13 @@
   justify-content: center;
 
   border-radius: 25px;
-  padding-right: 45px;
+  padding-left: 3vh;
+}
+
+.order-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
 }
 
 .order-component-high-priority {
@@ -61,14 +67,13 @@
   justify-content: center;
 
   border-radius: 25px;
-  padding-right: 45px;
+  padding-left: 3vh;
 }
 
 .order-content {
   display: flex;
   width: 90%;
   justify-content: space-between;
-  padding-left: 45px;
 }
 
 .order-content label{

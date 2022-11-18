@@ -7,23 +7,20 @@ import '../styles/components/headerComponent.css';
 import { OrderComponent } from '../components/OrderComponent'
 
 import { customStyleModal, customStylesFilter, customStylesSelect } from '../@types/customStyles';
-import { ArrowLeft, Funnel, ListNumbers, PlusCircle, X } from 'phosphor-react'
+import { ArrowLeft, Funnel, ListNumbers, PlusCircle, Trash, X } from 'phosphor-react'
 import '../styles/pages/orders.css';
 
 import { OrdersContext } from '../contexts/OrderContext';
+import ReactLoading from 'react-loading';
 
 import api from '../services/api';
 import { PopUpAlert } from '../components/PopUpAlert';
+import { Order } from '../@types';
 
 Modal.setAppElement('#root')
 
 export function Orders() {
   const {
-    orders,
-    setOrders,
-    handleCloseNewOrderMenuAndSubmit,
-    newOrder,
-    setNewOrder,
     newOrderIsOpen,
     setNewOrderIsOpen,
     handleOpenNewOrderMenu,
@@ -38,12 +35,31 @@ export function Orders() {
     setAlertErrorCreateOrder,
   } = useContext(OrdersContext);
 
-  const [reload, setReload] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [orders, setOrders] = useState<Order[]>([]);
   const [status, setStatus] = useState<string>('Em Progresso')
+  const [newOrder, setNewOrder] = useState<Order>({} as Order);
   const [showFilter, setShowFilter] = useState<boolean>(false)
   const [orderByPriority, setOrderByPriority] = useState<boolean>(false)
   const [alertError, setAlertError] = useState<boolean>(false)
-  
+
+
+  useEffect(() => {
+    setLoading(true);
+    const token = localStorage.getItem("@Auth:token");
+    api.get(`/orders?status=${status}`, {
+      headers: {
+        'ContentType': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    }).then(response => { setOrders(response.data.orders); setLoading(false); })
+      .catch(err => {
+        showModalError();
+        console.log(err)
+        setLoading(false);
+      });
+  }, []);
+
 
   const reversedOrders = Array.from(orders).reverse()
   let orderedOrders = Array.from(orders).sort((a, b) => Number(b.priority) - Number(a.priority)).filter((o) => o.status == status)
@@ -53,47 +69,61 @@ export function Orders() {
     setAlertError(true)
   }
 
-  function timer() {
-    setTimeout(() => { setReload(!reload) }, 60000)
-  }
-
-  useEffect(() => { timer() }, [])
-
   useEffect(() => {
+    setLoading(true);
     const token = localStorage.getItem("@Auth:token");
     api.get(`/orders?status=${status}`, {
       headers: {
         'ContentType': 'application/json',
         'Authorization': `Bearer ${token}`
       }
-    }).then(response => setOrders(response.data.orders))
-      .catch(err => {
-        showModalError();
-        console.log(err)
-      });
-  }, [orders.length])
-
-  useEffect(() => {
-    const token = localStorage.getItem("@Auth:token");
-    api.get(`/orders?status=${status}`, {
-      headers: {
-        'ContentType': 'application/json',
-        'Authorization': `Bearer ${token}`
-      }
-    }).then(response => { setOrders(response.data.orders) }).catch(err => { showModalError(); });
+    }).then(response => { setOrders(response.data.orders); setLoading(false); }).catch(err => { showModalError(); setLoading(false); });
   }, [status])
 
+  async function handleCreateOrder() {
+    setNewOrderIsOpen(false);
 
-  useEffect(() => {
     const token = localStorage.getItem("@Auth:token");
-    api.get(`/orders?status=${status}`, {
+    const response = await api.post('/orders', newOrder, {
       headers: {
         'ContentType': 'application/json',
         'Authorization': `Bearer ${token}`
       }
-    }).then(response => setOrders(response.data.orders)).catch(err => { showModalError(); });
-  }, [reload])
+    }).then(response => {
+      setOrders([response.data, ...orders]);
+      setAlertSuccessIsOpen(true);
+    }).catch(err => {
+      setAlertErrorCreateOrder(true);
+      console.log(err)
+    });
+  }
 
+  async function handleDeleteAllOrders() {
+
+    const token = localStorage.getItem("@Auth:token");
+    await api.delete('/orders', {
+      headers: {
+        'ContentType': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    }).then(response => {
+      setOrders([]);
+    }).catch(err => {
+      console.log(err)
+    });
+  }
+
+  async function handleUpdateOrders(order: Order) {
+    if (order.status != status) {
+      const newOrders = orders.filter((o: any) => o.id != order.id)
+      setOrders(newOrders);
+    } else {
+      const newOrders = [...orders]
+      const oldOrderIndex = orders.findIndex((o) => o.id == order.id)
+      newOrders[oldOrderIndex] = order;
+      setOrders(newOrders);
+    }
+  }
 
   return (
     <div id="orders-page">
@@ -177,11 +207,11 @@ export function Orders() {
         </div>
         <div className="form-buttons">
           <button onClick={handleCloseNewOrderMenu} className="cancel-btn">CANCELAR</button>
-          <button onClick={handleCloseNewOrderMenuAndSubmit} className="confirm-btn">CONFIRMAR</button>
+          <button onClick={handleCreateOrder} className="confirm-btn">CONFIRMAR</button>
         </div>
       </Modal>
 
-      {orders.length === 0 &&
+      {orders.length === 0 && !loading &&
         <div className="no-orders">
           <p>Não há pedidos no momento :(</p>
         </div>
@@ -212,9 +242,28 @@ export function Orders() {
         </div>
       ) : null}
 
-
-      {orderByPriority ? (
-        orderedOrders.map((item, index) => <OrderComponent
+      {loading ?
+        (
+          <div style={{ display: 'flex', justifyContent: 'center', 'alignItems': 'center', margin: '10vw 0px' }}>
+            <ReactLoading type={'spinningBubbles'} color={'black'} height={'10vw'} width={'10vw'} />
+          </div>
+        ) :
+        orderByPriority ? (
+          orderedOrders.map((item, index) => <OrderComponent
+            key={index}
+            id={item.id}
+            recipe={item.recipe}
+            portion_size={item.portion_size}
+            status={item.status}
+            created_at={item.created_at}
+            end_at={item.end_at}
+            priority={item.priority}
+            id_recipe={item.id_recipe}
+            portion_id={item.portion_id}
+            updateOrder={((order) => handleUpdateOrders(order))}
+          />
+          )
+        ) : filteredOrders.map((item, index) => <OrderComponent
           key={index}
           id={item.id}
           recipe={item.recipe}
@@ -225,31 +274,23 @@ export function Orders() {
           priority={item.priority}
           id_recipe={item.id_recipe}
           portion_id={item.portion_id}
+          updateOrder={((order) => handleUpdateOrders(order))}
         />
-        )
-      ) : filteredOrders.map((item, index) => <OrderComponent
-        key={index}
-        id={item.id}
-        recipe={item.recipe}
-        portion_size={item.portion_size}
-        status={item.status}
-        created_at={item.created_at}
-        end_at={item.end_at}
-        priority={item.priority}
-        id_recipe={item.id_recipe}
-        portion_id={item.portion_id}
-      />
-      )}
+        )}
+
+      <button id="trash-icon-btn" className="trash-icon" onClick={handleDeleteAllOrders}>
+        <Trash size={100} weight="fill" />
+      </button>
 
       <button id="plus-icon-btn" className="plus-icon" onClick={handleOpenNewOrderMenu}>
         <PlusCircle size={100} weight="fill" />
       </button>
 
 
-      <PopUpAlert status={"Houve um problema, tente novamente"} isOpen={alertError} setClosed={() => setAlertError(false)}/>
-      <PopUpAlert status={"Houve um problema, tente novamente"} isOpen={alertErrorCreateOrder} setClosed={() => setAlertErrorCreateOrder(false)}/>
+      <PopUpAlert status={"Houve um problema, tente novamente"} isOpen={alertError} setClosed={() => setAlertError(false)} />
+      <PopUpAlert status={"Houve um problema, tente novamente"} isOpen={alertErrorCreateOrder} setClosed={() => setAlertErrorCreateOrder(false)} />
 
-      <PopUpAlert status={"Pedido Realizado"} isOpen={alertSuccessIsOpen} setClosed={() => setAlertSuccessIsOpen(false)}/>
+      <PopUpAlert status={"Pedido Realizado"} isOpen={alertSuccessIsOpen} setClosed={() => setAlertSuccessIsOpen(false)} />
 
     </div>
   )

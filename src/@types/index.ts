@@ -25,6 +25,7 @@ export interface Order {
   id_recipe: string,
   portion_id: string,
 
+  updateOrder: (order: Order) => void,
 }
 
 export interface Recipe {
@@ -48,7 +49,7 @@ export interface PortionSize {
 
 export interface IngredientProps {
   id: string,
-  name: string;  
+  name: string;
 }
 
 export interface PortionSizeProps {

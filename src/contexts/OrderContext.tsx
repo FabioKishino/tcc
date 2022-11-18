@@ -17,11 +17,6 @@ import api from '../services/api';
 // }
 
 interface OrderContextType {
-  orders: Order[],
-  setOrders: (orders: Order[]) => void,
-  handleCloseNewOrderMenuAndSubmit: () => void,
-  newOrder: Order,
-  setNewOrder: (newOrder: Order) => void,
   newOrderIsOpen: boolean,
   setNewOrderIsOpen: (newOrderIsOpen: boolean) => void,
   handleOpenNewOrderMenu: () => void,
@@ -44,8 +39,6 @@ export const OrdersContext = createContext({} as OrderContextType);
 
 export function OrdersProvider({ children }: OrdersProviderProps) {
 
-  const [orders, setOrders] = useState<Order[]>([]);
-  const [newOrder, setNewOrder] = useState<Order>({} as Order);
   const [newOrderIsOpen, setNewOrderIsOpen] = useState(false);
 
   const [recipeOptions, setRecipeOptions] = useState<any[]>([]);
@@ -138,31 +131,10 @@ export function OrdersProvider({ children }: OrdersProviderProps) {
     setNewOrderIsOpen(false);
   }
 
-  async function handleCloseNewOrderMenuAndSubmit() {
-    setNewOrderIsOpen(false);
-    setOrders([newOrder, ...orders]);
 
-    const token = localStorage.getItem("@Auth:token");
-    const response = await api.post('/orders', newOrder, {
-      headers: {
-        'ContentType': 'application/json',
-        'Authorization': `Bearer ${token}`
-      }
-    }).then(response => {
-      setAlertSuccessIsOpen(true);
-    }).catch(err => {
-      setAlertErrorCreateOrder(true);
-      console.log(err)
-    });
-  }
 
   return (
     <OrdersContext.Provider value={{
-      orders,
-      setOrders,
-      handleCloseNewOrderMenuAndSubmit,
-      newOrder,
-      setNewOrder,
       newOrderIsOpen,
       setNewOrderIsOpen,
       handleOpenNewOrderMenu,
