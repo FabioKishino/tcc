@@ -16,7 +16,7 @@
   justify-content: center;
 
   border-radius: 25px;
-  padding-left: 3vh;
+  padding-left: 4vh;
 }
 
 .order-component-low-priority {
@@ -32,6 +32,8 @@
 
   border-radius: 25px;
   padding-left: 3vh;
+  padding-right: 3vh;
+
 }
 
 .order-component-medium-priority {
@@ -47,6 +49,7 @@
 
   border-radius: 25px;
   padding-left: 3vh;
+  padding-right: 3vh;
 }
 
 .order-item {
@@ -68,6 +71,7 @@
 
   border-radius: 25px;
   padding-left: 3vh;
+  padding-right: 3vh;
 }
 
 .order-content {

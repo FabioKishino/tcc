@@ -63,6 +63,7 @@ export function DataGathering() {
   const [alertErrorDataGatheringIngredientInitialValueIsOpen, setAlertErrorDataGatheringIngredientInitialValueIsOpen] = useState(false);
   const [alertErrrorDataGatheringIngredientFinalValue, setAlertErrrorDataGatheringIngredientFinalValue] = useState(false);
   const [alertSuccessDataGathering, setAlertSuccessDataGathering] = useState(false);
+  const [alertSuccessSaveDataGathering, setAlertSuccessSaveDataGathering] = useState(false);
 
 
   function showModalErrorDataGatheringWhenPageLoads() {
@@ -87,6 +88,10 @@ export function DataGathering() {
 
   function showModalSuccessDataGathering () {
     setAlertSuccessDataGathering(true);
+  }
+
+  function showModalSuccessSaveDataGathering () {
+    setAlertSuccessSaveDataGathering(true);
   }
 
   useEffect(() => {
@@ -189,7 +194,16 @@ export function DataGathering() {
             'Authorization': `Bearer ${token}`
           }
         }).then(res => {
-          showModalSuccessDataGathering();
+          
+          dataGatherings.map((i) => {
+            if (i.final_amount <= 0) {
+              showModalSuccessSaveDataGathering();
+            } else {
+              showModalSuccessDataGathering();
+            }
+          })
+          
+          
         }).catch(err => {
           showModalErrorDataGathering();
           console.log(err)
@@ -384,6 +398,7 @@ export function DataGathering() {
       <PopUpAlert status={"A quantidade inicial deve ser superior a 0"} isOpen={alertErrorDataGatheringIngredientInitialValueIsOpen} setClosed={() => setAlertErrorDataGatheringIngredientInitialValueIsOpen(false)}/>
       <PopUpAlert status={"A quantidade final não pode ser maior que a inicial!"} isOpen={alertErrrorDataGatheringIngredientFinalValue} setClosed={() => setAlertErrrorDataGatheringIngredientFinalValue(false)}/>
       <PopUpAlert status={"Coleta Realizada Com Sucesso."} isOpen={alertSuccessDataGathering} setClosed={() => setAlertSuccessDataGathering(false)}/>
+      <PopUpAlert status={"Quantidade inicial salva com sucesso!"} isOpen={alertSuccessSaveDataGathering} setClosed={() => setAlertSuccessSaveDataGathering(false)}/>
 
     </div >
   )

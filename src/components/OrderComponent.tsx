@@ -160,11 +160,6 @@ export function OrderComponent(props: Order) {
             <p>{props.portion_size?.name}</p>
           </div>
 
-          <div className="order-item" style={{ width: "15vw" }}>
-            <label>Status</label>
-            <p>{props.status}</p>
-          </div>
-
           <div className="order-item" style={{ width: "10vw" }}>
             <label>Prioridade</label>
             <p>{priorityOptions.find((p) => parseInt(p.value) == props.priority)?.label}</p>
@@ -185,6 +180,12 @@ export function OrderComponent(props: Order) {
               </div>
             )}
 
+          <div className="order-item" style={{ width: "15vw" }}>
+            <label>Status</label>
+            {/* style={{ color: props.status == 'Cancelado' ? '#e22727' : props.status == 'Concluído' ? '#3bbb30' : '#1746e2' }} */}
+            <p>{props.status}</p>
+          </div>
+
         </div>
 
         {props.status != 'Cancelado' ?
@@ -198,10 +199,10 @@ export function OrderComponent(props: Order) {
 
           ) : ''}
 
-
-        <div className="order-edit-btn" style={{ position: 'relative', right: props.status != 'Cancelado' ? '-0.1rem' : '-2vw', top: '0.5vh', height: '100%' }}>
+        {/* style={{ position: 'relative', right: props.status != 'Cancelado' ? '-0.1rem' : '-2vw', top: '0.5vh', height: '100%' }} */}
+        <div className="order-edit-btn">
           <button onClick={() => setEditOrderIsOpen(true)}>
-            <Pencil size={36} weight="fill" />
+            <Pencil size={50} weight="fill" />
           </button>
         </div>
 
